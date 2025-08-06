@@ -2,7 +2,7 @@ Thanks, Divanshu! Here's your fully personalized and enhanced `CONTRIBUTING.md` 
 
 ---
 
-# 🤖 Contributing to AI-Powered Portfolio
+# 🤖 Contributing to Gemini Dev Portfolio
 
 Thank you for considering a contribution! 🧠💻  
 This project thrives because of developers like you helping build a better, more accessible, and intelligent portfolio platform.
@@ -341,7 +341,7 @@ Add your tool in `src/app/api/chat/tools/`, import it, and use `npm run dev` to 
 
 ## 🙏 Thank You!
 
-We appreciate your time, skills, and effort in making **AI-Powered Portfolio** better for the entire community.
+We appreciate your time, skills, and effort in making **Gemini Dev Portfolio** better for the entire community.
 Whether it's a typo fix or a new feature — **your contribution matters**. 💙
 
 Happy coding! 🚀

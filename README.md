@@ -1,9 +1,9 @@
 
-# 🌟 AI-Powered Portfolio
+# 🌟 Gemini Dev Portfolio
 
 > A modern, customizable, AI-enhanced developer portfolio powered by Next.js, Tailwind CSS, and Google Gemini.
 
-![License](https://img.shields.io/github/license/sdivyanshu90/my_portfolio)
+![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 ![Next.js](https://img.shields.io/badge/Next.js-15-blue)
 ![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v3-38b2ac)
@@ -13,7 +13,7 @@
 
 ## 📸 Demo
 
-> **Live Preview:** [https://your-portfolio-url.com](https://your-portfolio-url.com) *(Replace with actual URL)*
+> **Live Preview:** [https://sdivyanshu90.vercel.app/](https://sdivyanshu90.vercel.app/)
 
 ![Preview Screenshot](/public/portfolio.png)
 
@@ -21,7 +21,7 @@
 
 ## 🧠 About the Project
 
-**AI-Powered Portfolio** is a dynamic and intelligent portfolio template for developers, freelancers, and creators. It blends sleek design with AI-driven features to showcase your work, resume, and skills — with support for customizable sections, themes, and smart chat tools.
+**Gemini Dev Portfolio** is a dynamic and intelligent portfolio template for developers, freelancers, and creators. It blends sleek design with AI-driven features to showcase your work, resume, and skills — with support for customizable sections, themes, and smart chat tools.
 
 Built with:
 
