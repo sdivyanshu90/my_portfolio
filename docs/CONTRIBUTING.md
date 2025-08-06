@@ -1,351 +1,347 @@
-# Contributing to AI-Powered Portfolio
+Thanks, Divanshu! Here's your fully personalized and enhanced `CONTRIBUTING.md` with your name, GitHub username, and project URL added in the right places. I've also removed references to the previous maintainer.
 
-First off, thank you for considering contributing to this project! 🎉
+---
 
-It's people like you that make this portfolio system a great tool for developers worldwide.
+# 🤖 Contributing to AI-Powered Portfolio
 
-## 📋 Table of Contents
+Thank you for considering a contribution! 🧠💻  
+This project thrives because of developers like you helping build a better, more accessible, and intelligent portfolio platform.
 
-- [Code of Conduct](#code-of-conduct)
-- [Getting Started](#getting-started)
-- [How Can I Contribute?](#how-can-i-contribute)
-- [Development Setup](#development-setup)
-- [Pull Request Process](#pull-request-process)
-- [Style Guidelines](#style-guidelines)
-- [Community](#community)
+---
 
-## Code of Conduct
+## 📚 Table of Contents
 
-This project and everyone participating in it is governed by our Code of Conduct. By participating, you are expected to uphold this code.
+- [🌈 Code of Conduct](#-code-of-conduct)
+- [🚀 Getting Started](#-getting-started)
+- [🛠️ How Can I Contribute?](#-how-can-i-contribute)
+- [🧪 Development Setup](#-development-setup)
+- [📦 Pull Request Process](#-pull-request-process)
+- [🎨 Style & Commit Guidelines](#-style--commit-guidelines)
+- [📈 Release Process](#-release-process)
+- [🧭 Development Guidelines](#-development-guidelines)
+- [🤝 Community](#-community)
+- [❓ FAQs](#-faqs)
+- [🙏 Thank You!](#-thank-you)
 
-### Our Pledge
+---
 
-We pledge to make participation in our project a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, religion, or sexual identity and orientation.
+## 🌈 Code of Conduct
 
-### Our Standards
+Please read and follow our [Code of Conduct](CODE_OF_CONDUCT.md).  
+We are committed to a respectful and inclusive environment for all.
 
-Examples of behavior that contributes to creating a positive environment include:
+### We Pledge To:
+- Foster a harassment-free community
+- Respect all contributors regardless of background
+- Act with empathy, kindness, and integrity
 
-- Using welcoming and inclusive language
-- Being respectful of differing viewpoints and experiences
-- Gracefully accepting constructive criticism
-- Focusing on what is best for the community
-- Showing empathy towards other community members
+---
 
-## Getting Started
+## 🚀 Getting Started
 
-### Prerequisites
+### 🔧 Prerequisites
 
-- Node.js (v18 or higher)
-- npm, pnpm, or yarn
-- Git
-- A text editor (VS Code recommended)
+Ensure the following are installed:
 
-### First-time Setup
+- **Node.js v18+**
+- **npm**, **yarn**, or **pnpm**
+- **Git**
+- **VS Code** or preferred editor
 
-1. **Fork the repository** on GitHub
-2. **Clone your fork** locally:
-   ```bash
+### 🔄 First-Time Setup
+
+1. **Fork** the repo and **clone** it:
+   ```
    git clone https://github.com/your-username/portfolio.git
    cd portfolio
+   ````
+
+2. **Add upstream**:
+
    ```
-3. **Add the original repository** as upstream:
-   ```bash
-   git remote add upstream https://github.com/anujjainbatu/portfolio.git
+   git remote add upstream https://github.com/sdivyanshu90/my_portfolio.git
    ```
-4. **Install dependencies**:
+
+3. **Install dependencies**:
+
    ```bash
    npm install
    ```
-5. **Set up environment variables**:
+
+4. **Set up your environment**:
+
    ```bash
    cp .env.example .env.local
-   # Add your Google Gemini API key
+   # Add your Google Gemini API Key in .env.local
    ```
 
-## How Can I Contribute?
+---
 
-### 🐛 Reporting Bugs
+## 🛠️ How Can I Contribute?
 
-Before creating bug reports, please check the existing issues to avoid duplicates.
+There are many ways to contribute:
 
-**When filing a bug report, please include:**
-- A clear and descriptive title
-- Steps to reproduce the issue
-- Expected vs actual behavior
-- Screenshots if applicable
-- Your environment (OS, Node.js version, browser)
-- Any relevant configuration (portfolio-config.json snippets)
+### 🐛 Report Bugs
 
-### 💡 Suggesting Enhancements
+* Search existing issues first.
+* Include steps to reproduce, actual vs expected results, and screenshots if possible.
+* Provide your system details (OS, Node.js version, browser).
 
-Enhancement suggestions are welcome! Please provide:
-- A clear and descriptive title
-- Detailed description of the enhancement
-- Explain why this would be useful
-- Provide examples or mockups if possible
+### 💡 Suggest Features
+
+* Clearly describe your idea and why it's beneficial.
+* Include mockups, sketches, or examples if possible.
 
 ### 🔧 Code Contributions
 
-#### Types of Contributions We Welcome:
+You can:
 
-1. **Bug fixes** - Fix existing issues
-2. **New features** - Add new portfolio sections or chat tools
-3. **UI/UX improvements** - Better design and user experience
-4. **Documentation** - Improve README, add examples, or create tutorials
-5. **Performance optimizations** - Make the system faster
-6. **Accessibility improvements** - Better a11y support
-7. **Testing** - Add or improve tests
+* Add **new features** or **chat tools**
+* Improve **performance**, **design**, or **accessibility**
+* Expand or fix **documentation**
+* Write or enhance **tests**
+* Contribute **translations**
 
-#### What We're Looking For:
+We welcome PRs both big and small!
 
-- **New chat tools** for different portfolio sections
-- **Theme customizations** and color schemes
-- **Animation improvements** for better UX
-- **Mobile responsiveness** enhancements
-- **SEO optimizations**
-- **Performance improvements**
-- **Better error handling**
+---
 
-## Development Setup
+## 🧪 Development Setup
 
-### 1. Development Environment
+### ⚙️ Local Dev Commands
 
 ```bash
-# Start development server
-npm run dev
-
-# Run type checking
-npm run type-check
-
-# Run linting
-npm run lint
-
-# Run tests (when available)
-npm run test
+npm run dev           # Run local development server
+npm run lint          # Run ESLint
+npm run type-check    # Run TypeScript checks
+npm run format        # Auto-format code
+npm run test          # Run test suite (when available)
 ```
 
-### 2. Project Structure
+### 🗂️ Project Structure
 
 ```
 portfolio/
 ├── src/
-│   ├── app/           # Next.js app router
-│   ├── components/    # React components
-│   ├── lib/           # Utility functions
-│   ├── types/         # TypeScript definitions
-│   └── hooks/         # Custom React hooks
-├── public/            # Static assets
-├── portfolio-config.json  # Main configuration
-└── docs/              # Documentation
+│   ├── app/             # Next.js app router
+│   ├── components/      # UI components
+│   ├── hooks/           # Custom React hooks
+│   ├── lib/             # Utility functions
+│   ├── types/           # TypeScript definitions
+├── public/              # Static assets
+├── docs/                # Documentation
+├── portfolio-config.json # Site-wide configuration
+└── .env.local           # API keys and secrets
 ```
 
-### 3. Key Technologies
+### 🧰 Tech Stack
 
-- **Next.js 15** - React framework
-- **TypeScript** - Type safety
-- **Tailwind CSS** - Styling
-- **Google Gemini API** - AI chat functionality
-- **Framer Motion** - Animations
+* **Next.js 15**
+* **TypeScript**
+* **Tailwind CSS**
+* **Google Gemini API**
+* **Framer Motion**
+* **ESLint & Prettier**
 
-## Pull Request Process
+---
 
-### 1. Branch Naming
+## 📦 Pull Request Process
 
-Use descriptive branch names:
-- `feature/add-new-chat-tool`
-- `fix/image-loading-issue`
-- `docs/update-setup-guide`
-- `refactor/improve-config-loader`
+### 🔖 Branch Naming
 
-### 2. Before Submitting
+Use clear, conventional names:
 
-1. **Update from upstream**:
+```
+feature/add-xyz
+fix/issue-101
+docs/improve-setup-guide
+refactor/clean-hero-component
+```
+
+### 🧹 Before Submitting
+
+1. **Sync with upstream**:
+
    ```bash
    git fetch upstream
    git rebase upstream/main
    ```
 
-2. **Run quality checks**:
+2. **Run tests and quality checks**:
+
    ```bash
-   npm run type-check
    npm run lint
+   npm run type-check
    npm run build
    ```
 
-3. **Test your changes**:
-   - Test with different portfolio configurations
-   - Verify on mobile devices
-   - Check dark/light mode compatibility
+3. **Test thoroughly**:
 
-### 3. Pull Request Guidelines
+   * ✅ Responsive design
+   * ✅ Light/dark mode
+   * ✅ Browser compatibility
+   * ✅ Different configs in `portfolio-config.json`
 
-**Your PR should:**
-- Have a clear title and description
-- Reference any related issues
-- Include screenshots for UI changes
-- Update documentation if needed
-- Add tests for new features (when applicable)
+### 📝 Pull Request Template
 
-**PR Template:**
 ```markdown
-## Description
-Brief description of changes
+## 📄 Description
+Brief overview of the change.
 
-## Type of Change
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Documentation update
-- [ ] Refactoring
-- [ ] Performance improvement
+## 📦 Type of Change
+- [ ] Bug fix 🐛
+- [ ] New feature ✨
+- [ ] Documentation 📚
+- [ ] Refactor 🔁
+- [ ] Performance improvement ⚡
 
-## Testing
-- [ ] Tested locally
-- [ ] Tested on mobile
-- [ ] Tested dark/light modes
-- [ ] Tested with different configs
+## 🧪 Testing
+- [ ] Ran locally
+- [ ] Mobile responsive
+- [ ] Dark/light mode checked
+- [ ] Config variations tested
 
-## Screenshots (if applicable)
-[Add screenshots here]
+## 📸 Screenshots (if UI changes)
 
-## Checklist
-- [ ] Code follows style guidelines
-- [ ] Self-review completed
-- [ ] Documentation updated
+## ✅ Checklist
+- [ ] Code follows style guide
+- [ ] Tests added/updated
+- [ ] Docs updated
 - [ ] No breaking changes
 ```
 
-## Style Guidelines
+---
 
-### Code Style
+## 🎨 Style & Commit Guidelines
 
-We use ESLint and Prettier for consistent code formatting:
+### 🖌️ Code Style
 
-```bash
-# Auto-fix linting issues
-npm run lint -- --fix
+* Format with Prettier: `npm run format`
+* Lint fix: `npm run lint -- --fix`
+* Use Tailwind CSS for styling
 
-# Format code
-npm run format
+### ⚛️ React
+
+* Functional components only
+* Hooks over class components
+* Keep components reusable
+
+### 🔠 TypeScript
+
+* Avoid `any`; use defined interfaces
+* Define new types in `src/types/`
+* Use `interface` over `type` for extensibility
+
+### 🧾 Commit Messages
+
+Format:
+
 ```
-
-### TypeScript Guidelines
-
-- Use strict TypeScript
-- Define proper types in `src/types/`
-- Avoid `any` type
-- Use interface over type when possible
-
-### React Guidelines
-
-- Use functional components with hooks
-- Follow React best practices
-- Use proper prop types
-- Keep components focused and reusable
-
-### CSS Guidelines
-
-- Use Tailwind CSS utility classes
-- Follow mobile-first approach
-- Ensure dark mode compatibility
-- Use semantic HTML
-
-### Git Guidelines
-
-**Commit Messages:**
-```
-feat: add new project carousel animation
-fix: resolve image loading issue on mobile
-docs: update API documentation
-refactor: improve config loader performance
-```
-
-**Format:**
-```
-<type>: <description>
+<type>: <summary>
 
 [optional body]
 
-[optional footer]
+[optional footer: references or issues]
 ```
 
-**Types:**
-- `feat`: New feature
-- `fix`: Bug fix
-- `docs`: Documentation
-- `style`: Code style changes
-- `refactor`: Code refactoring
-- `test`: Adding tests
-- `chore`: Maintenance tasks
+Examples:
 
-## Release Process
+* `feat: add language switcher to navbar`
+* `fix: resolve undefined config error`
+* `docs: update contributing.md`
+* `test: add coverage for config parser`
 
-### Versioning
+Types:
 
-We use [Semantic Versioning](https://semver.org/):
-- **MAJOR**: Breaking changes
-- **MINOR**: New features (backward compatible)
-- **PATCH**: Bug fixes
+* `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 
-### Release Checklist
+---
+
+## 📈 Release Process
+
+We follow **Semantic Versioning**:
+`MAJOR.MINOR.PATCH`
+
+### 🔁 Release Checklist
 
 1. Update version in `package.json`
 2. Update `CHANGELOG.md`
-3. Create release notes
-4. Tag the release
+3. Tag the release:
+
+   ```bash
+   git tag v1.2.0
+   git push origin --tags
+   ```
+4. Create GitHub release with release notes
 5. Deploy to production
 
-## Development Guidelines
+---
 
-### Adding New Features
+## 🧭 Development Guidelines
 
-1. **Chat Tools**: Add new tools in `src/app/api/chat/tools/`
-2. **Components**: Create reusable components in `src/components/`
-3. **Configuration**: Update types in `src/types/portfolio.ts`
-4. **Documentation**: Update README and examples
+### 📦 Adding New Features
 
-### Testing New Features
+* Add chat tools to `src/app/api/chat/tools/`
+* Create new UI components in `src/components/`
+* Update config types in `src/types/portfolio.ts`
+* Update documentation and usage examples
 
-1. Test with multiple portfolio configurations
-2. Verify mobile responsiveness
-3. Check accessibility compliance
-4. Test dark/light mode switching
-5. Verify performance impact
+### 🧪 Testing Focus Areas
 
-### Performance Considerations
+* Different `portfolio-config.json` variations
+* Mobile and tablet views
+* Dark/light mode support
+* Accessibility via screen readers and keyboard navigation
+* Performance via Lighthouse or Web Vitals
 
-- Optimize images and assets
-- Use dynamic imports for large components
-- Implement proper loading states
-- Consider bundle size impact
+### 🚀 Performance Best Practices
 
-## Community
-
-### Getting Help
-
-- 💬 [GitHub Discussions](https://github.com/anujjainbatu/portfolio/discussions)
-- 🐛 [Issues](https://github.com/anujjainbatu/portfolio/issues)
-- 📧 Email: anujjainbatu@gmail.com
-
-### Recognition
-
-Contributors will be:
-- Added to the README contributors section
-- Mentioned in release notes
-- Invited to our contributor Discord (coming soon)
-
-### Code of Conduct Enforcement
-
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project team at anujjainbatu@gmail.com.
+* Lazy load large components
+* Optimize image sizes
+* Use `next/image` where applicable
+* Avoid unnecessary re-renders
+* Implement loading states for slow APIs
 
 ---
 
-## 🎉 Thank You!
+## 🤝 Community
 
-Your contributions make this project better for everyone. We appreciate your time and effort in helping improve the AI-Powered Portfolio system.
+### 💬 Need Help?
 
-**Happy coding!** 🚀
+* GitHub [Discussions](https://github.com/sdivyanshu90/my_portfolio/discussions)
+* GitHub [Issues](https://github.com/sdivyanshu90/my_portfolio/issues)
+
+### 🏅 Recognition
+
+All contributors will:
+
+* Be listed in the README
+* Be mentioned in changelogs
+* Get an invite to our upcoming **Discord Community** *(coming soon)*
+
+### ⚖️ Code of Conduct Enforcement
+
+Unacceptable behavior will be addressed directly and may result in a ban.
+Please report concerns via [GitHub Issues](https://github.com/sdivyanshu90/my_portfolio/issues).
 
 ---
 
-*This contribution guide is inspired by the best practices from the open-source community and is continuously improved based on contributor feedback.*
+## ❓ FAQs
+
+**Q: Do I need to be an expert to contribute?**
+No! Beginners and first-timers are very welcome. We’ll help you through your first PR.
+
+**Q: Can I use this project in my portfolio or job interview?**
+Yes! Just make sure to credit the repo appropriately.
+
+**Q: How do I test a new chat tool?**
+Add your tool in `src/app/api/chat/tools/`, import it, and use `npm run dev` to test via the local interface.
+
+---
+
+## 🙏 Thank You!
+
+We appreciate your time, skills, and effort in making **AI-Powered Portfolio** better for the entire community.
+Whether it's a typo fix or a new feature — **your contribution matters**. 💙
+
+Happy coding! 🚀
