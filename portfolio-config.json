@@ -1,0 +1,341 @@
+{
+  "personal": {
+    "name": "Divanshu Sharma",
+    "age": 23,
+    "location": "Mumbai, Maharashtra, India",
+    "title": "Full-stack Python Developer Machine Learning Engineer & AI Engineer",
+    "email": "divyanshu74.80@gmail.com",
+    "handle": "@sdivanshu90",
+    "bio": "Hey 👋\nI'm Divanshu with expertise in AI/ML, LLMs, and Web Development. At WorldQuant BRAIN, I've built ensemble Alpha models and RAG systems using PubMedBERT and BioMistral-7B. I enjoy working with Python, TensorFlow, PyTorch, React, and Django, contributing to open source and creating scalable applications. I'm certified in Deep Learning, TensorFlow, and Front-End Development, and proud to have earned GOLD recognition in the WorldQuant Alphathon.",
+    "avatar": "/profile.jpg",
+    "fallbackAvatar": "https://images.unsplash.com/photo-1680543256467-ba0a2493f9fd?q=80&w=686&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  },
+  "education": {
+    "completed1": {
+      "degree": "B.Tech in Computer Science and Engineering",
+      "institution": "Mumbai University",
+      "duration": "2021-2025",
+      "cgpa": "8.2/10.0",
+      "graduationDate": "June 2025"
+    },
+    "completed2": {
+      "degree": "IBM Quantum Summer School",
+      "institution": "IBM",
+      "duration": "2022",
+      "cgpa": "Quantum Excellence",
+      "graduationDate": "August 2022"
+    },
+    "achievements": [
+      "Top 5% in WorldQuant Alphathon 2022",
+      "Certified in Deep Learning by Coursera",
+      "Postman API fundamentals certification"
+    ]
+  },
+  "experience": [
+    {
+      "company": "WorldQuant BRAIN",
+      "position": "Research Consultant",
+      "type": "Contract",
+      "duration": "November 2024-Present",
+      "description": "Developed high-Sharpe ratio quantitative Alpha models using advanced statistical techniques and market data analysis.",
+      "technologies": ["Python", "Statistics"]
+    }
+  ],
+  "skills": {
+    "programming": [
+      "Python",
+      "JavaScript",
+      "SQL",
+      "HTML/CSS",
+      "TypeScript",
+      "Java",
+      "C++",
+      "XML"
+    ],
+    "ml_ai": [
+      "Scikit-learn",
+      "XGBoost",
+      "TensorFlow",
+      "Keras",
+      "PyTorch",
+      "PyTorch Geometric",
+      "OpenCV",
+      "LangChain",
+      "LangGraph",
+      "OpenAI API",
+      "LLM Agents",
+      "Hugging Face",
+      "Prompt Engineering",
+      "RAG (Retrieval-Augmented Generation)",
+      "Transformers",
+      "GNN",
+      "LSTM",
+      "CNN"
+    ],
+    "web_development": [
+      "React.js",
+      "Next.js",
+      "FastAPI",
+      "Flask",
+      "Django",
+      "Firebase",
+      "Tailwind CSS",
+      "Node.js",
+      "SCSS"
+    ],
+    "databases": [
+      "PostgreSQL",
+      "MongoDB",
+      "Firebase",
+      "MySQL",
+      "Oracle Database",
+      "SQLite"
+    ],
+    "devops_cloud": [
+      "Docker",
+      "Git",
+      "AWS",
+      "Heroku",
+      "AWS EC2",
+      "GitHub Actions",
+      "Postman",
+      "Google Colab"
+    ],
+    "soft_skills": [
+      "Problem Solving",
+      "Team Leadership",
+      "Project Management",
+      "Communication",
+      "Learning Agility",
+      "Innovation"
+    ]
+  },
+  "projects": [
+    {
+      "title": "Portfolio",
+      "category": "AI/Web Development",
+      "description": "This portfolio website showcases my skills, projects, and achievements. Built with Next.js, React, TypeScript, and Tailwind CSS, it features an AI chatbot powered by Google Gemini API for interactive Q&A. The site is optimized for performance and SEO, with a focus on user experience.",
+      "techStack": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+        "AI Integration"
+      ],
+      "date": "2025",
+      "status": "Completed",
+      "featured": true,
+      "links": [
+        {
+          "name": "GitHub",
+          "url": ""
+        }
+      ]
+    },
+    {
+      "title": "BioMed-Retrieval",
+      "category": "AI/NLP",
+      "description": "A domain-specific Retrieval-Augmented Generation (RAG) system for biomedical Q&A using LLMs. Integrated PubMedBERT, BioMistral-7B, and Qdrant for hybrid semantic and keyword search. Fine-tuned responses using SFT-style prompt-response pairs to improve relevance by 30%.",
+      "techStack": [
+        "Python",
+        "LangChain",
+        "Hugging Face",
+        "PubMedBERT",
+        "BioMistral-7B",
+        "Qdrant",
+        "Chroma"
+      ],
+      "date": "2024",
+      "status": "Completed",
+      "featured": true,
+      "links": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/sdivyanshu90/BioMed-Retrieval"
+        }
+      ]
+    },
+    {
+      "title": "ProblemPioneer (ML4SCI Task Solutions)",
+      "category": "AI/Scientific Computing",
+      "description": "Implemented machine learning solutions for particle physics tasks from ML4SCI, including Electron/Photon classification using ResNet-15-like architecture, Quark-Gluon classification with VGG-inspired and CNN models, and particle momentum estimation using Graph Neural Networks (GCN and GAT).",
+      "techStack": [
+        "Python",
+        "PyTorch",
+        "TensorFlow",
+        "CNN",
+        "VGG",
+        "ResNet",
+        "GNN",
+        "GCN",
+        "GAT"
+      ],
+      "date": "2024",
+      "status": "Completed",
+      "featured": true,
+      "links": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/sdivyanshu90/ProblemPioneer"
+        }
+      ]
+    },
+    {
+      "title": "Next Word Prediction",
+      "category": "AI/NLP",
+      "description": "Trained a multi-layer LSTM network on a large text corpus of 580K+ sentences to predict the next word. Achieved 92% token-level accuracy and significantly reduced perplexity.",
+      "techStack": ["Python", "TensorFlow", "Keras", "LSTM"],
+      "date": "2023",
+      "status": "Completed",
+      "featured": false,
+      "links": [
+        {
+          "name": "Kaggle",
+          "url": "https://www.kaggle.com/code/divanshu22/next-word-prediction"
+        }
+      ]
+    },
+    {
+      "title": "Processing Foundation | p5.js Web Editor",
+      "category": "Web Development/Open Source",
+      "description": "Contributed to the p5.js Web Editor open-source project by implementing a time-saving keyboard shortcut for file creation and fixing numerous UI/UX responsiveness issues. Enhanced cross-platform performance and mobile responsiveness through CSS and JavaScript improvements.",
+      "techStack": ["JavaScript", "React", "SCSS", "CSS"],
+      "date": "2023",
+      "status": "Completed",
+      "featured": true,
+      "links": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/processing/p5.js-web-editor"
+        }
+      ]
+    },
+    {
+      "title": "React-Budgie",
+      "category": "Web Development",
+      "description": "A budget management application built using React. Features include budget overview and expense tracking, with data persistence using LocalStorage and a responsive UI for all devices.",
+      "techStack": ["React", "JavaScript", "LocalStorage", "CSS"],
+      "date": "2023",
+      "status": "Completed",
+      "featured": false,
+      "links": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/sdivyanshu90/React-Budgie"
+        }
+      ]
+    },
+    {
+      "title": "ReactFlix",
+      "category": "Web Development",
+      "description": "A movie listing application that allows users to browse and search for movies, view details, and add favorites. Built with React and React Router for seamless navigation, with a responsive UI.",
+      "techStack": ["React", "JavaScript", "React Router", "CSS"],
+      "date": "2023",
+      "status": "Completed",
+      "featured": false,
+      "links": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/sdivyanshu90/ReactFlix"
+        }
+      ]
+    }
+  ],
+  "social": {
+    "linkedin": "https://www.linkedin.com/in/divsha22/",
+    "github": "https://github.com/sdivyanshu90",
+    "kaggle": "https://www.kaggle.com/divanshu22",
+    "leetcode": "https://leetcode.com/u/emotional_fool/",
+    "codechef": "https://www.codechef.com/users/divanshu90"
+  },
+  "internship": {
+    "seeking": true,
+    "duration": "6 months",
+    "startDate": "August 2025",
+    "preferredLocation": "Remote or On-site",
+    "focusAreas": [
+      "AI Development",
+      "Full-stack Development",
+      "Data Science",
+      "Machine Learning"
+    ],
+    "availability": "Available for immediate start",
+    "workStyle": "Fast learner, team player, problem solver",
+    "goals": "Looking to join an innovative team developing AI-powered solutions, where I can contribute to impactful projects and continue growing my expertise in enterprise-level development."
+  },
+  "personality": {
+    "traits": ["passionate", "curious", "determined", "collaborative"],
+    "interests": ["AI/ML", "Web Development", "Open Source", "Hackathons"],
+    "funFacts": [
+      "Solved 1600+ algorithmic problems on CodeChef",
+      "Contributed to open-source projects like the p5.js Web Editor, Vulnerable Code, PyNN, and more",
+      "Love solving complex problems with simple solutions"
+    ],
+    "workingStyle": "I thrive in fast-paced environments, adapt quickly, and stay focused on delivering results",
+    "motivation": "Creating innovative solutions that solve real-world problems and add value"
+  },
+  "resume": {
+    "title": "Divanshu Sharma - Resume",
+    "description": "Full-stack Python Developer, ML Engineer & AI Engineer | B.Tech CSE Student | WorldQuant BRAIN Research Consultant",
+    "fileType": "PDF",
+    "lastUpdated": "May 2025",
+    "fileSize": "74 KB",
+    "downloadUrl": "/resume.pdf"
+  },
+  "chatbot": {
+    "name": "Divanshu",
+    "personality": "friendly, helpful, and engaging",
+    "tone": "friendly and conversational",
+    "language": "english",
+    "responseStyle": "short and interactive",
+    "useEmojis": true,
+    "topics": ["projects", "skills", "experience", "contact", "fun_facts"]
+  },
+  "presetQuestions": {
+    "me": [
+      "Who are you?",
+      "Tell me about yourself",
+      "What's your background?",
+      "What are your passions?",
+      "How did you get started in tech?",
+      "Where do you see yourself in 5 years?"
+    ],
+    "professional": [
+      "What are your skills?",
+      "Can I see your resume?",
+      "What's your experience?",
+      "Are you looking for internships?",
+      "Am I available for opportunities?",
+      "What makes you a valuable team member?",
+      "Where are you working now?",
+      "Why should I hire you?",
+      "What's your educational background?",
+      "How was your experience working as freelancer?"
+    ],
+    "projects": [
+      "What projects are you most proud of?",
+      "What are your projects?",
+      "Tell me about your best project",
+      "What are you working on?"
+    ],
+    "contact": [
+      "How can I reach you?",
+      "How can I contact you?",
+      "What's your email?",
+      "Where can I find you online?",
+      "What kind of project would make you say 'yes' immediately?",
+      "Where are you located?"
+    ],
+    "fun": [
+      "What are your hobbies?",
+      "Tell me something interesting about you",
+      "What motivates you?"
+    ]
+  },
+  "meta": {
+    "configVersion": "1.0",
+    "lastUpdated": "2025-08-06",
+    "generatedBy": "Divanshu Sharma",
+    "description": "This is a personal portfolio configuration file for me, showcasing skills, projects, and contact information."
+  }
+}
