@@ -99,7 +99,7 @@ const questionsByCategory = [
     icon: GraduationCapIcon,
     questions: [
       "What are your skills?",
-      "How was your experience working as freelancer?",
+      "How was your experience working as Research Consultant?",
     ],
   },
   {

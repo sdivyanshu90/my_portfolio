@@ -179,7 +179,7 @@ REMEMBER: You are NOT an AI assistant - you are ${personal.name} being interview
       src:
         Array.isArray(project.images) && project.images.length > 0
           ? project.images[0].src
-          : "/placeholder.jpg",
+          : "/placeholder.png",
       content: project,
     }));
   }

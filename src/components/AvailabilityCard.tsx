@@ -62,7 +62,7 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
           {/* Avatar placeholder */}
           <div className="bg-muted h-16 w-16 overflow-hidden rounded-full shadow-md">
             <img
-              src="/profile.jpeg"
+              src="/profile.jpg"
               alt="Divanshu's avatar"
               className="h-full w-full object-cover object-[center_top_-5%] scale-95"
             />

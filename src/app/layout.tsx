@@ -121,7 +121,7 @@ export default function RootLayout({
               name: "Divanshu Sharma",
               jobTitle: "Full-stack Developer, ML Engineer & AI Engineer",
               url: "",
-              image: "/home/somu/personal_portfolio/public/profile.jpg",
+              image: "./public/profile.jpg",
               sameAs: [
                 "https://github.com/sdivyanshu90",
                 "https://linkedin.com/in/divsha22",

@@ -19,8 +19,8 @@ try {
       email: "error@example.com",
       handle: "@error",
       bio: "Configuration file could not be loaded",
-      avatar: "/placeholder.jpg",
-      fallbackAvatar: "/placeholder.jpg",
+      avatar: "/placeholder.png",
+      fallbackAvatar: "/placeholder.png",
     },
     education: {
       completed1: {
