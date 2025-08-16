@@ -13,7 +13,7 @@
 
 ## 📸 Demo
 
-> **Live Preview:** [https://sdivyanshu90.vercel.app/](https://sdivyanshu90.vercel.app/)
+> **Live Preview:** [https://div90.vercel.app/](https://div90.vercel.app/)
 
 ![Preview Screenshot](/public/portfolio.png)
 
