@@ -17,7 +17,6 @@ const google = createGoogleGenerativeAI({
   apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
 });
 
-// ❌ Pas besoin de l'export ici, Next.js n'aime pas ça
 function errorHandler(error: unknown) {
   if (error == null) {
     return "Unknown error";
@@ -65,7 +64,7 @@ export async function POST(req: Request) {
     console.log("[CHAT-API] About to call streamText");
 
     const result = await streamText({
-      model: google("gemini-1.5-flash"),
+      model: google("gemini-2.5-flash"),
       messages,
       tools,
       maxSteps: 2,

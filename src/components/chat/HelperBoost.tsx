@@ -91,7 +91,12 @@ const questionsByCategory = [
     id: "projects",
     name: "Projects",
     icon: CodeIcon,
-    questions: ["What projects are you most proud of?"],
+    questions: [
+      "What projects are you most proud of?",
+      "What are you working on right now?",
+      "How do you evaluate the success of a project once it's completed?",
+      "What challenges have you faced in your projects?",
+    ],
   },
   {
     id: "skills",
@@ -100,6 +105,7 @@ const questionsByCategory = [
     questions: [
       "What are your skills?",
       "How was your experience working as Research Consultant?",
+      "How was your experience working as AI Solutions Engineer?",
     ],
   },
   {

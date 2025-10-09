@@ -39,6 +39,22 @@
       "duration": "November 2024-Present",
       "description": "Developed high-Sharpe ratio quantitative Alpha models using advanced statistical techniques and market data analysis.",
       "technologies": ["Python", "Statistics"]
+    },
+    {
+      "company": "Local Business",
+      "position": "AI Solutions Engineer",
+      "type": "Contract",
+      "duration": "June 2025-Present",
+      "description": "Built an AI-driven billing system using Gemma 270M, allowing users to generate invoices by simply texting item names and quantities. The solution auto-creates Excel bills with timestamps, reducing manual effort and digitizing the billing process effortlessly.",
+      "technologies": ["Python", "GenAI", "LLMs", "Gemma-270M", "Automation"]
+    },
+    {
+      "company": "University Research Lab",
+      "position": "AI Researcher",
+      "type": "Project-based",
+      "duration": "October 2025-Present",
+      "description": "The Secure Deep Learning Framework (SDLF) aims to provide a secure, collaborative deep learning platform for medical researchers. It will feature a user-friendly API, implement robust Multi-Party Computation (MPC) protocols for neural networks, and optimize performance through a compiler-centric approach. Key deliverables include an open-source Python library, comprehensive documentation, and a technical publication. The project seeks to enable multi-institutional studies while ensuring data privacy.",
+      "technologies": ["Python", "ML", "MPC", "Neural Networks"]
     }
   ],
   "skills": {
