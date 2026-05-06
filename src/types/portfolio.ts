@@ -4,28 +4,28 @@ export interface PersonalInfo {
   location: string;
   title: string;
   email: string;
+  phone?: string;
+  website?: string;
+  targetRoles: string[];
   handle: string;
   bio: string;
   avatar: string;
   fallbackAvatar: string;
 }
 
+export interface EducationEntry {
+  degree: string;
+  institution: string;
+  duration: string;
+  cgpa: string;
+  graduationDate: string;
+}
+
 export interface Education {
-  completed1: {
-    degree: string;
-    institution: string;
-    duration: string;
-    cgpa: string;
-    graduationDate: string;
-  };
-  completed2: {
-    degree: string;
-    institution: string;
-    duration: string;
-    cgpa: string;
-    graduationDate: string;
-  };
+  completed1: EducationEntry;
+  completed2?: EducationEntry;
   achievements: string[];
+  coursework: string[];
 }
 
 export interface Experience {
@@ -35,6 +35,7 @@ export interface Experience {
   duration: string;
   description: string;
   technologies: string[];
+  achievements?: string[];
 }
 
 export interface Skills {
@@ -67,7 +68,7 @@ export interface Project {
   achievements?: string[];
   metrics?: string[];
   links: ProjectLink[];
-  images: ProjectImage[];
+  images?: ProjectImage[];
 }
 
 export interface Social {
@@ -76,6 +77,7 @@ export interface Social {
   github: string;
   kaggle: string;
   leetcode: string;
+  portfolio?: string;
 }
 
 export interface Internship {
@@ -104,6 +106,14 @@ export interface Resume {
   lastUpdated: string;
   fileSize: string;
   downloadUrl: string;
+  certifications: Certification[];
+}
+
+export interface Certification {
+  name: string;
+  issuer: string;
+  year: string;
+  credentialUrl?: string;
 }
 
 export interface Chatbot {
@@ -129,6 +139,9 @@ export interface Meta {
   lastUpdated: string;
   generatedBy: string;
   description: string;
+  siteUrl: string;
+  ogImage: string;
+  googleSiteVerification?: string;
 }
 
 export interface PortfolioConfig {
@@ -156,7 +169,9 @@ export interface ProjectContentProps {
 export interface ContactInfo {
   name: string;
   email: string;
+  phone?: string;
   handle: string;
+  portfolio?: string;
   socials: Array<{
     name: string;
     url: string;
@@ -167,6 +182,8 @@ export interface ProfileInfo {
   name: string;
   age: string;
   location: string;
+  title: string;
+  tags: string[];
   description: string;
   src: string;
   fallbackSrc: string;
