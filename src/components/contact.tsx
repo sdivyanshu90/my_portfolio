@@ -39,9 +39,9 @@ export function Contact({ data }: { data?: ContactCardData }) {
 
   return (
     <div className="mx-auto mt-8 w-full min-w-0">
-      <div className="bg-accent w-full min-w-0 overflow-hidden rounded-3xl px-6 py-8 font-sans sm:px-10 md:px-16 md:py-12">
+      <div className="bg-[#0e1520] w-full min-w-0 overflow-hidden rounded-3xl px-6 py-8 font-sans sm:px-10 md:px-16 md:py-12">
         <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-foreground text-3xl font-semibold md:text-4xl">
+          <h2 className="text-[#e2e8f0] text-3xl font-semibold md:text-4xl">
             Contacts
           </h2>
           <span className="text-safe-wrap mt-2 sm:mt-0">{handle}</span>
@@ -60,7 +60,7 @@ export function Contact({ data }: { data?: ContactCardData }) {
             </div>
           </div>
 
-          <div className="mb-6 flex flex-col gap-2 text-sm text-muted-foreground">
+          <div className="mb-6 flex flex-col gap-2 text-sm text-[#8b9db5]">
             {phone ? <span className="text-safe-wrap">{phone}</span> : null}
             {portfolio ? (
               <button
@@ -83,7 +83,7 @@ export function Contact({ data }: { data?: ContactCardData }) {
             {socials.map((social) => (
               <button
                 key={social.name}
-                className="text-muted-foreground hover:text-foreground cursor-pointer text-sm transition-colors"
+                className="text-[#8b9db5] hover:text-[#e2e8f0] cursor-pointer text-sm transition-colors"
                 onClick={() => openLink(social.url)}
                 title={social.name}
               >
