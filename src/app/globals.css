@@ -8,8 +8,8 @@
   --font-sans: var(--font-inter);
   --font-display: var(--font-space-grotesk);
   --font-mono:
-    "SFMono-Regular", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
+    var(--font-jetbrains-mono), "SFMono-Regular", ui-monospace, SFMono-Regular,
+    Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -46,25 +46,26 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(0.97 0.014 82.54);
-  --foreground: oklch(0.24 0.03 244.98);
-  --card: oklch(0.995 0.006 95.1);
-  --card-foreground: oklch(0.24 0.03 244.98);
-  --popover: oklch(0.995 0.006 95.1);
-  --popover-foreground: oklch(0.24 0.03 244.98);
-  --primary: oklch(0.42 0.08 194.73);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.95 0.009 84.5);
-  --secondary-foreground: oklch(0.24 0.03 244.98);
-  --muted: oklch(0.94 0.009 84.5);
-  --muted-foreground: oklch(0.51 0.03 247.87);
-  --accent: oklch(0.93 0.02 83.3);
-  --accent-foreground: oklch(0.24 0.03 244.98);
+  --radius: 0.5rem;
+  /* Light mode — clean cool-white (fallback) */
+  --background: oklch(0.98 0.005 220);
+  --foreground: oklch(0.14 0.022 240);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.14 0.022 240);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.14 0.022 240);
+  --primary: oklch(0.6 0.13 172);
+  --primary-foreground: oklch(0.98 0.005 220);
+  --secondary: oklch(0.94 0.008 220);
+  --secondary-foreground: oklch(0.14 0.022 240);
+  --muted: oklch(0.94 0.008 220);
+  --muted-foreground: oklch(0.55 0.025 230);
+  --accent: oklch(0.93 0.01 220);
+  --accent-foreground: oklch(0.14 0.022 240);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.88 0.01 84.5);
-  --input: oklch(0.88 0.01 84.5);
-  --ring: oklch(0.61 0.05 198.21);
+  --border: oklch(0.89 0.012 222);
+  --input: oklch(0.89 0.012 222);
+  --ring: oklch(0.6 0.13 172);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -72,46 +73,47 @@
   --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-primary: oklch(0.21 0.006 285.885);
+  --sidebar-primary: oklch(0.6 0.13 172);
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.705 0.015 286.067);
+  --sidebar-accent: oklch(0.94 0.008 220);
+  --sidebar-accent-foreground: oklch(0.14 0.022 240);
+  --sidebar-border: oklch(0.89 0.012 222);
+  --sidebar-ring: oklch(0.6 0.13 172);
 }
 
 .dark {
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.92 0.004 286.32);
-  --primary-foreground: oklch(0.21 0.006 285.885);
-  --secondary: oklch(0.274 0.006 286.033);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.552 0.016 285.938);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.552 0.016 285.938);
+  /* Evaluation Console — deep navy + electric teal */
+  --background: oklch(0.09 0.014 240); /* #080c12 */
+  --foreground: oklch(0.9 0.008 222); /* #e2e8f0 */
+  --card: oklch(0.12 0.016 235); /* #0e1520 */
+  --card-foreground: oklch(0.9 0.008 222);
+  --popover: oklch(0.12 0.016 235);
+  --popover-foreground: oklch(0.9 0.008 222);
+  --primary: oklch(0.78 0.14 174); /* electric teal #00d4aa */
+  --primary-foreground: oklch(0.09 0.014 240);
+  --secondary: oklch(0.16 0.018 232); /* #141d2b */
+  --secondary-foreground: oklch(0.9 0.008 222);
+  --muted: oklch(0.16 0.018 232);
+  --muted-foreground: oklch(0.55 0.028 228); /* #8b9db5 */
+  --accent: oklch(0.77 0.17 78); /* amber #f59e0b */
+  --accent-foreground: oklch(0.09 0.014 240);
+  --destructive: oklch(0.65 0.22 25);
+  --border: oklch(0.2 0.02 232); /* #1a2535 */
+  --input: oklch(0.16 0.018 232);
+  --ring: oklch(0.78 0.14 174);
+  --chart-1: oklch(0.78 0.14 174);
+  --chart-2: oklch(0.77 0.17 78);
+  --chart-3: oklch(0.65 0.22 25);
+  --chart-4: oklch(0.72 0.15 280);
+  --chart-5: oklch(0.8 0.08 120);
+  --sidebar: oklch(0.12 0.016 235);
+  --sidebar-foreground: oklch(0.9 0.008 222);
+  --sidebar-primary: oklch(0.78 0.14 174);
+  --sidebar-primary-foreground: oklch(0.09 0.014 240);
+  --sidebar-accent: oklch(0.16 0.018 232);
+  --sidebar-accent-foreground: oklch(0.9 0.008 222);
+  --sidebar-border: oklch(0.2 0.02 232);
+  --sidebar-ring: oklch(0.78 0.14 174);
 }
 
 @layer base {
@@ -132,14 +134,53 @@
       "cv02" 1,
       "cv03" 1,
       "cv04" 1;
-    background-image: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.72),
-      rgba(246, 240, 232, 0.96)
+  }
+
+  /* ── Dark mode background: dot grid on deep navy ── */
+  .dark body {
+    background-color: #080c12;
+    background-image: none;
+  }
+
+  .dark body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    /* Subtle teal scanlines */
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(0, 212, 170, 0.014) 3px,
+      rgba(0, 212, 170, 0.014) 4px
     );
   }
 
-  body::before {
+  .dark body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(26, 37, 53, 0.7) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26, 37, 53, 0.7) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.6;
+  }
+
+  /* ── Light mode background ── */
+  body:not(.dark *) {
+    background-image: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.9),
+      rgba(241, 245, 249, 0.98)
+    );
+  }
+
+  body:not(:is(.dark *))::before {
     content: "";
     position: fixed;
     inset: 0;
@@ -148,39 +189,49 @@
     background:
       radial-gradient(
         circle at top left,
-        rgba(45, 212, 191, 0.18),
-        transparent 28%
+        rgba(13, 148, 136, 0.08),
+        transparent 30%
       ),
       radial-gradient(
         circle at top right,
-        rgba(251, 146, 60, 0.18),
-        transparent 26%
+        rgba(217, 119, 6, 0.08),
+        transparent 28%
       ),
       radial-gradient(
         circle at bottom center,
-        rgba(96, 165, 250, 0.14),
-        transparent 22%
+        rgba(96, 165, 250, 0.06),
+        transparent 24%
       );
   }
 
-  body::after {
+  body:not(:is(.dark *))::after {
     content: "";
     position: fixed;
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    opacity: 0.28;
+    opacity: 0.2;
     background-image:
-      linear-gradient(rgba(15, 23, 42, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
-    background-size: 28px 28px;
+      linear-gradient(rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
   }
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Typography
+──────────────────────────────────────────────────────────────── */
 .font-display {
   font-family: var(--font-space-grotesk), var(--font-inter), sans-serif;
 }
 
+.font-mono-ui {
+  font-family: var(--font-mono);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Text utilities
+──────────────────────────────────────────────────────────────── */
 .text-safe-wrap {
   overflow-wrap: anywhere;
   word-break: break-word;
@@ -192,40 +243,185 @@
   word-break: break-word;
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Panel surface — adapts light/dark
+──────────────────────────────────────────────────────────────── */
 .panel-surface {
   border: 1px solid rgba(255, 255, 255, 0.64);
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(24px);
-  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.07);
 }
 
+.dark .panel-surface {
+  border: 1px solid rgba(0, 212, 170, 0.1);
+  background: rgba(14, 21, 32, 0.88);
+  backdrop-filter: blur(20px);
+  box-shadow:
+    0 0 0 1px rgba(0, 212, 170, 0.04),
+    0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Console surface — solid dark card
+──────────────────────────────────────────────────────────────── */
+.console-surface {
+  background: #0e1520;
+  border: 1px solid #1a2535;
+}
+
+.console-surface-elevated {
+  background: #141d2b;
+  border: 1px solid #1a2535;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Section kicker / labels
+──────────────────────────────────────────────────────────────── */
 .section-kicker {
-  color: #0b544b;
-  font-size: 0.72rem;
+  color: #0d9488;
+  font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
 }
 
+.dark .section-kicker {
+  color: #00d4aa;
+  font-family: var(--font-mono);
+  opacity: 0.85;
+}
+
+/* Monospace label for console UI */
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #00d4aa;
+  opacity: 0.75;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Dividers
+──────────────────────────────────────────────────────────────── */
 .soft-rule {
   height: 1px;
   background: linear-gradient(
     90deg,
-    rgba(11, 84, 75, 0.28),
-    rgba(11, 84, 75, 0)
+    rgba(13, 148, 136, 0.28),
+    rgba(13, 148, 136, 0)
   );
 }
 
-.custom-scrollbar {
-  /* For Firefox */
-  scrollbar-width: thin;
-  scrollbar-color: rgba(155, 155, 155, 0.5) transparent;
+.dark .soft-rule {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 212, 170, 0.22),
+    rgba(0, 212, 170, 0)
+  );
 }
 
-/* For Chrome, Edge, and Safari */
-.custom-scrollbar::-webkit-scrollbar {
-  width: 4px;
+/* ─────────────────────────────────────────────────────────────
+   Benchmark bar (for skills)
+──────────────────────────────────────────────────────────────── */
+.bench-track {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.bench-pip {
+  width: 18px;
   height: 4px;
+  border-radius: 2px;
+  background: #1a2535;
+}
+
+.bench-pip.filled {
+  background: #00d4aa;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Cursor blink
+──────────────────────────────────────────────────────────────── */
+@keyframes cursor-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.cursor-blink::after {
+  content: "▋";
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  animation: cursor-blink 1s step-end infinite;
+  color: #00d4aa;
+  margin-left: 1px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Teal / Amber accents
+──────────────────────────────────────────────────────────────── */
+.teal {
+  color: #00d4aa;
+}
+.amber {
+  color: #f59e0b;
+}
+.dark .teal-border {
+  border-color: rgba(0, 212, 170, 0.18);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   LED / status dot
+──────────────────────────────────────────────────────────────── */
+@keyframes led-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 212, 170, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(0, 212, 170, 0);
+  }
+}
+
+.led-green {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #00d4aa;
+  animation: led-pulse 2.4s ease-in-out infinite;
+}
+
+.led-amber {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f59e0b;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Scrollbar
+──────────────────────────────────────────────────────────────── */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(155, 155, 155, 0.3) transparent;
+}
+
+.dark .custom-scrollbar {
+  scrollbar-color: rgba(0, 212, 170, 0.2) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -233,19 +429,110 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgba(155, 155, 155, 0.5);
+  background-color: rgba(155, 155, 155, 0.3);
   border-radius: 10px;
-  border: transparent;
 }
 
-/* Hide scrollbar when not in use but keep functionality */
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(155, 155, 155, 0.7);
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 212, 170, 0.18);
 }
 
-/* Ensure code blocks can scroll horizontally */
+/* ─────────────────────────────────────────────────────────────
+   Code blocks
+──────────────────────────────────────────────────────────────── */
 pre {
   white-space: pre;
   word-wrap: normal;
   overflow-x: auto;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Dark-mode overrides for chat.tsx structural elements
+   (avoids editing the 880-line file)
+──────────────────────────────────────────────────────────────── */
+
+/* Chat bottom bar wrapper */
+.dark .chat-input-shell {
+  border-top: 1px solid rgba(0, 212, 170, 0.08);
+  background: rgba(8, 12, 18, 0.92);
+  backdrop-filter: blur(20px);
+}
+
+/* Chat right sidebar */
+.dark .chat-sidebar-shell {
+  border-left: 1px solid rgba(0, 212, 170, 0.08);
+  background: #0a0f18;
+}
+
+/* Chat header */
+.dark .chat-header-shell {
+  border-bottom: 1px solid rgba(0, 212, 170, 0.08);
+}
+
+/* Inline pill badges */
+.dark .chat-pill {
+  background: rgba(20, 29, 43, 0.9);
+  border-color: rgba(0, 212, 170, 0.15);
+  color: #8b9db5;
+}
+
+/* Sidebar nav buttons */
+.dark .sidebar-nav-btn {
+  background: rgba(20, 29, 43, 0.7);
+  border-color: rgba(0, 212, 170, 0.12);
+  color: #c5d5e8;
+}
+
+.dark .sidebar-nav-btn:hover {
+  background: rgba(0, 212, 170, 0.08);
+  border-color: rgba(0, 212, 170, 0.25);
+}
+
+/* Tool result cards (resume/contact/availability) */
+.dark .tool-card-shell {
+  background: #0e1520;
+  border-radius: 16px;
+  border: 1px solid #1a2535;
+  overflow: hidden;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   arXiv project card
+──────────────────────────────────────────────────────────────── */
+.arxiv-card {
+  background: #0e1520;
+  border: 1px solid #1a2535;
+  border-radius: 12px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.arxiv-card:hover {
+  border-color: rgba(0, 212, 170, 0.25);
+  box-shadow:
+    0 0 0 1px rgba(0, 212, 170, 0.06),
+    0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Fill-sweep button hover
+──────────────────────────────────────────────────────────────── */
+.btn-sweep {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-sweep::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 212, 170, 0.08);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+
+.btn-sweep:hover::before {
+  transform: scaleX(1);
 }
