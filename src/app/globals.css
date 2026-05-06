@@ -5,8 +5,11 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-space-grotesk);
+  --font-mono:
+    "SFMono-Regular", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -44,24 +47,24 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.141 0.005 285.823);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.141 0.005 285.823);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.141 0.005 285.823);
-  --primary: oklch(0.21 0.006 285.885);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.967 0.001 286.375);
-  --secondary-foreground: oklch(0.21 0.006 285.885);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.21 0.006 285.885);
+  --background: oklch(0.97 0.014 82.54);
+  --foreground: oklch(0.24 0.03 244.98);
+  --card: oklch(0.995 0.006 95.1);
+  --card-foreground: oklch(0.24 0.03 244.98);
+  --popover: oklch(0.995 0.006 95.1);
+  --popover-foreground: oklch(0.24 0.03 244.98);
+  --primary: oklch(0.42 0.08 194.73);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.95 0.009 84.5);
+  --secondary-foreground: oklch(0.24 0.03 244.98);
+  --muted: oklch(0.94 0.009 84.5);
+  --muted-foreground: oklch(0.51 0.03 247.87);
+  --accent: oklch(0.93 0.02 83.3);
+  --accent-foreground: oklch(0.24 0.03 244.98);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.705 0.015 286.067);
+  --border: oklch(0.88 0.01 84.5);
+  --input: oklch(0.88 0.01 84.5);
+  --ring: oklch(0.61 0.05 198.21);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -115,9 +118,102 @@
   * {
     @apply border-border outline-ring/50;
   }
+
+  html,
+  body {
+    min-height: 100%;
+    overflow-x: clip;
+  }
+
   body {
     @apply bg-background text-foreground;
+    position: relative;
+    font-feature-settings:
+      "cv02" 1,
+      "cv03" 1,
+      "cv04" 1;
+    background-image: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.72),
+      rgba(246, 240, 232, 0.96)
+    );
   }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        circle at top left,
+        rgba(45, 212, 191, 0.18),
+        transparent 28%
+      ),
+      radial-gradient(
+        circle at top right,
+        rgba(251, 146, 60, 0.18),
+        transparent 26%
+      ),
+      radial-gradient(
+        circle at bottom center,
+        rgba(96, 165, 250, 0.14),
+        transparent 22%
+      );
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.28;
+    background-image:
+      linear-gradient(rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+}
+
+.font-display {
+  font-family: var(--font-space-grotesk), var(--font-inter), sans-serif;
+}
+
+.text-safe-wrap {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.text-safe-balance {
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.panel-surface {
+  border: 1px solid rgba(255, 255, 255, 0.64);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(24px);
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.08);
+}
+
+.section-kicker {
+  color: #0b544b;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+.soft-rule {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(11, 84, 75, 0.28),
+    rgba(11, 84, 75, 0)
+  );
 }
 
 .custom-scrollbar {
