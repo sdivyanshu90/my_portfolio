@@ -69,11 +69,11 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-accent mx-auto mt-8 w-full max-w-4xl min-w-0 rounded-3xl px-6 py-8 font-sans sm:px-10 md:px-16 md:py-12"
+      className="bg-[#0e1520] mx-auto mt-8 w-full max-w-4xl min-w-0 rounded-3xl px-6 py-8 font-sans sm:px-10 md:px-16 md:py-12"
     >
       <div className="mb-6 flex flex-col items-center sm:flex-row sm:items-center sm:justify-between">
         <div className="flex min-w-0 items-center gap-4">
-          <div className="bg-muted h-16 w-16 overflow-hidden rounded-full shadow-md">
+          <div className="bg-[#141d2b] h-16 w-16 overflow-hidden rounded-full ">
             <Image
               src="/profile.jpg"
               alt="Divanshu Sharma avatar"
@@ -83,10 +83,10 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
             />
           </div>
           <div className="min-w-0">
-            <h2 className="text-safe-balance text-foreground text-2xl font-semibold">
+            <h2 className="text-safe-balance text-[#e2e8f0] text-2xl font-semibold">
               Divanshu Sharma
             </h2>
-            <p className="text-safe-wrap text-muted-foreground text-sm">
+            <p className="text-safe-wrap text-[#8b9db5] text-sm">
               Available for Opportunities
             </p>
           </div>
@@ -100,7 +100,7 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
             </span>
             Available Now
           </span>
-          <p className="text-center text-xs text-muted-foreground sm:text-right">
+          <p className="text-center text-xs text-[#8b9db5] sm:text-right">
             Open to full-time & internship roles
           </p>
         </div>
@@ -111,19 +111,19 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500">
             <Briefcase className="h-4 w-4 text-white" />
           </div>
-          <h3 className="text-lg font-semibold text-foreground">
+          <h3 className="text-lg font-semibold text-[#e2e8f0]">
             Current Availability Status
           </h3>
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <p className="mb-1 text-sm font-medium text-foreground">Status</p>
+            <p className="mb-1 text-sm font-medium text-[#e2e8f0]">Status</p>
             <p className="text-safe-wrap text-sm font-semibold text-green-600 dark:text-green-400">
               {data?.availability ?? config.internship.availability}
             </p>
           </div>
           <div>
-            <p className="mb-1 text-sm font-medium text-foreground">
+            <p className="mb-1 text-sm font-medium text-[#e2e8f0]">
               Looking for
             </p>
             <p className="text-safe-wrap text-sm font-semibold text-blue-600 dark:text-blue-400">
@@ -137,8 +137,8 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
         <div className="flex items-start gap-3">
           <CalendarDays className="mt-1 h-5 w-5 text-blue-500" />
           <div>
-            <p className="text-foreground text-sm font-medium">Duration</p>
-            <p className="text-safe-wrap text-muted-foreground text-sm">
+            <p className="text-[#e2e8f0] text-sm font-medium">Duration</p>
+            <p className="text-safe-wrap text-[#8b9db5] text-sm">
               {duration}
             </p>
           </div>
@@ -146,8 +146,8 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
         <div className="flex items-start gap-3">
           <Globe className="mt-1 h-5 w-5 text-green-500" />
           <div>
-            <p className="text-foreground text-sm font-medium">Location</p>
-            <p className="text-safe-wrap text-muted-foreground text-sm">
+            <p className="text-[#e2e8f0] text-sm font-medium">Location</p>
+            <p className="text-safe-wrap text-[#8b9db5] text-sm">
               {location} • {workMode}
             </p>
           </div>
@@ -156,8 +156,8 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
         <div className="flex items-start gap-3 sm:col-span-2">
           <Code2 className="mt-1 h-5 w-5 text-purple-500" />
           <div className="w-full">
-            <p className="text-foreground text-sm font-medium">Tech stack</p>
-            <div className="text-muted-foreground grid grid-cols-1 gap-y-1 text-sm sm:grid-cols-2">
+            <p className="text-[#e2e8f0] text-sm font-medium">Tech stack</p>
+            <div className="text-[#8b9db5] grid grid-cols-1 gap-y-1 text-sm sm:grid-cols-2">
               <ul className="list-disc pl-4">
                 {technicalSkills.slice(0, 4).map((skill) => (
                   <li key={skill} className="text-safe-wrap">
@@ -186,10 +186,10 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
       </div>
 
       <div className="mt-10">
-        <p className="mb-2 text-lg font-semibold text-foreground">
+        <p className="mb-2 text-lg font-semibold text-[#e2e8f0]">
           What I bring
         </p>
-        <ul className="space-y-2 text-sm text-muted-foreground">
+        <ul className="space-y-2 text-sm text-[#8b9db5]">
           {achievements.slice(0, 3).map((achievement) => (
             <li key={achievement} className="text-safe-wrap">
               {achievement}
@@ -199,8 +199,8 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
       </div>
 
       <div className="mt-8">
-        <p className="mb-2 text-lg font-semibold text-foreground">Goal</p>
-        <p className="text-safe-wrap text-sm text-foreground">
+        <p className="mb-2 text-lg font-semibold text-[#e2e8f0]">Goal</p>
+        <p className="text-safe-wrap text-sm text-[#e2e8f0]">
           {lookingFor?.growthOpportunities ||
             "Looking for roles that offer strong ownership, learning velocity, and long-term growth."}{" "}
           I want to work on{" "}
