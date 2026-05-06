@@ -1,98 +1,116 @@
-import Image from "next/image";
-import { Image as Img } from "lucide-react";
-import { ChevronRight, Link } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
-import { projectData, getConfig } from "@/lib/config-loader";
+import {
+  ArrowUpRight,
+  CalendarRange,
+  FolderKanban,
+  Sparkles,
+} from "lucide-react";
+import { getConfig } from "@/lib/config-loader";
+import type { Project } from "@/types/portfolio";
 
-// Get project content from configuration
-const config = getConfig();
-const PROJECT_CONTENT = config.projects;
+const defaultProjects = getConfig().projects;
 
-// ProjectContent component - now uses config data
-const ProjectContent = ({ project }: { project: { title: string } }) => {
-  const projectData = PROJECT_CONTENT.find((p) => p.title === project.title);
+const ProjectContent = ({ project }: { project: Project }) => {
+  const projectLinks = project.links.filter((link) => link.url);
 
-  if (!projectData) return null;
+  if (!project) return null;
 
   return (
-    <div className="bg-card text-card-foreground max-w-4xl space-y-6 p-0">
-      {/* Header */}
-      <div className="space-y-4">
-        <div className="flex items-center gap-3">
-          <div className="bg-primary/10 text-primary rounded-lg p-2">
-            <Img className="h-6 w-6" />
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold">{projectData.title}</h3>
-            <p className="text-muted-foreground text-sm">{projectData.date}</p>
+    <div className="text-card-foreground max-w-4xl min-w-0 space-y-8 p-0">
+      <div className="grid gap-4 sm:grid-cols-2 2xl:grid-cols-3">
+        <div className="panel-surface px-5 py-4">
+          <p className="section-kicker">Category</p>
+          <div className="mt-3 flex min-w-0 items-center gap-3 text-[#142132]">
+            <FolderKanban className="h-5 w-5 text-[#0b544b]" />
+            <span className="text-safe-wrap text-sm font-medium">
+              {project.category}
+            </span>
           </div>
         </div>
 
-        <p className="text-muted-foreground leading-relaxed">
-          {projectData.description}
-        </p>
+        <div className="panel-surface px-5 py-4">
+          <p className="section-kicker">Timeline</p>
+          <div className="mt-3 flex min-w-0 items-center gap-3 text-[#142132]">
+            <CalendarRange className="h-5 w-5 text-[#0b544b]" />
+            <span className="text-safe-wrap text-sm font-medium">
+              {project.date}
+            </span>
+          </div>
+        </div>
+
+        <div className="panel-surface px-5 py-4">
+          <p className="section-kicker">Delivery State</p>
+          <div className="mt-3 flex min-w-0 items-center gap-3 text-[#142132]">
+            <Sparkles className="h-5 w-5 text-[#0b544b]" />
+            <span className="text-safe-wrap text-sm font-medium">
+              {project.status}
+            </span>
+          </div>
+        </div>
       </div>
 
-      {/* Status & Achievements */}
-      {(projectData.status ||
-        projectData.achievements ||
-        projectData.metrics) && (
-        <div className="space-y-3">
-          {projectData.status && (
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium">Status:</span>
-              <span
-                className={`text-sm px-2 py-1 rounded-full ${
-                  projectData.status === "Completed"
-                    ? "bg-green-100 text-green-800"
-                    : projectData.status === "Ongoing"
-                      ? "bg-blue-100 text-blue-800"
-                      : "bg-gray-100 text-gray-800"
-                }`}
-              >
-                {projectData.status}
-              </span>
-            </div>
-          )}
+      <div className="grid gap-5 2xl:grid-cols-[minmax(0,1.35fr)_minmax(0,0.95fr)]">
+        <div className="panel-surface px-6 py-6 sm:px-7">
+          <p className="section-kicker">Overview</p>
+          <p className="text-safe-wrap mt-4 text-sm leading-7 text-[#425062] sm:text-[0.98rem]">
+            {project.description}
+          </p>
+        </div>
 
-          {projectData.achievements && (
-            <div>
-              <h4 className="font-medium mb-1">Achievements</h4>
-              <ul className="text-sm text-muted-foreground list-disc list-inside">
-                {projectData.achievements.map((achievement, index) => (
-                  <li key={index}>{achievement}</li>
+        {(project.achievements?.length || project.metrics?.length) && (
+          <div className="panel-surface px-6 py-6 sm:px-7">
+            <p className="section-kicker">Impact Snapshot</p>
+
+            {project.achievements?.length ? (
+              <ul className="mt-4 space-y-3 text-sm leading-6 text-[#425062]">
+                {project.achievements.slice(0, 3).map((achievement) => (
+                  <li key={achievement} className="flex min-w-0 gap-3">
+                    <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#0b544b]" />
+                    <span className="text-safe-wrap">{achievement}</span>
+                  </li>
                 ))}
               </ul>
-            </div>
-          )}
+            ) : null}
 
-          {projectData.metrics && (
-            <div>
-              <h4 className="font-medium mb-1">Key Metrics</h4>
-              <div className="flex flex-wrap gap-2">
-                {projectData.metrics.map((metric, index) => (
+            {!project.achievements?.length && project.metrics?.length ? (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {project.metrics.map((metric) => (
                   <span
-                    key={index}
-                    className="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded"
+                    key={metric}
+                    className="text-safe-wrap rounded-full bg-[#eef6f3] px-3 py-1.5 text-xs font-medium text-[#0b544b]"
                   >
                     {metric}
                   </span>
                 ))}
               </div>
-            </div>
-          )}
-        </div>
-      )}
+            ) : null}
+          </div>
+        )}
+      </div>
 
-      {/* Tech Stack */}
-      {projectData.techStack && projectData.techStack.length > 0 && (
-        <div className="space-y-3">
-          <h4 className="font-medium">Tech Stack</h4>
-          <div className="flex flex-wrap gap-2">
-            {projectData.techStack.map((tech, index) => (
+      {project.metrics?.length ? (
+        <div className="panel-surface px-6 py-6 sm:px-7">
+          <p className="section-kicker">Key Metrics</p>
+          <div className="mt-4 flex flex-wrap gap-3">
+            {project.metrics.map((metric) => (
               <span
-                key={index}
-                className="bg-accent text-accent-foreground rounded-full px-3 py-1 text-sm"
+                key={metric}
+                className="text-safe-wrap rounded-full border border-[#c9ddd7] bg-[#f2f8f5] px-4 py-2 text-sm font-medium text-[#0b544b]"
+              >
+                {metric}
+              </span>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
+      {project.techStack.length > 0 && (
+        <div className="panel-surface px-6 py-6 sm:px-7">
+          <p className="section-kicker">Tech Stack</p>
+          <div className="mt-4 flex flex-wrap gap-2.5">
+            {project.techStack.map((tech) => (
+              <span
+                key={tech}
+                className="text-safe-wrap rounded-full border border-[#d7dee7] bg-white/80 px-3 py-1.5 text-sm text-[#233044]"
               >
                 {tech}
               </span>
@@ -101,42 +119,21 @@ const ProjectContent = ({ project }: { project: { title: string } }) => {
         </div>
       )}
 
-      {/* Links */}
-      {projectData.links && projectData.links.length > 0 && (
-        <div className="space-y-3">
-          <h4 className="font-medium">Links</h4>
+      {projectLinks.length > 0 && (
+        <div className="panel-surface px-6 py-6 sm:px-7">
+          <p className="section-kicker">Links</p>
           <div className="flex flex-wrap gap-3">
-            {projectData.links.map((link, index) => (
+            {projectLinks.map((link) => (
               <a
-                key={index}
+                key={link.url}
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary hover:text-primary/80 flex items-center gap-2 transition-colors"
+                className="inline-flex min-w-0 items-center gap-2 rounded-full border border-[#c9ddd7] bg-[#eef6f3] px-4 py-2 text-sm font-medium text-[#0b544b] transition hover:-translate-y-0.5 hover:bg-[#e2f1ec]"
               >
-                <Link className="h-4 w-4" />
-                {link.name}
-                <ChevronRight className="h-4 w-4" />
+                <span className="text-safe-wrap">{link.name}</span>
+                <ArrowUpRight className="h-4 w-4 shrink-0" />
               </a>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Images gallery */}
-      {projectData.images && projectData.images.length > 0 && (
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 gap-4">
-            {projectData.images.map((image, index) => (
-              <div key={index} className="relative overflow-hidden rounded-2xl">
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  width={800}
-                  height={600}
-                  className="w-full h-auto transition-transform"
-                />
-              </div>
             ))}
           </div>
         </div>
@@ -145,10 +142,13 @@ const ProjectContent = ({ project }: { project: { title: string } }) => {
   );
 };
 
-// Main data export - now dynamically generated from config
-export const data = projectData.map((project) => ({
-  category: project.category,
-  title: project.title,
-  src: project.src,
-  content: <ProjectContent project={{ title: project.title }} />,
-}));
+export const createProjectData = (projects: Project[] = defaultProjects) =>
+  projects.map((project) => ({
+    category: project.category,
+    title: project.title,
+    summary: project.description,
+    project,
+    content: <ProjectContent project={project} />,
+  }));
+
+export const data = createProjectData();
