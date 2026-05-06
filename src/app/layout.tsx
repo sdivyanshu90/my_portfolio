@@ -1,7 +1,8 @@
 import { Analytics } from "@vercel/analytics/react";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Inter, Space_Grotesk } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { getConfig } from "@/lib/config-loader";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
@@ -12,45 +13,67 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-export const metadata: Metadata = {
-  title: {
-    default:
-      "Divanshu Sharma - Full-stack Developer, ML Engineer & AI Engineer | Professional Portfolio",
-    template: "%s | Divanshu Sharma Portfolio",
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+});
+
+const config = getConfig();
+const siteUrl = config.meta.siteUrl;
+const ogImageUrl = new URL(config.meta.ogImage, siteUrl).toString();
+const socialLinks = Object.values(config.social).filter(Boolean);
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: config.personal.name,
+  jobTitle: config.personal.title,
+  url: siteUrl,
+  image: new URL(config.personal.avatar, siteUrl).toString(),
+  sameAs: socialLinks,
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: config.education.completed1.institution,
   },
-  description:
-    "Professional portfolio of Divanshu Sharma - Full-stack Developer, ML Engineer & AI Engineer. Research Consultant at WorldQuant BRAIN.",
+  worksFor: config.experience[0]
+    ? {
+        "@type": "Organization",
+        name: config.experience[0].company,
+      }
+    : undefined,
+  knowsAbout: [
+    ...config.skills.programming.slice(0, 4),
+    ...config.skills.ml_ai.slice(0, 6),
+    ...config.skills.web_development.slice(0, 4),
+  ],
+  description: config.meta.description,
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
+export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: `${config.personal.name} - ${config.personal.title}`,
+    template: `%s | ${config.personal.name}`,
+  },
+  description: config.meta.description,
   keywords: [
-    "Divanshu Sharma",
-    "Full-stack Developer",
-    "Python Developer",
-    "AI Engineer",
-    "Portfolio",
-    "Software Developer",
-    "Machine Learning",
-    "Web Development",
-    "Next.js",
-    "React",
-    "FastAPI",
-    "Django",
-    "Automation",
-    "LangChain",
-    "AI Chatbot",
-    "Professional Portfolio",
-    "Developer Portfolio",
-    "Tech Portfolio",
-    "Internship",
-    "Web Scraping",
-    "API Development",
+    config.personal.name,
+    ...config.personal.targetRoles,
+    ...config.skills.ml_ai.slice(0, 8),
+    ...config.skills.web_development.slice(0, 6),
   ],
   authors: [
     {
-      name: "Divanshu Sharma",
-      url: "",
+      name: config.personal.name,
+      url: siteUrl,
     },
   ],
-  creator: "Divanshu Sharma",
-  publisher: "Divanshu Sharma",
+  creator: config.personal.name,
+  publisher: config.personal.name,
   robots: {
     index: true,
     follow: true,
@@ -65,18 +88,16 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "",
-    title:
-      "Divanshu Sharma - Full-stack Developer, ML Engineer & AI Engineer | Professional Portfolio",
-    description:
-      "Professional portfolio showcasing AI-powered projects, and full-stack development. Available for internships.",
-    siteName: "Divanshu Sharma Portfolio",
+    url: siteUrl,
+    title: `${config.personal.name} - ${config.personal.title}`,
+    description: config.meta.description,
+    siteName: `${config.personal.name} Portfolio`,
     images: [
       {
-        url: "",
+        url: ogImageUrl,
         width: 1200,
         height: 630,
-        alt: "Divanshu Sharma - Professional Portfolio with AI Chatbot",
+        alt: `${config.personal.name} portfolio preview`,
         type: "image/png",
       },
     ],
@@ -88,15 +109,16 @@ export const metadata: Metadata = {
         sizes: "any",
       },
     ],
-    shortcut: "/favicon.ico?v=2",
-    apple: "/apple-touch-icon.svg?v=2",
+    shortcut: "/favicon.ico",
   },
   manifest: "/manifest.json",
   category: "technology",
   classification: "Portfolio Website",
-  other: {
-    "google-site-verification": "your-google-verification-code-here",
-  },
+  verification: config.meta.googleSiteVerification
+    ? {
+        google: config.meta.googleSiteVerification,
+      }
+    : undefined,
 };
 
 export default function RootLayout({
@@ -107,50 +129,19 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-        />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Person",
-              name: "Divanshu Sharma",
-              jobTitle: "Full-stack Developer, ML Engineer & AI Engineer",
-              url: "",
-              image: "./public/profile.jpg",
-              sameAs: [
-                "https://github.com/sdivyanshu90",
-                "https://linkedin.com/in/divsha22",
-              ],
-              worksFor: {
-                "@type": "Organization",
-                name: "WorldQuant BRAIN",
-              },
-              alumniOf: {
-                "@type": "Organization",
-                name: "MU",
-              },
-              knowsAbout: [
-                "Python Development",
-                "AI Engineering",
-                "Machine Learning",
-                "Web Development",
-                "Full Stack Development",
-              ],
-              description:
-                "Full-stack Developer & AI Engineer with expertise in building AI-powered solutions. Research Consultant at WorldQuant BRAIN.",
-            }),
+            __html: JSON.stringify(structuredData),
           }}
         />
       </head>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
-          inter.variable
+          inter.variable,
+          spaceGrotesk.variable,
         )}
       >
         <ThemeProvider
