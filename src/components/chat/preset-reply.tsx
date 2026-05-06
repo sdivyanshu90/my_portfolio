@@ -96,11 +96,11 @@ export function PresetReply({
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="w-full max-w-3xl mx-auto mb-4"
+      className="mx-auto mb-4 w-full max-w-3xl min-w-0"
     >
       {/* If we have a component to render, show it like AI responses */}
       {presetComponent ? (
-        <div className="w-full space-y-4">
+        <div className="w-full min-w-0 space-y-4">
           {/* Render the component */}
           {presetComponent}
 
@@ -108,7 +108,7 @@ export function PresetReply({
           {showAIOption && (
             <ChatBubble variant="received">
               <ChatBubbleMessage className="bg-gray-50/80 dark:bg-gray-800/80 w-full">
-                <div className="space-y-3 p-6 w-full">
+                <div className="w-full min-w-0 space-y-3 p-6">
                   {onClose && (
                     <div className="flex justify-end">
                       <Button
@@ -122,14 +122,14 @@ export function PresetReply({
                     </div>
                   )}
 
-                  <div className="flex flex-col gap-3 px-2">
+                  <div className="flex min-w-0 flex-col gap-3 px-2">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                      <div className="flex items-center gap-2 flex-wrap">
+                      <div className="flex min-w-0 flex-wrap items-center gap-2">
                         <div className="flex items-center gap-1.5 text-xs text-blue-600 dark:text-blue-400">
                           <Zap className="w-3 h-3 flex-shrink-0" />
                           <span className="font-medium">Preset Response</span>
                         </div>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-safe-wrap text-xs text-gray-500">
                           • I implemented this to save API quota
                         </span>
                       </div>
@@ -153,7 +153,7 @@ export function PresetReply({
         // Fallback to text-based preset for tools without components
         <ChatBubble variant="received">
           <ChatBubbleMessage className="bg-gradient-to-r from-blue-50/50 to-purple-50/50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-100/50 dark:border-blue-800/50 w-full">
-            <div className="space-y-4 p-6 w-full">
+            <div className="w-full min-w-0 space-y-4 p-6">
               {/* Close button */}
               {onClose && (
                 <div className="flex justify-end">
@@ -169,7 +169,7 @@ export function PresetReply({
               )}
 
               {/* Reply content with enhanced formatting */}
-              <div className="prose prose-sm max-w-none text-gray-700 dark:text-gray-300 px-2">
+              <div className="prose prose-sm max-w-none px-2 text-gray-700 dark:text-gray-300">
                 {reply.split("\n").map((line, index) => {
                   if (line.trim() === "") return <br key={index} />;
 
@@ -217,7 +217,10 @@ export function PresetReply({
                   if (line.includes("http")) {
                     const parts = line.split(/(https?:\/\/[^\s]+)/);
                     return (
-                      <p key={index} className="mb-3 last:mb-0 leading-relaxed">
+                      <p
+                        key={index}
+                        className="text-safe-wrap mb-3 last:mb-0 leading-relaxed"
+                      >
                         {parts.map((part, partIndex) => {
                           if (part.match(/^https?:\/\//)) {
                             return (
@@ -226,7 +229,7 @@ export function PresetReply({
                                 href={part}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-blue-600 hover:text-blue-800 underline decoration-2 underline-offset-2 font-medium"
+                                className="break-all text-blue-600 underline decoration-2 underline-offset-2 font-medium hover:text-blue-800"
                               >
                                 {part}
                               </a>
@@ -242,7 +245,10 @@ export function PresetReply({
                   if (line.includes("**")) {
                     const parts = line.split("**");
                     return (
-                      <p key={index} className="mb-3 last:mb-0 leading-relaxed">
+                      <p
+                        key={index}
+                        className="text-safe-wrap mb-3 last:mb-0 leading-relaxed"
+                      >
                         {parts.map((part, partIndex) =>
                           partIndex % 2 === 1 ? (
                             <strong
@@ -253,7 +259,7 @@ export function PresetReply({
                             </strong>
                           ) : (
                             part
-                          )
+                          ),
                         )}
                       </p>
                     );
@@ -264,7 +270,7 @@ export function PresetReply({
                     return (
                       <p
                         key={index}
-                        className="mb-2 last:mb-0 font-medium text-gray-800 dark:text-gray-200 text-base"
+                        className="text-safe-wrap mb-2 last:mb-0 text-base font-medium text-gray-800 dark:text-gray-200"
                       >
                         {line}
                       </p>
@@ -276,7 +282,7 @@ export function PresetReply({
                     return (
                       <p
                         key={index}
-                        className="mb-1 last:mb-0 ml-4 text-gray-600 dark:text-gray-400"
+                        className="text-safe-wrap mb-1 ml-4 last:mb-0 text-gray-600 dark:text-gray-400"
                       >
                         {line}
                       </p>
