@@ -91,18 +91,75 @@ export default function ChatMessageContent({
                 <Markdown
                   remarkPlugins={[remarkGfm]}
                   components={{
+                    h1: ({ children }) => (
+                      <h1 className="text-safe-balance mt-6 text-2xl font-semibold first:mt-0">
+                        {children}
+                      </h1>
+                    ),
+                    h2: ({ children }) => (
+                      <h2 className="text-safe-balance mt-6 text-xl font-semibold first:mt-0">
+                        {children}
+                      </h2>
+                    ),
+                    h3: ({ children }) => (
+                      <h3 className="text-safe-balance mt-5 text-lg font-semibold first:mt-0">
+                        {children}
+                      </h3>
+                    ),
                     p: ({ children }) => (
-                      <p className="break-words whitespace-pre-wrap">
+                      <p className="break-words whitespace-pre-wrap leading-7">
                         {children}
                       </p>
                     ),
                     ul: ({ children }) => (
-                      <ul className="my-4 list-disc pl-6">{children}</ul>
+                      <ul className="my-4 list-disc space-y-1 pl-6">
+                        {children}
+                      </ul>
                     ),
                     ol: ({ children }) => (
-                      <ol className="my-4 list-decimal pl-6">{children}</ol>
+                      <ol className="my-4 list-decimal space-y-1 pl-6">
+                        {children}
+                      </ol>
                     ),
                     li: ({ children }) => <li className="my-1">{children}</li>,
+                    table: ({ children }) => (
+                      <div className="my-4 overflow-x-auto">
+                        <table className="min-w-full border-collapse overflow-hidden rounded-lg border border-[#d8e1e9] text-sm">
+                          {children}
+                        </table>
+                      </div>
+                    ),
+                    thead: ({ children }) => (
+                      <thead className="bg-[#eef3f8] text-left">
+                        {children}
+                      </thead>
+                    ),
+                    tbody: ({ children }) => (
+                      <tbody className="divide-y divide-[#e6ebf0]">
+                        {children}
+                      </tbody>
+                    ),
+                    tr: ({ children }) => (
+                      <tr className="align-top">{children}</tr>
+                    ),
+                    th: ({ children }) => (
+                      <th className="px-3 py-2 font-semibold text-[#142132]">
+                        {children}
+                      </th>
+                    ),
+                    td: ({ children }) => (
+                      <td className="px-3 py-2 text-[#334155]">{children}</td>
+                    ),
+                    blockquote: ({ children }) => (
+                      <blockquote className="my-4 border-l-4 border-[#0b544b]/30 pl-4 italic text-[#556173]">
+                        {children}
+                      </blockquote>
+                    ),
+                    code: ({ children }) => (
+                      <code className="rounded bg-black/5 px-1.5 py-0.5 font-mono text-[0.92em]">
+                        {children}
+                      </code>
+                    ),
                     a: ({ href, children }) => (
                       <a
                         href={href}
@@ -121,7 +178,7 @@ export default function ChatMessageContent({
             ) : (
               // Code block content
               <CodeBlock key={`code-${i}`} content={content} />
-            )
+            ),
           )}
         </div>
       );
