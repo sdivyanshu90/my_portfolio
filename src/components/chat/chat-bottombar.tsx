@@ -30,6 +30,7 @@ export default function ChatBottombar({
   isToolInProgress,
 }: ChatBottombarProps) {
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
+  const [isFocused, setIsFocused] = React.useState(false);
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (
@@ -79,12 +80,21 @@ export default function ChatBottombar({
             </div>
 
             {/* Textarea */}
-            <div className="flex-1 min-w-0 pt-3 pb-2 pr-4">
+            <div className="relative flex-1 min-w-0 pt-3 pb-2 pr-4">
+              {/* Blinking cursor shown when empty */}
+              {!input && !isDisabled && (
+                <span
+                  className="cursor-blink pointer-events-none absolute left-0 top-[0.9rem] font-mono text-sm leading-6 text-[#00d4aa] opacity-60 select-none"
+                  aria-hidden
+                />
+              )}
               <textarea
                 ref={inputRef}
                 value={input}
                 onChange={handleInputChange}
                 onKeyDown={handleKeyPress}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
                 placeholder={
                   isToolInProgress
                     ? "Running tool call…"
@@ -92,7 +102,7 @@ export default function ChatBottombar({
                       ? "Generating response…"
                       : "Query about projects, research, skills, availability, contact…"
                 }
-                className="min-h-[60px] max-h-[180px] w-full resize-none border-none bg-transparent font-mono text-sm leading-6 text-[#e2e8f0] placeholder:text-[#2a3d55] focus:outline-none"
+                className="min-h-[60px] max-h-[180px] w-full resize-none border-none bg-transparent font-mono text-sm leading-6 text-[#e2e8f0] placeholder:text-[#4a6480] focus:outline-none"
                 disabled={isDisabled}
               />
             </div>
@@ -101,12 +111,12 @@ export default function ChatBottombar({
           {/* Action Row */}
           <div className="flex items-center justify-between gap-3 border-t border-[#1a2535] px-4 py-2.5">
             <div className="flex items-center gap-3">
-              <span className="font-mono text-[0.62rem] text-[#2a3d55] tracking-wider">
+              <span className="font-mono text-[0.62rem] text-[#3d5470] tracking-wider">
                 ENTER ↵ to run · SHIFT+ENTER for newline
               </span>
               {input.length > 0 && (
                 <span
-                  className={`font-mono text-[0.62rem] tabular-nums ${input.length > 1800 ? "text-[#ef4444]" : "text-[#2a3d55]"}`}
+                  className={`font-mono text-[0.62rem] tabular-nums ${input.length > 1800 ? "text-[#ef4444]" : "text-[#3d5470]"}`}
                 >
                   {input.length}/2000
                 </span>
