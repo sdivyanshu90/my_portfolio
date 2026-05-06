@@ -1,4 +1,10 @@
 // src/components/chat/tool-renderer.tsx
+import type { Project } from "@/types/portfolio";
+import type { AvailabilityData } from "../AvailabilityCard";
+import type { ContactCardData } from "../contact";
+import type { PresentationData } from "../presentation";
+import type { ResumeCardData } from "../resume";
+import type { SkillsCardData } from "../skills";
 import { Contact } from "../contact";
 import AvailabilityCard from "../AvailabilityCard";
 import { Presentation } from "../presentation";
@@ -6,15 +12,17 @@ import AllProjects from "../projects/AllProjects";
 import Resume from "../resume";
 import Skills from "../skills";
 
+type CompletedToolInvocation = {
+  toolCallId: string;
+  toolName: string;
+  result: unknown;
+};
+
 interface ToolRendererProps {
-  toolInvocations: any[];
-  messageId: string;
+  toolInvocations: CompletedToolInvocation[];
 }
 
-export default function ToolRenderer({
-  toolInvocations,
-  messageId,
-}: ToolRendererProps) {
+export default function ToolRenderer({ toolInvocations }: ToolRendererProps) {
   return (
     <div className="w-full transition-all duration-300">
       {toolInvocations.map((tool) => {
@@ -28,7 +36,16 @@ export default function ToolRenderer({
                 key={toolCallId}
                 className="w-full overflow-hidden rounded-lg"
               >
-                <AllProjects />
+                <AllProjects
+                  projects={
+                    typeof tool.result === "object" &&
+                    tool.result !== null &&
+                    "projects" in tool.result &&
+                    Array.isArray(tool.result.projects)
+                      ? (tool.result.projects as Project[])
+                      : undefined
+                  }
+                />
               </div>
             );
 
@@ -38,35 +55,35 @@ export default function ToolRenderer({
                 key={toolCallId}
                 className="w-full overflow-hidden rounded-lg"
               >
-                <Presentation />
+                <Presentation data={tool.result as PresentationData} />
               </div>
             );
 
           case "getResume":
             return (
               <div key={toolCallId} className="w-full rounded-lg">
-                <Resume />
+                <Resume data={tool.result as ResumeCardData} />
               </div>
             );
 
           case "getContact":
             return (
               <div key={toolCallId} className="w-full rounded-lg">
-                <Contact />
+                <Contact data={tool.result as ContactCardData} />
               </div>
             );
 
           case "getSkills":
             return (
               <div key={toolCallId} className="w-full rounded-lg">
-                <Skills />
+                <Skills data={tool.result as SkillsCardData} />
               </div>
             );
 
           case "getInternship":
             return (
               <div key={toolCallId} className="w-full rounded-lg">
-                <AvailabilityCard data={tool.result} />
+                <AvailabilityCard data={tool.result as AvailabilityData} />
               </div>
             );
 
