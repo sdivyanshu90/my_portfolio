@@ -1,103 +1,21 @@
+import rawPortfolioConfig from "../../portfolio-config.json";
 import { PortfolioConfig } from "../types/portfolio";
+import { portfolioConfigSchema } from "./config-schema";
 import ConfigParser from "./config-parser";
 
-// Import the configuration file - using dynamic import for better compatibility
-let portfolioConfig: PortfolioConfig;
+const parsedConfig = portfolioConfigSchema.safeParse(rawPortfolioConfig);
 
-try {
-  // Import JSON configuration
-  portfolioConfig = require("../../portfolio-config.json") as PortfolioConfig;
-} catch (error) {
-  console.error("Failed to load portfolio configuration:", error);
-  // Provide a fallback minimal config to prevent the app from crashing
-  portfolioConfig = {
-    personal: {
-      name: "Configuration Error",
-      age: 0,
-      location: "Unknown",
-      title: "Error Loading Config",
-      email: "error@example.com",
-      handle: "@error",
-      bio: "Configuration file could not be loaded",
-      avatar: "/placeholder.png",
-      fallbackAvatar: "/placeholder.png",
-    },
-    education: {
-      completed1: {
-        degree: "Error",
-        institution: "Error",
-        duration: "Error",
-        cgpa: "Error",
-        graduationDate: "Error",
-      },
-      achievements: [],
-    },
-    experience: [],
-    skills: {
-      programming: [],
-      ml_ai: [],
-      web_development: [],
-      databases: [],
-      devops_cloud: [],
-      soft_skills: [],
-    },
-    projects: [],
-    social: {
-      linkedin: "",
-      github: "",
-      kaggle: "",
-      leetcode: "",
-      codechef: "",
-    },
-    internship: {
-      seeking: false,
-      duration: "",
-      startDate: "",
-      preferredLocation: "",
-      focusAreas: [],
-      availability: "",
-      workStyle: "",
-      goals: "",
-    },
-    personality: {
-      traits: [],
-      interests: [],
-      funFacts: [],
-      workingStyle: "",
-      motivation: "",
-    },
-    resume: {
-      title: "",
-      description: "",
-      fileType: "",
-      lastUpdated: "",
-      fileSize: "",
-      downloadUrl: "",
-    },
-    chatbot: {
-      name: "",
-      personality: "",
-      tone: "",
-      language: "",
-      responseStyle: "",
-      useEmojis: false,
-      topics: [],
-    },
-    presetQuestions: {
-      me: [],
-      professional: [],
-      projects: [],
-      contact: [],
-      fun: [],
-    },
-    meta: {
-      configVersion: "",
-      lastUpdated: "",
-      generatedBy: "",
-      description: "",
-    },
-  } as unknown as PortfolioConfig;
+if (!parsedConfig.success) {
+  console.error(
+    "Invalid portfolio configuration:",
+    parsedConfig.error.flatten(),
+  );
+  throw new Error(
+    "Invalid portfolio-config.json. Fix the config before starting the app.",
+  );
 }
+
+const portfolioConfig: PortfolioConfig = parsedConfig.data;
 
 // Create a parser instance
 const configParser = new ConfigParser(portfolioConfig);
