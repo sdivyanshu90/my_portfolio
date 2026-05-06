@@ -30,7 +30,6 @@ export default function ChatBottombar({
   isToolInProgress,
 }: ChatBottombarProps) {
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
-  const [isFocused, setIsFocused] = React.useState(false);
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (
@@ -93,8 +92,6 @@ export default function ChatBottombar({
                 value={input}
                 onChange={handleInputChange}
                 onKeyDown={handleKeyPress}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
                 placeholder={
                   isToolInProgress
                     ? "Running tool call…"
