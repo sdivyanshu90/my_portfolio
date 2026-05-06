@@ -10,7 +10,43 @@ import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
+
+// oneLight theme inlined to avoid Vercel subpath resolution issues
+const oneLightTheme: { [key: string]: React.CSSProperties } = {
+  'code[class*="language-"]': { color: "#383a42", background: "#fafafa", fontFamily: "var(--font-jetbrains-mono, monospace)", fontSize: "0.82rem", lineHeight: "1.7" },
+  'pre[class*="language-"]': { color: "#383a42", background: "#fafafa", fontFamily: "var(--font-jetbrains-mono, monospace)", fontSize: "0.82rem", lineHeight: "1.7", margin: 0, padding: "1rem", overflow: "auto" },
+  comment: { color: "#a0a1a7", fontStyle: "italic" },
+  prolog: { color: "#a0a1a7", fontStyle: "italic" },
+  doctype: { color: "#a0a1a7", fontStyle: "italic" },
+  cdata: { color: "#a0a1a7", fontStyle: "italic" },
+  punctuation: { color: "#383a42" },
+  property: { color: "#e45649" },
+  tag: { color: "#e45649" },
+  boolean: { color: "#986801" },
+  number: { color: "#986801" },
+  constant: { color: "#986801" },
+  symbol: { color: "#986801" },
+  deleted: { color: "#e45649" },
+  selector: { color: "#50a14f" },
+  "attr-name": { color: "#986801" },
+  string: { color: "#50a14f" },
+  char: { color: "#50a14f" },
+  builtin: { color: "#0184bb" },
+  inserted: { color: "#50a14f" },
+  operator: { color: "#383a42" },
+  entity: { color: "#383a42", cursor: "help" },
+  url: { color: "#383a42" },
+  variable: { color: "#383a42" },
+  atrule: { color: "#a626a4" },
+  "attr-value": { color: "#50a14f" },
+  function: { color: "#4078f2" },
+  "class-name": { color: "#c18401" },
+  keyword: { color: "#a626a4" },
+  regex: { color: "#0184bb" },
+  important: { color: "#e45649", fontWeight: "bold" },
+  bold: { fontWeight: "bold" },
+  italic: { fontStyle: "italic" },
+};
 import { ChatRequestOptions } from "ai";
 import { Message } from "ai/react";
 
@@ -94,7 +130,7 @@ export default function ChatMessageContent({
                       <CopyButton text={codeText} />
                     </div>
                     <SyntaxHighlighter
-                      style={oneLight}
+                      style={oneLightTheme}
                       language={match?.[1] ?? "text"}
                       PreTag="div"
                       customStyle={{
