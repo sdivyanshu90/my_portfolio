@@ -1,7 +1,8 @@
 "use client";
 
 import { getConfig } from "@/lib/config-loader";
-import { motion, easeOut } from "framer-motion";
+import { motion, useInView, easeOut } from "framer-motion";
+import { useRef } from "react";
 
 export interface SkillsCardData {
   technicalSkills?: {
@@ -14,81 +15,101 @@ export interface SkillsCardData {
   };
 }
 
-interface BenchmarkSection {
+interface Section {
   id: string;
   label: string;
-  cmd: string;
-  color: string;
+  accent: string;
+  border: string;
+  bg: string;
+  textColor: string;
   skills: string[];
-  levels: number[]; // per-skill level, or broadcast one value
+  levels: number[];
+}
+
+function SkillBar({ level, accent, delay }: { level: number; accent: string; delay: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "0px 0px -40px 0px" });
+  const pct = (level / 5) * 100;
+
+  return (
+    <div ref={ref} className="skill-track">
+      <motion.div
+        className="skill-bar"
+        style={{ background: accent }}
+        initial={{ width: 0 }}
+        animate={inView ? { width: `${pct}%` } : { width: 0 }}
+        transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1], delay }}
+      />
+    </div>
+  );
 }
 
 const Skills = ({ data }: { data?: SkillsCardData }) => {
   const config = getConfig();
   const t = data?.technicalSkills;
 
-  const sections: BenchmarkSection[] = [
+  const sections: Section[] = [
     {
       id: "prog",
       label: "Programming",
-      cmd: "skills.programming",
-      color: "#00d4aa",
+      accent: "#4f46e5",
+      border: "border-indigo-200",
+      bg: "bg-indigo-50",
+      textColor: "text-indigo-700",
       skills: t?.programming ?? config.skills.programming,
       levels: [5, 5, 4, 4, 5, 5, 4, 4, 4, 4],
     },
     {
       id: "ml",
       label: "ML / AI",
-      cmd: "skills.ml_ai",
-      color: "#a78bfa",
+      accent: "#7c3aed",
+      border: "border-violet-200",
+      bg: "bg-violet-50",
+      textColor: "text-violet-700",
       skills: t?.machineLearning ?? config.skills.ml_ai,
       levels: [5, 5, 5, 4, 5, 5, 4, 4, 4, 4, 4, 4],
     },
     {
       id: "web",
       label: "Web Engineering",
-      cmd: "skills.web_dev",
-      color: "#34d399",
+      accent: "#059669",
+      border: "border-emerald-200",
+      bg: "bg-emerald-50",
+      textColor: "text-emerald-700",
       skills: t?.webDevelopment ?? config.skills.web_development,
       levels: [5, 4, 5, 5, 4, 4, 4, 4, 4],
     },
     {
       id: "db",
       label: "Databases",
-      cmd: "skills.databases",
-      color: "#f59e0b",
+      accent: "#d97706",
+      border: "border-amber-200",
+      bg: "bg-amber-50",
+      textColor: "text-amber-700",
       skills: t?.databases ?? config.skills.databases,
       levels: [4, 4, 4, 3, 4],
     },
     {
       id: "devops",
       label: "DevOps & Cloud",
-      cmd: "skills.devops",
-      color: "#60a5fa",
+      accent: "#0284c7",
+      border: "border-sky-200",
+      bg: "bg-sky-50",
+      textColor: "text-sky-700",
       skills: t?.devOpsCloud ?? config.skills.devops_cloud,
       levels: [4, 4, 3, 4, 4, 3],
     },
     {
       id: "soft",
       label: "Soft Skills",
-      cmd: "skills.soft",
-      color: "#fb7185",
+      accent: "#e11d48",
+      border: "border-rose-200",
+      bg: "bg-rose-50",
+      textColor: "text-rose-700",
       skills: t?.softSkills ?? config.skills.soft_skills,
       levels: [5, 5, 5, 5, 5],
     },
   ].filter((s) => s.skills.length > 0);
-
-  const BenchPips = ({ level, color }: { level: number; color: string }) => (
-    <div className="bench-track">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <div
-          key={i}
-          className="bench-pip"
-          style={i < level ? { background: color, opacity: 0.85 } : undefined}
-        />
-      ))}
-    </div>
-  );
 
   return (
     <motion.div
@@ -97,52 +118,61 @@ const Skills = ({ data }: { data?: SkillsCardData }) => {
       transition={{ duration: 0.5, ease: easeOut }}
       className="mx-auto w-full max-w-5xl min-w-0 py-6 px-1 sm:px-2"
     >
-      {/* Header */}
-      <div className="mb-6 px-1">
+      <div className="mb-7 px-1">
         <p className="section-kicker">Capability Matrix</p>
-        <h2 className="font-display text-safe-balance mt-3 text-3xl font-semibold tracking-tight text-[#e2e8f0] sm:text-4xl">
+        <h2 className="font-display text-safe-balance mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
           Skills & Expertise
         </h2>
-        <p className="text-safe-wrap mt-2 text-sm leading-6 text-[#5c7080]">
+        <p className="text-safe-wrap mt-2 text-sm leading-6 text-slate-500">
           Depth per domain — verified by shipped systems and research output.
         </p>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-4">
         {sections.map((section, si) => (
           <motion.div
             key={section.id}
-            className="console-surface overflow-hidden rounded-xl"
-            initial={{ opacity: 0, y: 12 }}
+            className={`overflow-hidden rounded-2xl border ${section.border} bg-white shadow-sm`}
+            initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: easeOut, delay: si * 0.06 }}
+            transition={{ duration: 0.4, ease: easeOut, delay: si * 0.07 }}
           >
-            {/* Section Header */}
-            <div className="flex items-center gap-3 border-b border-[#1a2535] bg-[#080c12]/60 px-5 py-2.5">
+            {/* Header */}
+            <div className={`flex items-center gap-3 border-b ${section.border} ${section.bg} px-5 py-3`}>
               <span
-                className="font-mono text-[0.65rem] font-semibold tracking-[0.14em] uppercase"
-                style={{ color: section.color }}
-              >
-                &gt;&gt; {section.cmd}
+                className="h-2 w-2 rounded-full flex-shrink-0"
+                style={{ background: section.accent }}
+              />
+              <span className={`font-mono text-[0.7rem] font-bold tracking-[0.18em] uppercase ${section.textColor}`}>
+                {section.label}
               </span>
-              <span className="font-mono text-[0.62rem] text-[#2a3d55]">
-                ({section.skills.length} items)
+              <span className="font-mono text-[0.62rem] text-slate-400 ml-auto">
+                {section.skills.length} skills
               </span>
             </div>
 
             {/* Skill rows */}
-            <div className="divide-y divide-[#1a2535]">
+            <div className="divide-y divide-slate-50">
               {section.skills.map((skill, i) => {
                 const level = section.levels[i] ?? 4;
                 return (
                   <div
                     key={skill}
-                    className="grid grid-cols-[1fr_auto] items-center gap-4 px-5 py-2.5 hover:bg-[#1a2535]/40 transition-colors"
+                    className="flex items-center gap-4 px-5 py-3 hover:bg-slate-50 transition-colors"
                   >
-                    <span className="text-safe-wrap text-sm text-[#c5d5e8]">
+                    <span className="text-safe-wrap w-40 shrink-0 text-sm font-medium text-slate-800">
                       {skill}
                     </span>
-                    <BenchPips level={level} color={section.color} />
+                    <div className="flex-1 min-w-0">
+                      <SkillBar
+                        level={level}
+                        accent={section.accent}
+                        delay={si * 0.05 + i * 0.03}
+                      />
+                    </div>
+                    <span className="font-mono text-[0.65rem] text-slate-400 tabular-nums w-6 text-right shrink-0">
+                      {level}/5
+                    </span>
                   </div>
                 );
               })}
@@ -152,22 +182,17 @@ const Skills = ({ data }: { data?: SkillsCardData }) => {
       </div>
 
       {/* Legend */}
-      <div className="mt-4 flex items-center gap-5 px-1">
-        <span className="font-mono text-[0.6rem] text-[#2a3d55] tracking-wider uppercase">
-          Legend
-        </span>
-        {[
-          { label: "Learning", n: 1 },
-          { label: "Familiar", n: 2 },
-          { label: "Proficient", n: 3 },
-          { label: "Advanced", n: 4 },
-          { label: "Expert", n: 5 },
-        ].map(({ label, n }) => (
+      <div className="mt-5 flex flex-wrap items-center gap-4 px-1">
+        <span className="font-mono text-[0.6rem] text-slate-400 tracking-wider uppercase">Legend</span>
+        {["Learning", "Familiar", "Proficient", "Advanced", "Expert"].map((label, i) => (
           <div key={label} className="flex items-center gap-1.5">
-            <BenchPips level={n} color="#00d4aa" />
-            <span className="font-mono text-[0.6rem] text-[#2a3d55]">
-              {label}
-            </span>
+            <div className="skill-track w-10">
+              <div
+                className="skill-bar"
+                style={{ width: `${((i + 1) / 5) * 100}%`, background: "#4f46e5" }}
+              />
+            </div>
+            <span className="font-mono text-[0.6rem] text-slate-400">{label}</span>
           </div>
         ))}
       </div>

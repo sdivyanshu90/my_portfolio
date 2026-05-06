@@ -60,33 +60,44 @@ export default function ChatBottombar({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
       className="w-full"
     >
       <form onSubmit={handleSubmit} className="relative w-full">
-        <div className="rounded-2xl border border-[#1a2535] bg-[#0e1520]/95 backdrop-blur-xl overflow-hidden shadow-[0_0_0_1px_rgba(0,212,170,0.05),0_16px_48px_rgba(0,0,0,0.4)]">
-          {/* Input Row */}
+        <motion.div
+          animate={{
+            boxShadow: isDisabled
+              ? "0 0 0 1px rgba(226,232,240,1), 0 4px 16px rgba(15,23,42,0.04)"
+              : "0 0 0 2px rgba(79,70,229,0.18), 0 4px 24px rgba(79,70,229,0.08)",
+          }}
+          transition={{ duration: 0.2 }}
+          className="rounded-2xl border border-slate-200 bg-white overflow-hidden"
+        >
+          {/* Input row */}
           <div className="flex items-start gap-0">
-            {/* Prompt gutter */}
-            <div className="flex items-start px-4 pt-4 pb-2 select-none shrink-0">
+            {/* Blinking cursor when empty */}
+            {!input && !isDisabled && (
               <span
-                className={`font-mono text-sm font-semibold transition-colors ${isDisabled ? "text-[#2a3d55]" : "text-[#00d4aa]"}`}
+                className="cursor-blink pointer-events-none absolute left-[3.2rem] top-[1.05rem] font-mono text-sm text-indigo-500 opacity-70 select-none"
+                aria-hidden
+              />
+            )}
+
+            {/* Prompt glyph */}
+            <div className="flex items-start px-4 pt-[1.05rem] pb-2 select-none shrink-0">
+              <span
+                className={`font-mono text-sm font-bold transition-colors duration-150 ${
+                  isDisabled ? "text-slate-300" : "text-indigo-500"
+                }`}
               >
-                &gt;&gt;
+                &gt;
               </span>
             </div>
 
             {/* Textarea */}
-            <div className="relative flex-1 min-w-0 pt-3 pb-2 pr-4">
-              {/* Blinking cursor shown when empty */}
-              {!input && !isDisabled && (
-                <span
-                  className="cursor-blink pointer-events-none absolute left-0 top-[0.9rem] font-mono text-sm leading-6 text-[#00d4aa] opacity-60 select-none"
-                  aria-hidden
-                />
-              )}
+            <div className="flex-1 min-w-0 pt-[0.9rem] pb-2 pr-4">
               <textarea
                 ref={inputRef}
                 value={input}
@@ -97,23 +108,25 @@ export default function ChatBottombar({
                     ? "Running tool call…"
                     : isLoading
                       ? "Generating response…"
-                      : "Query about projects, research, skills, availability, contact…"
+                      : "Ask about projects, skills, availability, or contact…"
                 }
-                className="min-h-[60px] max-h-[180px] w-full resize-none border-none bg-transparent font-mono text-sm leading-6 text-[#e2e8f0] placeholder:text-[#4a6480] focus:outline-none"
+                className="min-h-[56px] max-h-[180px] w-full resize-none border-none bg-transparent text-sm leading-6 text-slate-900 placeholder:text-slate-400 focus:outline-none"
                 disabled={isDisabled}
               />
             </div>
           </div>
 
-          {/* Action Row */}
-          <div className="flex items-center justify-between gap-3 border-t border-[#1a2535] px-4 py-2.5">
+          {/* Action row */}
+          <div className="flex items-center justify-between gap-3 border-t border-slate-100 px-4 py-2.5 bg-slate-50/60">
             <div className="flex items-center gap-3">
-              <span className="font-mono text-[0.62rem] text-[#3d5470] tracking-wider">
-                ENTER ↵ to run · SHIFT+ENTER for newline
+              <span className="font-mono text-[0.62rem] text-slate-400 tracking-wider">
+                ENTER to send · SHIFT+ENTER for newline
               </span>
               {input.length > 0 && (
                 <span
-                  className={`font-mono text-[0.62rem] tabular-nums ${input.length > 1800 ? "text-[#ef4444]" : "text-[#3d5470]"}`}
+                  className={`font-mono text-[0.62rem] tabular-nums ${
+                    input.length > 1800 ? "text-red-500" : "text-slate-400"
+                  }`}
                 >
                   {input.length}/2000
                 </span>
@@ -123,13 +136,13 @@ export default function ChatBottombar({
             <button
               type="submit"
               disabled={!canSubmit && !isLoading}
-              className={`flex items-center gap-2 rounded-lg px-4 py-1.5 font-mono text-xs font-bold tracking-[0.12em] uppercase transition-all duration-150
+              className={`flex items-center gap-2 rounded-xl px-4 py-1.5 font-mono text-xs font-bold tracking-[0.1em] uppercase transition-all duration-150
                 ${
                   isLoading
-                    ? "bg-[#1a2535] border border-[#f59e0b]/30 text-[#f59e0b] hover:bg-[#f59e0b]/10"
+                    ? "border border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100"
                     : canSubmit
-                      ? "bg-[#00d4aa] text-[#080c12] hover:bg-[#00c09a] shadow-[0_0_16px_rgba(0,212,170,0.25)]"
-                      : "bg-[#141d2b] text-[#2a3d55] cursor-not-allowed border border-[#1a2535]"
+                      ? "bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm shadow-indigo-200"
+                      : "bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200"
                 }`}
               onClick={(e) => {
                 if (isLoading) {
@@ -137,19 +150,19 @@ export default function ChatBottombar({
                   stop();
                 }
               }}
-              aria-label={isLoading ? "Stop generation" : "Run query"}
+              aria-label={isLoading ? "Stop generation" : "Send message"}
             >
               {isLoading ? (
                 <>
                   <Square className="h-3 w-3 fill-current" />
-                  STOP ■
+                  Stop
                 </>
               ) : (
-                "RUN ↵"
+                "Send ↵"
               )}
             </button>
           </div>
-        </div>
+        </motion.div>
       </form>
     </motion.div>
   );

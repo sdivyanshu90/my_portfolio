@@ -1,10 +1,10 @@
 "use client";
 
-import { motion, easeOut } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import React from "react";
 import { profileInfo } from "@/lib/config-loader";
-import { MapPin, Terminal, Cpu } from "lucide-react";
+import { MapPin, Cpu, Sparkles } from "lucide-react";
 
 export interface PresentationData {
   presentation?: string;
@@ -31,141 +31,114 @@ export function Presentation({ data }: { data?: PresentationData }) {
     src: data?.avatar ?? profileInfo.src,
     fallbackSrc: data?.fallbackAvatar ?? profileInfo.fallbackSrc,
     tags: data?.targetRoles ?? profileInfo.tags,
-    age:
-      typeof data?.age === "number" ? `${data.age} years old` : profileInfo.age,
+    age: data?.age != null ? `${data.age} years old` : profileInfo.age,
   };
 
-  // Map profile handle to @-identifier
-  const handle = profile.name
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9-]/g, "");
+  const stagger = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
+  };
+  const item = {
+    hidden: { opacity: 0, y: 16 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
+  };
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: easeOut }}
+      initial="hidden"
+      animate="visible"
+      variants={stagger}
       className="mx-auto w-full max-w-4xl min-w-0 py-6 px-1 sm:px-2"
     >
-      {/* Model Card Shell */}
-      <div className="console-surface overflow-hidden rounded-2xl">
-        {/* Card Header */}
-        <div className="flex items-center justify-between border-b border-[#1a2535] bg-[#080c12] px-5 py-3">
-          <div className="flex items-center gap-2.5">
-            <Terminal className="h-3.5 w-3.5 text-[#00d4aa]" />
-            <span className="font-mono text-[0.65rem] font-semibold tracking-[0.2em] text-[#00d4aa] uppercase opacity-80">
-              CANDIDATE_PROFILE · v1.0
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="led-green" />
-            <span className="font-mono text-[0.65rem] font-semibold tracking-[0.16em] text-[#00d4aa] uppercase opacity-70">
-              ACTIVE
-            </span>
-          </div>
-        </div>
+      {/* Profile card */}
+      <motion.div
+        variants={item}
+        className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm"
+      >
+        {/* Gradient banner */}
+        <div
+          className="h-24 w-full"
+          style={{
+            background:
+              "linear-gradient(135deg, #eef2ff 0%, #f5f3ff 50%, #ecfdf5 100%)",
+          }}
+        />
 
-        {/* Avatar + Identity Row */}
-        <div className="grid grid-cols-1 gap-0 sm:grid-cols-[200px_1fr]">
+        {/* Avatar + identity */}
+        <div className="relative px-6 pb-6">
           {/* Avatar */}
-          <div className="flex items-start justify-center border-b border-[#1a2535] p-6 sm:border-b-0 sm:border-r">
-            <motion.div
-              initial={{ scale: 0.92, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
-              className="relative h-36 w-36 overflow-hidden rounded-xl border border-[#1a2535]"
-            >
-              <Image
-                src={profile.src || profile.fallbackSrc}
-                alt={profile.name}
-                width={144}
-                height={144}
-                className="h-full w-full object-cover object-center"
-              />
-              {/* Teal overlay on bottom edge */}
-              <div className="absolute bottom-0 inset-x-0 h-0.5 bg-[#00d4aa] opacity-50" />
-            </motion.div>
-          </div>
+          <motion.div
+            variants={item}
+            className="relative -mt-12 mb-4 h-24 w-24 overflow-hidden rounded-2xl border-4 border-white shadow-md"
+            style={{ boxShadow: "0 4px 20px rgba(79,70,229,0.15), 0 0 0 4px white" }}
+          >
+            <Image
+              src={profile.src || profile.fallbackSrc}
+              alt={profile.name}
+              width={96}
+              height={96}
+              className="h-full w-full object-cover object-center"
+            />
+          </motion.div>
 
-          {/* Identity fields table */}
-          <div className="divide-y divide-[#1a2535]">
-            <div className="grid grid-cols-[100px_1fr]">
-              <div className="bg-[#080c12]/40 flex items-center px-5 py-3 font-mono text-[0.62rem] font-semibold tracking-[0.14em] uppercase text-[#00d4aa] opacity-60">
-                ID
-              </div>
-              <div className="px-5 py-3 font-mono text-sm text-[#00d4aa]">
-                {handle}
-              </div>
-            </div>
-            <div className="grid grid-cols-[100px_1fr]">
-              <div className="bg-[#080c12]/40 flex items-center px-5 py-3 font-mono text-[0.62rem] font-semibold tracking-[0.14em] uppercase text-[#00d4aa] opacity-60">
-                Name
-              </div>
-              <div className="px-5 py-3 text-sm font-semibold text-[#e2e8f0]">
-                {profile.name}
-              </div>
-            </div>
-            <div className="grid grid-cols-[100px_1fr]">
-              <div className="bg-[#080c12]/40 flex items-center px-5 py-3 font-mono text-[0.62rem] font-semibold tracking-[0.14em] uppercase text-[#00d4aa] opacity-60">
-                Role
-              </div>
-              <div className="px-5 py-3 text-sm text-[#c5d5e8] leading-5">
-                {profile.title}
-              </div>
-            </div>
-            <div className="grid grid-cols-[100px_1fr]">
-              <div className="bg-[#080c12]/40 flex items-center px-5 py-3 font-mono text-[0.62rem] font-semibold tracking-[0.14em] uppercase text-[#00d4aa] opacity-60">
-                Location
-              </div>
-              <div className="px-5 py-3 flex items-center gap-2 text-sm text-[#8b9db5]">
-                <MapPin className="h-3.5 w-3.5 text-[#5c7080] shrink-0" />
-                {profile.location}
-              </div>
-            </div>
+          {/* Name + title */}
+          <motion.div variants={item}>
+            <h2 className="font-display text-safe-balance text-2xl font-bold text-slate-900 sm:text-3xl">
+              <span className="gradient-text">{profile.name}</span>
+            </h2>
+            <p className="mt-1 text-sm font-medium text-slate-600">{profile.title}</p>
+          </motion.div>
+
+          {/* Meta row */}
+          <motion.div
+            variants={item}
+            className="mt-3 flex flex-wrap items-center gap-3"
+          >
             {profile.age && (
-              <div className="grid grid-cols-[100px_1fr]">
-                <div className="bg-[#080c12]/40 flex items-center px-5 py-3 font-mono text-[0.62rem] font-semibold tracking-[0.14em] uppercase text-[#00d4aa] opacity-60">
-                  Age
-                </div>
-                <div className="px-5 py-3 text-sm text-[#8b9db5]">
-                  {profile.age}
-                </div>
-              </div>
+              <span className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600">
+                <Sparkles className="h-3 w-3 text-indigo-500" />
+                {profile.age}
+              </span>
             )}
-          </div>
-        </div>
+            <span className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600">
+              <MapPin className="h-3 w-3 text-indigo-500" />
+              {profile.location}
+            </span>
+            <span className="flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
+              <span className="led-green" style={{ width: 6, height: 6 }} />
+              Available
+            </span>
+          </motion.div>
 
-        {/* Bio section */}
-        <div className="border-t border-[#1a2535] px-5 py-4">
-          <div className="mb-2 flex items-center gap-2">
-            <span className="mono-label">Summary</span>
-          </div>
-          <p className="text-safe-wrap text-sm leading-7 text-[#8b9db5]">
+          {/* Bio */}
+          <motion.p
+            variants={item}
+            className="text-safe-wrap mt-5 text-sm leading-7 text-slate-600 max-w-2xl"
+          >
             {profile.description}
-          </p>
-        </div>
+          </motion.p>
 
-        {/* Target roles */}
-        {profile.tags.length > 0 && (
-          <div className="border-t border-[#1a2535] bg-[#080c12]/30 px-5 py-4">
-            <div className="mb-3 flex items-center gap-2">
-              <Cpu className="h-3.5 w-3.5 text-[#00d4aa]" />
-              <span className="mono-label">Target Roles</span>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {profile.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-safe-wrap font-mono text-[0.68rem] rounded border border-[#00d4aa]/20 bg-[#001a12] px-3 py-1 text-[#00d4aa] opacity-80"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
+          {/* Target roles */}
+          {profile.tags.length > 0 && (
+            <motion.div variants={item} className="mt-5">
+              <div className="flex items-center gap-2 mb-3">
+                <Cpu className="h-3.5 w-3.5 text-indigo-600" />
+                <span className="mono-label">Target Roles</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {profile.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-safe-wrap rounded-xl border border-indigo-100 bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </div>
+      </motion.div>
     </motion.div>
   );
 }

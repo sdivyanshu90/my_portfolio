@@ -153,7 +153,7 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem={false}
         >
           <main className="flex min-h-screen flex-col">{children}</main>

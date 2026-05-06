@@ -1,18 +1,19 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Easing } from "framer-motion";
 import {
-  ArrowUpRight,
+  ArrowRight,
   Bot,
   Briefcase,
+  Code2,
+  FlaskConical,
   Mail,
   MapPin,
   ShieldCheck,
-  Terminal,
+  Sparkles,
   Zap,
 } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { getConfig, presetReplies } from "@/lib/config-loader";
 
@@ -23,63 +24,111 @@ interface ChatLandingProps {
 
 const config = getConfig();
 
-const modelCardRows = [
-  { label: "ID", value: config.personal.handle, mono: true },
-  { label: "Architecture", value: config.personal.title },
-  {
-    label: "Training",
-    value: `${config.education.completed1.institution} · ${config.education.completed1.degree}`,
-  },
-  {
-    label: "Benchmarks",
-    value: `${config.projects.length} systems shipped · ASR WER ↓48% · OCR CER → 0%`,
-  },
-  { label: "Inference", value: "Available immediately · Remote / Hybrid" },
-  { label: "Location", value: config.personal.location },
-];
+/* ── Typewriter hook ── */
+function useTypewriter(words: string[], typingSpeed = 65, deletingSpeed = 35, pause = 2200) {
+  const [text, setText] = useState("");
+  const [wordIndex, setWordIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const current = words[wordIndex];
+    let timeout: ReturnType<typeof setTimeout>;
+
+    if (!deleting && charIndex <= current.length) {
+      timeout = setTimeout(() => {
+        setText(current.slice(0, charIndex));
+        setCharIndex((c) => c + 1);
+      }, typingSpeed);
+    } else if (!deleting && charIndex > current.length) {
+      timeout = setTimeout(() => setDeleting(true), pause);
+    } else if (deleting && charIndex >= 0) {
+      timeout = setTimeout(() => {
+        setText(current.slice(0, charIndex));
+        setCharIndex((c) => c - 1);
+      }, deletingSpeed);
+    } else {
+      setDeleting(false);
+      setWordIndex((i) => (i + 1) % words.length);
+    }
+    return () => clearTimeout(timeout);
+  }, [charIndex, deleting, wordIndex, words, typingSpeed, deletingSpeed, pause]);
+
+  return text;
+}
+
+const roles = ["ML Engineer", "AI Systems Builder", "Research Engineer", "LLM Tooling Specialist"];
 
 const queryCommands = [
   {
-    cmd: "getPresentation()",
     label: "Who are you?",
-    description: "Intro, background, and how Divanshu approaches building.",
-    color: "#00d4aa",
+    description: "Background, approach to building, and what drives the work.",
     question: "Who are you?",
+    icon: Sparkles,
+    gradient: "from-indigo-500 to-violet-500",
+    bg: "bg-indigo-50",
+    border: "border-indigo-100",
+    iconColor: "text-indigo-600",
   },
   {
-    cmd: "getProjects()",
     label: "Show projects",
-    description: "Featured builds — models, metrics, links.",
-    color: "#00d4aa",
+    description: "Shipped ML systems, models, and measurable outcomes.",
     question: "What projects are you most proud of?",
+    icon: Code2,
+    gradient: "from-violet-500 to-purple-500",
+    bg: "bg-violet-50",
+    border: "border-violet-100",
+    iconColor: "text-violet-600",
   },
   {
-    cmd: "getSkills()",
     label: "List capabilities",
-    description: "ML systems, LLM tooling, production engineering depth.",
-    color: "#00d4aa",
+    description: "ML stack, web engineering, DevOps depth.",
     question: "What are your skills?",
+    icon: FlaskConical,
+    gradient: "from-emerald-500 to-teal-500",
+    bg: "bg-emerald-50",
+    border: "border-emerald-100",
+    iconColor: "text-emerald-600",
   },
   {
-    cmd: "getResume()",
     label: "Pull résumé",
-    description: "Experience, education, certifications.",
-    color: "#f59e0b",
+    description: "Education, experience, certifications.",
     question: "Can I see your resume?",
+    icon: Briefcase,
+    gradient: "from-amber-500 to-orange-500",
+    bg: "bg-amber-50",
+    border: "border-amber-100",
+    iconColor: "text-amber-700",
   },
   {
-    cmd: "getContact()",
     label: "Contact paths",
-    description: "Email, GitHub, LinkedIn — direct to the source.",
-    color: "#f59e0b",
+    description: "Email, GitHub, LinkedIn — direct links.",
     question: "How can I reach you?",
+    icon: Mail,
+    gradient: "from-rose-500 to-pink-500",
+    bg: "bg-rose-50",
+    border: "border-rose-100",
+    iconColor: "text-rose-600",
   },
 ];
 
-const ChatLanding: React.FC<ChatLandingProps> = ({
-  submitQuery,
-  handlePresetReply,
-}) => {
+const stagger = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.07 } },
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+const ChatLanding: React.FC<ChatLandingProps> = ({ submitQuery, handlePresetReply }) => {
+  const role = useTypewriter(roles);
+
   const handleQuestionClick = (questionText: string) => {
     const preset = presetReplies[questionText as keyof typeof presetReplies];
     if (preset && handlePresetReply) {
@@ -89,192 +138,185 @@ const ChatLanding: React.FC<ChatLandingProps> = ({
     }
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.08 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 16 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] as Easing },
-    },
-  };
-
   return (
     <motion.div
-      className="grid w-full min-w-0 gap-4 2xl:grid-cols-[minmax(0,1fr)_300px]"
+      className="grid w-full min-w-0 gap-5 2xl:grid-cols-[minmax(0,1fr)_290px]"
       initial="hidden"
       animate="visible"
-      variants={containerVariants}
+      variants={stagger}
     >
-      {/* ── Left: Model Card + Query Grid ── */}
-      <motion.div className="min-w-0 space-y-4" variants={itemVariants}>
-        {/* Model Card */}
-        <div className="console-surface overflow-hidden rounded-2xl">
-          {/* Card Header */}
-          <div className="flex items-center justify-between border-b border-[#1a2535] bg-[#080c12] px-5 py-3">
-            <div className="flex items-center gap-3">
-              <Terminal className="h-3.5 w-3.5 text-[#00d4aa]" />
-              <span className="font-mono text-[0.65rem] font-semibold tracking-[0.22em] text-[#00d4aa] uppercase opacity-80">
-                MODEL_CARD · v1.0
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
+      {/* ── Left column ── */}
+      <div className="min-w-0 space-y-5">
+
+        {/* Hero card */}
+        <motion.div
+          variants={fadeUp}
+          className="relative overflow-hidden rounded-3xl bg-white border border-slate-200 shadow-sm px-7 py-8"
+        >
+          {/* Decorative gradient blobs */}
+          <div
+            className="pointer-events-none absolute -top-16 -right-16 h-56 w-56 rounded-full opacity-30"
+            style={{ background: "radial-gradient(circle, #a5b4fc 0%, transparent 70%)" }}
+          />
+          <div
+            className="pointer-events-none absolute -bottom-10 -left-10 h-40 w-40 rounded-full opacity-20"
+            style={{ background: "radial-gradient(circle, #86efac 0%, transparent 70%)" }}
+          />
+
+          <motion.p
+            variants={fadeUp}
+            className="section-kicker mb-4"
+          >
+            Candidate Profile
+          </motion.p>
+
+          <motion.h1
+            variants={fadeUp}
+            className="font-display text-safe-balance text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl"
+          >
+            Hi, I&apos;m{" "}
+            <span className="gradient-text">{config.personal.name.split(" ")[0]}</span>
+          </motion.h1>
+
+          <motion.div
+            variants={fadeUp}
+            className="mt-3 flex items-center gap-2 h-8"
+          >
+            <span className="text-lg font-medium text-slate-500">
+              {role}
+              <span className="cursor-blink" />
+            </span>
+          </motion.div>
+
+          <motion.div
+            variants={fadeUp}
+            className="mt-4 flex flex-wrap items-center gap-3"
+          >
+            <div className="flex items-center gap-1.5">
               <span className="led-green" />
-              <span className="font-mono text-[0.65rem] font-semibold tracking-[0.18em] text-[#00d4aa] uppercase opacity-75">
-                ONLINE
+              <span className="text-sm font-medium text-emerald-700">
+                Available for opportunities
               </span>
             </div>
-          </div>
+            <span className="text-slate-300">·</span>
+            <div className="flex items-center gap-1.5 text-sm text-slate-500">
+              <MapPin className="h-3.5 w-3.5" />
+              {config.personal.location}
+            </div>
+          </motion.div>
 
-          {/* Card Fields */}
-          <div className="divide-y divide-[#1a2535]">
-            {modelCardRows.map((row) => (
-              <div
-                key={row.label}
-                className="grid grid-cols-[110px_1fr] sm:grid-cols-[140px_1fr]"
-              >
-                <div className="bg-[#080c12]/60 px-5 py-3 font-mono text-[0.65rem] font-semibold tracking-[0.16em] text-[#00d4aa] uppercase opacity-65 flex items-center">
-                  {row.label}
-                </div>
-                <div
-                  className={`px-5 py-3 text-sm text-[#c5d5e8] leading-6 ${row.mono ? "font-mono text-[#00d4aa]" : ""}`}
-                >
-                  {row.value}
-                </div>
-              </div>
-            ))}
-          </div>
+          <motion.p
+            variants={fadeUp}
+            className="text-safe-wrap mt-5 max-w-xl text-sm leading-7 text-slate-600"
+          >
+            {config.personal.bio}
+          </motion.p>
+        </motion.div>
 
-          {/* Card Footer */}
-          <div className="border-t border-[#1a2535] bg-[#080c12]/40 px-5 py-3">
-            <p className="font-mono text-[0.62rem] text-[#2a3d55] leading-5">
-              Query this model using the commands below or type a free-form
-              question. Tool results render as structured cards.
-            </p>
-          </div>
-        </div>
-
-        {/* Query Commands Grid */}
-        <div className="grid gap-2.5 sm:grid-cols-2 xl:grid-cols-3">
+        {/* Query command grid */}
+        <motion.div
+          variants={stagger}
+          className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3"
+        >
           {queryCommands.map((cmd) => (
             <motion.button
-              key={cmd.cmd}
-              className="group console-surface btn-sweep min-w-0 rounded-xl p-4 text-left transition-all duration-200 hover:border-[#00d4aa]/25"
+              key={cmd.label}
+              variants={fadeUp}
+              whileHover={{ y: -3, boxShadow: "0 12px 32px rgba(79,70,229,0.12)" }}
+              whileTap={{ scale: 0.97 }}
               onClick={() => handleQuestionClick(cmd.question)}
-              variants={itemVariants}
-              whileTap={{ scale: 0.98 }}
+              className={`group relative overflow-hidden rounded-2xl border ${cmd.border} ${cmd.bg} p-4 text-left transition-colors hover:border-indigo-200`}
             >
-              <div className="flex items-center justify-between gap-2 mb-3">
-                <span
-                  className="font-mono text-[0.7rem] font-semibold tracking-wide"
-                  style={{ color: cmd.color }}
-                >
-                  &gt;&gt; {cmd.cmd}
-                </span>
-                <ArrowUpRight
-                  className="h-3.5 w-3.5 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                  style={{ color: cmd.color }}
-                />
+              {/* Icon */}
+              <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white shadow-sm border border-slate-100">
+                <cmd.icon className={`h-4.5 w-4.5 ${cmd.iconColor}`} size={18} />
               </div>
-              <p className="text-safe-wrap text-sm font-semibold text-[#e2e8f0]">
+              <p className="text-safe-wrap text-sm font-semibold text-slate-900">
                 {cmd.label}
               </p>
-              <p className="text-safe-wrap mt-1.5 text-xs leading-5 text-[#5c7080]">
+              <p className="text-safe-wrap mt-1 text-xs leading-5 text-slate-500">
                 {cmd.description}
               </p>
+              <ArrowRight className="absolute right-4 bottom-4 h-4 w-4 text-slate-300 transition-all group-hover:translate-x-1 group-hover:text-indigo-500" />
             </motion.button>
           ))}
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
 
-      {/* ── Right: Status + Context ── */}
+      {/* ── Right column ── */}
       <div className="min-w-0 space-y-3">
-        {/* Availability Status */}
+
+        {/* Availability card */}
         <motion.button
-          onClick={() =>
-            handleQuestionClick("Am I available for opportunities?")
-          }
-          className="console-surface btn-sweep w-full min-w-0 rounded-2xl p-5 text-left transition-all hover:border-[#00d4aa]/25"
-          variants={itemVariants}
+          variants={fadeUp}
+          whileHover={{ y: -2, boxShadow: "0 8px 24px rgba(5,150,105,0.1)" }}
           whileTap={{ scale: 0.98 }}
+          onClick={() => handleQuestionClick("Am I available for opportunities?")}
+          className="w-full min-w-0 rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-left transition-colors hover:border-emerald-300"
         >
-          <div className="flex items-center gap-2 mb-3">
+          <div className="flex items-center gap-2 mb-2">
             <span className="led-green" />
-            <span className="font-mono text-[0.65rem] font-semibold tracking-[0.2em] text-[#00d4aa] uppercase opacity-75">
-              STATUS · ACTIVE
+            <span className="font-mono text-[0.65rem] font-bold tracking-[0.2em] text-emerald-700 uppercase">
+              Status · Active
             </span>
           </div>
-          <p className="text-safe-wrap text-base font-semibold text-[#e2e8f0]">
-            Open to opportunities
+          <p className="text-sm font-semibold text-slate-900">Open to opportunities</p>
+          <p className="mt-1.5 text-xs leading-5 text-slate-500">
+            ML Engineer · AI Systems · Immediate start. Ask about fit.
           </p>
-          <p className="text-safe-wrap mt-2 text-xs leading-5 text-[#5c7080]">
-            ML Engineer / AI Systems · Immediate start · Ask about role fit.
-          </p>
-          <div className="mt-3 flex items-center gap-1.5">
-            <MapPin className="h-3 w-3 text-[#5c7080]" />
-            <span className="font-mono text-[0.65rem] text-[#5c7080]">
-              {config.personal.location}
-            </span>
+          <div className="mt-3 flex items-center gap-1.5 text-xs text-slate-400">
+            <MapPin className="h-3 w-3" />
+            {config.personal.location}
           </div>
         </motion.button>
 
-        {/* Target Roles */}
+        {/* Target roles */}
         <motion.div
-          className="console-surface rounded-2xl p-5"
-          variants={itemVariants}
+          variants={fadeUp}
+          className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
         >
           <div className="flex items-center gap-2 mb-3">
-            <Briefcase className="h-3.5 w-3.5 text-[#00d4aa]" />
+            <Briefcase className="h-3.5 w-3.5 text-indigo-600" />
             <span className="mono-label">Target Roles</span>
           </div>
-          <div className="space-y-1.5">
+          <div className="flex flex-wrap gap-1.5">
             {config.personal.targetRoles.map((role) => (
-              <div key={role} className="flex items-center gap-2">
-                <span className="font-mono text-[#00d4aa] text-xs opacity-50">
-                  ›
-                </span>
-                <span className="text-xs text-[#8b9db5]">{role}</span>
-              </div>
+              <span
+                key={role}
+                className="text-safe-wrap rounded-lg bg-indigo-50 px-2.5 py-1 text-xs font-medium text-indigo-700 border border-indigo-100"
+              >
+                {role}
+              </span>
             ))}
           </div>
         </motion.div>
 
-        {/* System Info */}
+        {/* System info */}
         <motion.div
-          className="console-surface rounded-2xl p-5"
-          variants={itemVariants}
+          variants={fadeUp}
+          className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
         >
           <div className="flex items-center gap-2 mb-3">
-            <Bot className="h-3.5 w-3.5 text-[#00d4aa]" />
-            <span className="mono-label">System Info</span>
+            <Bot className="h-3.5 w-3.5 text-indigo-600" />
+            <span className="mono-label">How this works</span>
           </div>
-          <div className="space-y-3 text-xs leading-5 text-[#5c7080]">
+          <div className="space-y-3 text-xs leading-5">
             <div className="flex gap-2.5">
-              <Zap className="h-3.5 w-3.5 shrink-0 text-[#f59e0b] mt-0.5" />
-              <span className="text-safe-wrap">
-                Tool calls render portfolio data as structured cards — not vague
-                summaries.
+              <Zap className="h-3.5 w-3.5 shrink-0 text-amber-500 mt-0.5" />
+              <span className="text-safe-wrap text-slate-600">
+                Each query calls a tool that renders portfolio data as a structured card.
               </span>
             </div>
             <div className="flex gap-2.5">
-              <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-[#00d4aa] mt-0.5" />
-              <span className="text-safe-wrap">
-                Rate-limited, origin-checked, and filtered for injection
-                patterns.
+              <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-emerald-600 mt-0.5" />
+              <span className="text-safe-wrap text-slate-600">
+                Rate-limited and filtered. Safe to share with recruiters.
               </span>
             </div>
             <div className="flex gap-2.5">
-              <Mail className="h-3.5 w-3.5 shrink-0 text-[#5c7080] mt-0.5" />
-              <span className="text-safe-wrap">
-                Redirects to direct contact when a live conversation is the
-                better path.
+              <Mail className="h-3.5 w-3.5 shrink-0 text-slate-400 mt-0.5" />
+              <span className="text-safe-wrap text-slate-600">
+                Redirects to direct contact when a live conversation is better.
               </span>
             </div>
           </div>
