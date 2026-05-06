@@ -10,11 +10,17 @@ import { motion, easeOut } from "framer-motion";
 import ChatMessageContent from "./chat-message-content";
 import ToolRenderer from "./tool-renderer";
 
+type CompletedToolInvocation = {
+  toolCallId: string;
+  toolName: string;
+  result: unknown;
+};
+
 interface SimplifiedChatViewProps {
   message: Message;
   isLoading: boolean;
   reload: (
-    chatRequestOptions?: ChatRequestOptions
+    chatRequestOptions?: ChatRequestOptions,
   ) => Promise<string | null | undefined>;
   addToolResult?: (args: { toolCallId: string; result: string }) => void;
 }
@@ -37,18 +43,23 @@ export function SimplifiedChatView({
 }: SimplifiedChatViewProps) {
   if (message.role !== "assistant") return null;
 
-  // Extract tool invocations that are in "result" state
-  const toolInvocations =
-    message.parts
-      ?.filter(
-        (part) =>
-          part.type === "tool-invocation" &&
-          part.toolInvocation?.state === "result"
-      )
-      .map((part) =>
-        part.type === "tool-invocation" ? part.toolInvocation : null
-      )
-      .filter(Boolean) || [];
+  const toolInvocations: CompletedToolInvocation[] =
+    message.parts?.flatMap((part) => {
+      if (
+        part.type === "tool-invocation" &&
+        part.toolInvocation?.state === "result"
+      ) {
+        return [
+          {
+            toolCallId: part.toolInvocation.toolCallId,
+            toolName: part.toolInvocation.toolName,
+            result: part.toolInvocation.result,
+          },
+        ];
+      }
+
+      return [];
+    }) ?? [];
 
   // Only display the first tool (if any)
   const currentTool = toolInvocations.length > 0 ? [toolInvocations[0]] : [];
@@ -61,8 +72,6 @@ export function SimplifiedChatView({
   const showTextContent =
     hasTextContent && (!hasTools || message.content.trim().length > 50);
 
-  console.log("currentTool", currentTool);
-
   return (
     <motion.div {...MOTION_CONFIG} className="flex h-full w-full flex-col px-4">
       {/* Single scrollable container for both tool and text content */}
@@ -70,10 +79,7 @@ export function SimplifiedChatView({
         {/* Tool invocation result - displayed at the top */}
         {hasTools && (
           <div className="mb-4 w-full">
-            <ToolRenderer
-              toolInvocations={currentTool}
-              messageId={message.id || "current-msg"}
-            />
+            <ToolRenderer toolInvocations={currentTool} />
           </div>
         )}
 
