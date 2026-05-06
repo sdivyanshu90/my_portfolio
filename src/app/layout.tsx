@@ -1,6 +1,6 @@
 import { Analytics } from "@vercel/analytics/react";
 import type { Metadata, Viewport } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { getConfig } from "@/lib/config-loader";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -16,6 +16,12 @@ const inter = Inter({
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space-grotesk",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
+  weight: ["400", "500", "600", "700"],
 });
 
 const config = getConfig();
@@ -142,11 +148,12 @@ export default function RootLayout({
           "min-h-screen bg-background font-sans antialiased",
           inter.variable,
           spaceGrotesk.variable,
+          jetbrainsMono.variable,
         )}
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="dark"
           enableSystem={false}
         >
           <main className="flex min-h-screen flex-col">{children}</main>
