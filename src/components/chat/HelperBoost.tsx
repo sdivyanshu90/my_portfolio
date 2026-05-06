@@ -157,14 +157,14 @@ export default function HelperBoost({
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0">
               <p className="section-kicker">Quick Routes</p>
-              <p className="text-safe-wrap mt-1 text-sm leading-6 text-[#5c6675]">
+              <p className="text-safe-wrap mt-1 text-sm leading-6 text-[#8b9db5]">
                 Recruiter shortcuts for the questions that usually matter first.
               </p>
             </div>
 
             <button
               onClick={toggleVisibility}
-              className="inline-flex items-center gap-1 rounded-full border border-[#d8e1e9] bg-white/75 px-3 py-1.5 text-xs font-medium text-[#556173] transition hover:bg-white"
+              className="inline-flex items-center gap-1 rounded-full border border-[#1a2535] bg-[#0e1520]/75 px-3 py-1.5 text-xs font-medium text-[#8b9db5] transition hover:bg-[#0e1520]"
             >
               {isVisible ? (
                 <>
@@ -183,31 +183,31 @@ export default function HelperBoost({
           {isVisible && (
             <div className="flex w-full min-w-0 flex-wrap gap-2">
               {questionConfig.map(({ key, color, icon: Icon }) => (
-                <Button
+                <button
                   key={key}
                   onClick={() => handleQuestionClick(key)}
-                  variant="outline"
-                  className="h-auto min-w-[112px] max-w-full flex-shrink-0 cursor-pointer rounded-2xl border border-[#d8e1e9] bg-white/82 px-4 py-3 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:bg-white active:scale-[0.98]"
+                  className="flex h-auto min-w-[100px] max-w-full flex-shrink-0 cursor-pointer items-center gap-2.5 rounded-xl border border-[#1a2535] bg-[#0e1520] px-3.5 py-2 backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-[#00d4aa]/30 hover:bg-[#141d2b] active:scale-[0.98]"
                 >
-                  <div className="flex min-w-0 items-center gap-3 text-[#243142]">
-                    <Icon size={18} strokeWidth={2} color={color} />
-                    <span className="text-safe-wrap text-left text-sm font-medium">
-                      {key}
-                    </span>
-                  </div>
-                </Button>
+                  <span className="font-mono text-[0.62rem] font-semibold text-[#00d4aa] opacity-60">
+                    &gt;&gt;
+                  </span>
+                  <Icon size={16} strokeWidth={2} color={color} />
+                  <span className="text-safe-wrap text-left font-mono text-xs font-medium text-[#c5d5e8]">
+                    {key}
+                  </span>
+                </button>
               ))}
 
               <Drawer.Trigger className="group relative flex flex-shrink-0 items-center justify-center">
                 <motion.div
-                  className="flex h-auto cursor-pointer items-center gap-3 rounded-2xl border border-[#d8e1e9] bg-white/82 px-4 py-3 text-sm text-[#243142] shadow-sm backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-white"
+                  className="flex h-auto cursor-pointer items-center gap-2.5 rounded-xl border border-[#1a2535] bg-[#0e1520] px-3.5 py-2 text-xs text-[#8b9db5] backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-[#00d4aa]/30 hover:bg-[#141d2b]"
                   whileTap={{ scale: 0.98 }}
                 >
                   <CircleEllipsis
-                    className="h-[20px] w-[18px]"
+                    className="h-[16px] w-[16px]"
                     strokeWidth={2}
                   />
-                  <span className="text-sm font-medium">More</span>
+                  <span className="font-mono text-xs font-medium">more</span>
                 </motion.div>
               </Drawer.Trigger>
             </div>
@@ -216,16 +216,16 @@ export default function HelperBoost({
 
         <Drawer.Portal>
           <Drawer.Overlay className="fixed inset-0 z-100 bg-[#0b1120]/55 backdrop-blur-lg" />
-          <Drawer.Content className="fixed right-0 bottom-0 left-0 z-100 mt-24 flex h-[84%] flex-col rounded-t-[28px] border border-white/30 bg-[#f6f0e8] outline-none lg:h-[68%]">
+          <Drawer.Content className="fixed right-0 bottom-0 left-0 z-100 mt-24 flex h-[84%] flex-col rounded-t-[28px] border border-[#1a2535] bg-[#0a0f18] outline-none lg:h-[68%]">
             <div className="flex-1 overflow-y-auto rounded-t-[28px] p-4 sm:p-6">
               <div className="mx-auto max-w-md space-y-4">
                 <div
                   aria-hidden
-                  className="mx-auto mb-6 h-1.5 w-14 flex-shrink-0 rounded-full bg-[#cbd5df]"
+                  className="mx-auto mb-6 h-1.5 w-14 flex-shrink-0 rounded-full bg-[#1a2535]"
                 />
                 <div className="mx-auto w-full max-w-md">
                   <p className="section-kicker">Question Library</p>
-                  <h3 className="font-display text-safe-balance mt-3 text-3xl font-semibold tracking-tight text-[#102133]">
+                  <h3 className="font-display text-safe-balance mt-3 text-3xl font-semibold tracking-tight text-[#e2e8f0]">
                     Browse the deeper prompt set.
                   </h3>
                   <div className="space-y-8 pb-16">
@@ -266,13 +266,13 @@ function CategorySection({
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-2.5 px-1">
-        <Icon className="h-5 w-5 text-[#0b544b]" />
-        <Drawer.Title className="font-display text-[22px] font-medium text-[#102133]">
+        <Icon className="h-5 w-5 text-[#00d4aa]" />
+        <Drawer.Title className="font-display text-[22px] font-medium text-[#e2e8f0]">
           {name}
         </Drawer.Title>
       </div>
 
-      <Separator className="my-4 bg-[#d8e1e9]" />
+      <Separator className="my-4 bg-[#1a2535]" />
 
       <div className="space-y-3">
         {questions.map((question) => (
@@ -307,7 +307,7 @@ function QuestionItem({ question, onClick, isSpecial }: QuestionItemProps) {
         "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0b544b]",
         isSpecial
           ? "border-transparent bg-[#102133] text-white"
-          : "border-[#d8e1e9] bg-white/86 text-[#233044] shadow-sm",
+          : "border-[#1a2535] bg-[#0e1520]/86 text-[#c5d5e8] ",
       )}
       onClick={onClick}
       onHoverStart={() => setIsHovered(true)}
@@ -342,7 +342,7 @@ function QuestionItem({ question, onClick, isSpecial }: QuestionItemProps) {
         <ChevronRight
           className={cn(
             "h-5 w-5 shrink-0",
-            isSpecial ? "text-white" : "text-[#0b544b]",
+            isSpecial ? "text-white" : "text-[#00d4aa]",
           )}
         />
       </motion.div>
