@@ -14,12 +14,6 @@ export interface SkillsCardData {
   };
 }
 
-interface BenchmarkRow {
-  name: string;
-  level: number; // 1–5
-  category: string;
-}
-
 interface BenchmarkSection {
   id: string;
   label: string;

@@ -2,7 +2,7 @@
 
 import { getConfig } from "@/lib/config-loader";
 import type { Project } from "@/types/portfolio";
-import { motion, easeOut, AnimatePresence } from "framer-motion";
+import { motion, easeOut } from "framer-motion";
 import { ArrowUpRight, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 
@@ -116,13 +116,13 @@ function ArxivCard({ project, index }: { project: Project; index: number }) {
               .slice(0, 3)
               .map((link) => (
                 <a
-                  key={link.label}
+                  key={link.name}
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 font-mono text-[0.65rem] text-[#00d4aa] border border-[#00d4aa]/20 rounded px-2 py-0.5 hover:border-[#00d4aa]/50 hover:bg-[#00d4aa]/6 transition-all"
                 >
-                  {link.label}
+                  {link.name}
                   <ArrowUpRight className="h-2.5 w-2.5" />
                 </a>
               ))}
@@ -177,38 +177,4 @@ export default function AllProjects({ projects }: AllProjectsProps) {
   );
 }
 
-interface AllProjectsProps {
-  projects?: Project[];
-}
 
-export default function AllProjects({ projects }: AllProjectsProps) {
-  const cards = createProjectData(projects).map((card, index) => (
-    <Card key={card.title} card={card} index={index} layout={true} />
-  ));
-
-  return (
-    <div className="w-full min-w-0 pt-6 sm:pt-8">
-      <div className="mx-auto flex max-w-7xl min-w-0 flex-col gap-3 px-1 sm:px-2">
-        <p className="section-kicker">Selected Work</p>
-        <div className="flex min-w-0 flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-3xl min-w-0 space-y-2">
-            <h2 className="font-display text-safe-balance text-3xl font-semibold tracking-tight text-[#102133] sm:text-4xl">
-              Systems, ML products, and open-source work with measurable
-              outcomes.
-            </h2>
-            <p className="text-safe-wrap max-w-2xl text-sm leading-7 text-[#556173] sm:text-base">
-              Every card opens into a structured case study with the build
-              story, impact, stack, and links. The cover art is generated from
-              the project metadata instead of unrelated placeholder images.
-            </p>
-          </div>
-          <div className="text-safe-wrap rounded-full border border-[#d8e1e9] bg-white/75 px-4 py-2 text-sm text-[#556173] shadow-sm">
-            Tap a card for the full breakdown
-          </div>
-        </div>
-      </div>
-
-      <Carousel items={cards} />
-    </div>
-  );
-}
