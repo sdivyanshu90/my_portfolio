@@ -1,26 +1,25 @@
 import { tool } from "ai";
 import { z } from "zod";
 import { getConfig } from "@/lib/config-loader";
+import { take, truncateText } from "./tool-result-utils";
 
 export const getPresentation = tool({
   description:
     "This tool provides a comprehensive professional introduction and personal background, suitable for interviews and formal presentations.",
-  parameters: z.object({}),
+  parameters: z.object({}).passthrough(),
   execute: async () => {
     const config = getConfig();
 
     return {
-      presentation: config.personal.bio,
+      presentation: truncateText(config.personal.bio, 320),
       name: config.personal.name,
       title: config.personal.title,
-      age: config.personal.age,
       location: config.personal.location,
-      education: config.education.completed1,
-      traits: config.personality.traits,
-      interests: config.personality.interests,
-      motivation: config.personality.motivation,
+      avatar: config.personal.avatar,
+      fallbackAvatar: config.personal.fallbackAvatar,
+      targetRoles: take(config.personal.targetRoles, 4),
       professionalSummary:
-        "I'm a passionate software developer driven by curiosity and a commitment to building innovative, real-world solutions. My journey in technology combines a solid theoretical foundation with hands-on experience from internships, freelance projects, and open-source contributions. I thrive on solving complex challenges that require both creativity and technical precision, and I excel in collaborative environments where ideas turn into impactful products. My ultimate goal is to work on groundbreaking projects that leverage AI, machine learning, and modern development practices to create meaningful change. I'm excited about the opportunity to bring my expertise, adaptability, and enthusiasm to your team.",
+        "I build AI systems and developer products from first principles, then push them toward production quality. My background combines ML research, quantitative modeling, full-stack engineering, and open-source teaching, so I am comfortable moving between theory, systems design, and execution.",
     };
   },
 });
