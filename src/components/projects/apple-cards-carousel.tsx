@@ -1,15 +1,17 @@
 "use client";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import { cn } from "@/lib/utils";
+import type { Project } from "@/types/portfolio";
 import { AnimatePresence, motion } from "framer-motion";
-import Image, { ImageProps } from "next/image";
 import React, {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useRef,
   useState,
 } from "react";
+import ProjectCover from "@/components/projects/project-cover";
 
 // Simple icon components to replace @tabler/icons-react
 const IconArrowNarrowLeft = ({ className }: { className?: string }) => (
@@ -66,9 +68,10 @@ const IconX = ({ className }: { className?: string }) => (
 );
 
 type Card = {
-  src: string;
   title: string;
   category: string;
+  summary: string;
+  project: Project;
   content: React.ReactNode;
 };
 
@@ -109,14 +112,11 @@ export const Carousel = ({
 
   // Get the card width and gap based on viewport size
   const getScrollDistance = () => {
-    // Card width (w-80 = 320px) + gap-4 (16px)
-    const cardWidth = 320;
-    const gap = 16;
+    const cardWidth = window.innerWidth < 640 ? 300 : 360;
+    const gap = 20;
     const totalWidth = cardWidth + gap;
 
-    // Scroll by 1 card at a time
-    const cardsToScroll = 1;
-    return totalWidth * cardsToScroll;
+    return totalWidth;
   };
 
   const scrollLeft = () => {
@@ -139,8 +139,8 @@ export const Carousel = ({
 
   const handleCardClose = (index: number) => {
     if (carouselRef.current) {
-      const cardWidth = 320; // w-80 (320px)
-      const gap = isMobile() ? 16 : 16; // gap-4 (16px)
+      const cardWidth = isMobile() ? 300 : 360;
+      const gap = 20;
       const scrollPosition = (cardWidth + gap) * index;
       carouselRef.current.scrollTo({
         left: scrollPosition,
@@ -151,7 +151,7 @@ export const Carousel = ({
   };
 
   const isMobile = () => {
-    return window && window.innerWidth < 768;
+    return typeof window !== "undefined" && window.innerWidth < 768;
   };
 
   return (
@@ -160,20 +160,20 @@ export const Carousel = ({
     >
       <div className="relative w-full">
         <div
-          className="flex w-full overflow-x-scroll overscroll-x-auto scroll-smooth py-10 [scrollbar-width:none]"
+          className="flex w-full overflow-x-scroll overscroll-x-auto scroll-smooth py-8 [scrollbar-width:none]"
           ref={carouselRef}
           onScroll={checkScrollability}
         >
           <div
             className={cn(
-              "absolute right-0 z-[10] h-auto w-[5%] overflow-hidden bg-gradient-to-l"
+              "pointer-events-none absolute right-0 z-[10] h-full w-16 overflow-hidden bg-gradient-to-l from-[#f6f0e8] to-transparent",
             )}
-          ></div>
+          />
 
           <div
             className={cn(
-              "flex flex-row justify-start gap-4",
-              "mx-auto max-w-7xl" // remove max-w-4xl if you want the carousel to span the full width of its container
+              "mx-auto flex flex-row justify-start gap-5 px-1 sm:px-2",
+              "max-w-7xl",
             )}
           >
             {items.map((item, index) => (
@@ -193,27 +193,27 @@ export const Carousel = ({
                 }}
                 viewport={{ once: true }}
                 key={"card" + index}
-                className="rounded-3xl last:pr-[5%] md:last:pr-[33%]"
+                className="rounded-[32px] last:pr-[10%] md:last:pr-[28%]"
               >
                 {item}
               </motion.div>
             ))}
           </div>
         </div>
-        <div className="mr-10 flex justify-end gap-2 md:mr-20">
+        <div className="mr-4 flex justify-end gap-2 md:mr-10">
           <button
-            className="relative z-40 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 disabled:opacity-50"
+            className="relative z-40 flex h-11 w-11 items-center justify-center rounded-full border border-[#d8e1e9] bg-white/85 text-[#102133] shadow-sm transition hover:-translate-y-0.5 disabled:opacity-40"
             onClick={scrollLeft}
             disabled={!canScrollLeft}
           >
-            <IconArrowNarrowLeft className="h-6 w-6 text-gray-500" />
+            <IconArrowNarrowLeft className="h-5 w-5" />
           </button>
           <button
-            className="relative z-40 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 disabled:opacity-50"
+            className="relative z-40 flex h-11 w-11 items-center justify-center rounded-full border border-[#d8e1e9] bg-white/85 text-[#102133] shadow-sm transition hover:-translate-y-0.5 disabled:opacity-40"
             onClick={scrollRight}
             disabled={!canScrollRight}
           >
-            <IconArrowNarrowRight className="h-6 w-6 text-gray-500" />
+            <IconArrowNarrowRight className="h-5 w-5" />
           </button>
         </div>
       </div>
@@ -232,7 +232,12 @@ export const Card = ({
 }) => {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { onCardClose, currentIndex } = useContext(CarouselContext);
+  const { onCardClose } = useContext(CarouselContext);
+
+  const handleClose = useCallback(() => {
+    setOpen(false);
+    onCardClose(index);
+  }, [index, onCardClose]);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -249,30 +254,24 @@ export const Card = ({
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [open]);
+  }, [handleClose, open]);
 
-  //@ts-ignore
-  useOutsideClick(containerRef, () => handleClose());
+  useOutsideClick(containerRef, handleClose);
 
   const handleOpen = () => {
     setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    onCardClose(index);
   };
 
   return (
     <>
       <AnimatePresence>
         {open && (
-          <div className="fixed inset-0 z-52 h-screen overflow-auto">
+          <div className="fixed inset-0 z-52 overflow-auto px-4 py-6 sm:px-6 lg:px-10">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 h-full w-full bg-black/80 backdrop-blur-lg"
+              className="fixed inset-0 h-full w-full bg-[#081018]/78 backdrop-blur-xl"
             />
             <motion.div
               initial={{ opacity: 0 }}
@@ -280,38 +279,45 @@ export const Card = ({
               exit={{ opacity: 0 }}
               ref={containerRef}
               layoutId={layout ? `card-${card.title}` : undefined}
-              className="relative z-[60] mx-auto my-10 h-fit max-w-5xl rounded-3xl bg-white font-sans dark:bg-neutral-900"
+              className="relative z-[60] mx-auto h-fit max-w-6xl rounded-[36px] border border-white/30 bg-[#f6f0e8] font-sans shadow-[0_40px_120px_rgba(8,16,24,0.35)]"
             >
-              {/* Sticky close button */}
-              <div className="sticky top-4 z-52 flex justify-end px-8 pt-8 md:px-14 md:pt-8">
+              <div className="sticky top-4 z-52 flex justify-end px-5 pt-5 sm:px-8 lg:px-10 lg:pt-8">
                 <button
-                  className="flex h-8 w-8 items-center justify-center rounded-full bg-black/90 shadow-md dark:bg-white/90"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-[#102133] shadow-md"
                   onClick={handleClose}
                 >
-                  <IconX className="h-6 w-6 text-neutral-100 dark:text-neutral-900" />
+                  <IconX className="h-5 w-5 text-white" />
                 </button>
               </div>
 
-              {/* Header section with consistent padding */}
-              <div className="relative px-8 pt-2 pb-0 md:px-14">
-                <div>
+              <div className="grid min-w-0 gap-8 px-5 pb-8 sm:px-8 xl:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:px-10 lg:pb-10">
+                <div className="min-w-0 space-y-6 xl:sticky xl:top-12 xl:self-start">
+                  <ProjectCover project={card.project} />
+                  <div className="panel-surface px-6 py-6">
+                    <p className="section-kicker">Case Study Preview</p>
+                    <p className="text-safe-wrap mt-4 text-sm leading-7 text-[#425062]">
+                      {card.summary}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="min-w-0 space-y-6 pb-2">
                   <motion.p
                     layoutId={layout ? `category-${card.title}` : undefined}
-                    className="text-base font-medium text-black dark:text-white"
+                    className="section-kicker"
                   >
                     {card.category}
                   </motion.p>
                   <motion.p
                     layoutId={layout ? `title-${card.title}` : undefined}
-                    className="mt-4 text-2xl font-semibold text-neutral-700 md:text-5xl dark:text-white"
+                    className="font-display text-safe-balance text-3xl font-semibold tracking-tight text-[#102133] sm:text-4xl lg:text-5xl"
                   >
                     {card.title}
                   </motion.p>
+                  <div className="soft-rule" />
+                  <div>{card.content}</div>
                 </div>
               </div>
-
-              {/* Content with consistent padding */}
-              <div className="px-8 pt-8 pb-14 md:px-14">{card.content}</div>
             </motion.div>
           </div>
         )}
@@ -319,60 +325,38 @@ export const Card = ({
       <motion.button
         layoutId={layout ? `card-${card.title}` : undefined}
         onClick={handleOpen}
-        className="relative z-10 flex h-48 w-80 flex-col items-start justify-start overflow-hidden rounded-3xl bg-gray-100 dark:bg-neutral-900"
+        whileHover={{ y: -6 }}
+        className="group relative z-10 flex h-[470px] w-[300px] min-w-0 flex-col overflow-hidden rounded-[32px] border border-white/70 bg-white/80 p-3 text-left shadow-[0_24px_70px_rgba(15,23,42,0.08)] backdrop-blur-xl sm:h-[520px] sm:w-[360px]"
       >
-        <div className="absolute inset-x-0 top-0 z-30 h-full cursor-pointer bg-gradient-to-b from-black hover:scale-110 via-transparent to-transparent" />
-        {/*<div className="absolute inset-0 z-20 cursor-pointer bg-black/20 hover:bg-black/2" />*/}
-        <div className="relative z-40 p-8">
+        <div className="h-[248px] overflow-hidden rounded-[26px] sm:h-[286px]">
+          <ProjectCover
+            project={card.project}
+            compact={true}
+            className="h-full transition duration-500 group-hover:scale-[1.02]"
+          />
+        </div>
+        <div className="relative z-20 flex min-w-0 flex-1 flex-col space-y-3 px-1 pb-2 pt-5">
           <motion.p
-            layoutId={layout ? `category-${card.category}` : undefined}
-            className="text-left font-sans text-sm font-medium text-white md:text-base"
+            layoutId={layout ? `category-${card.title}` : undefined}
+            className="section-kicker"
           >
             {card.category}
           </motion.p>
-          <motion.p
+          <motion.h3
             layoutId={layout ? `title-${card.title}` : undefined}
-            className="max-w-xs text-left font-sans text-xl font-semibold [text-wrap:balance] text-white md:text-3xl"
+            className="font-display text-safe-balance max-w-sm min-h-[6.6rem] line-clamp-3 text-2xl font-semibold tracking-tight text-[#102133]"
           >
             {card.title}
-          </motion.p>
+          </motion.h3>
+          <p className="text-safe-wrap line-clamp-4 text-sm leading-6 text-[#5c6675]">
+            {card.summary}
+          </p>
+          <div className="mt-auto flex items-center gap-2 pt-2 text-sm font-semibold text-[#0b544b]">
+            Open case study
+            <IconArrowNarrowRight className="h-4 w-4" />
+          </div>
         </div>
-        <BlurImage
-          src={card.src}
-          alt={card.title}
-          fill
-          className="absolute inset-0 z-10 object-cover"
-        />
       </motion.button>
     </>
-  );
-};
-
-export const BlurImage = ({
-  height,
-  width,
-  src,
-  className,
-  alt,
-  ...rest
-}: ImageProps) => {
-  const [isLoading, setLoading] = useState(true);
-  return (
-    <Image
-      className={cn(
-        "transition duration-300",
-        isLoading ? "blur-sm" : "blur-0",
-        className
-      )}
-      onLoad={() => setLoading(false)}
-      src={src}
-      width={width}
-      height={height}
-      loading="lazy"
-      decoding="async"
-      blurDataURL={typeof src === "string" ? src : undefined}
-      alt={alt ? alt : "Background of a beautiful view"}
-      {...rest}
-    />
   );
 };
