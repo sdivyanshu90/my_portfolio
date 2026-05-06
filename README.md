@@ -1,217 +1,168 @@
+# Developer Portfolio
 
-# 🌟 Gemini Dev Portfolio
-
-> A modern, customizable, AI-enhanced developer portfolio powered by Next.js, Tailwind CSS, and Google Gemini.
+> A modern, AI-enhanced developer portfolio built with Next.js, Tailwind CSS, and the Vercel AI SDK.
 
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
-![Next.js](https://img.shields.io/badge/Next.js-15-blue)
+![Next.js](https://img.shields.io/badge/Next.js-15-black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue)
-![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v3-38b2ac)
-![Open Source](https://img.shields.io/badge/Open%20Source-%E2%9D%A4-red)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v4-38b2ac)
 
 ---
 
-## 📸 Demo
+## Live Demo
 
-> **Live Preview:** [https://div90.vercel.app/](https://div90.vercel.app/)
-
-![Preview Screenshot](/public/portfolio.png)
+**[https://div90.vercel.app/](https://div90.vercel.app/)**
 
 ---
 
-## 🧠 About the Project
+## About
 
-**Gemini Dev Portfolio** is a dynamic and intelligent portfolio template for developers, freelancers, and creators. It blends sleek design with AI-driven features to showcase your work, resume, and skills — with support for customizable sections, themes, and smart chat tools.
-
-Built with:
-
-- ⚡️ **Next.js 15** with App Router
-- 🎨 **Tailwind CSS** for modern UI styling
-- 🧠 **Google Gemini API** for intelligent chat interactions
-- 📱 Fully responsive and mobile-ready
-- 🌘 Dark mode and accessibility support
+A fully customizable portfolio template for developers and engineers. Personalize it entirely through `portfolio-config.json` — no code changes required for content. Features an AI-powered chatbot that answers questions about your skills, projects, and experience using tool-calling.
 
 ---
 
-## 🚀 Features
+## Features
 
-- ✅ Fully customizable via `portfolio-config.json`
-- 🧠 AI chatbot powered by Google Gemini API
-- 📄 Dynamic resume and project sections
-- 🎯 SEO optimized with meta tags
-- 💬 Contact form and social media links
-- 🎨 Theme-ready and animation-rich
-- 📱 Mobile-first responsive layout
-- 🌐 Deployable anywhere: Vercel, Netlify, etc.
+- **Config-driven** — all personal data, projects, and skills live in `portfolio-config.json`
+- **AI chatbot** — powered by Vercel AI SDK with OpenAI-compatible models; uses tool-calling to answer contextual questions
+- **Dynamic sections** — projects, resume, skills, internships, and contact
+- **Dark mode** — theme support with `next-themes`
+- **Responsive** — mobile-first layout with Framer Motion animations
+- **SEO ready** — meta tags and `sitemap.xml` included
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
-| Tech             | Role                        |
-|------------------|-----------------------------|
-| **Next.js**      | React framework             |
-| **TypeScript**   | Type-safe development       |
-| **Tailwind CSS** | Utility-first styling       |
-| **Framer Motion**| Smooth animations           |
-| **Google Gemini**| AI chat integration         |
-| **Vercel**       | Recommended deployment host |
+| Technology        | Role                          |
+|-------------------|-------------------------------|
+| **Next.js 15**    | React framework (App Router)  |
+| **TypeScript**    | Type-safe development         |
+| **Tailwind CSS**  | Utility-first styling         |
+| **Vercel AI SDK** | AI chat with tool-calling     |
+| **Framer Motion** | Animations                    |
+| **Radix UI**      | Accessible UI primitives      |
+| **Vercel**        | Recommended deployment        |
 
 ---
 
-## 📂 Folder Structure
+## Project Structure
 
 ```
-
-portfolio/
-├── src/
-│   ├── app/             # Next.js app router
-│   ├── components/      # UI Components
-│   ├── hooks/           # React Hooks
-│   ├── lib/             # Utility functions
-│   ├── types/           # TypeScript types
-│   └── styles/          # Global styles
-├── public/              # Static assets
-├── docs/                # Documentation and preview assets
-├── portfolio-config.json # User configuration
-└── .env.local           # Environment variables (API keys, etc.)
-
-````
+src/
+├── app/
+│   ├── page.tsx              # Home page
+│   ├── layout.tsx            # Root layout
+│   └── api/chat/             # AI chat API route + tools
+├── components/               # UI and section components
+│   └── chat/                 # Chat UI components
+├── lib/                      # Config loader and utilities
+└── types/                    # TypeScript types
+public/                       # Static assets
+docs/                         # Contributing guide and license
+portfolio-config.json         # All portfolio content
+```
 
 ---
 
-## ⚙️ Getting Started
+## Getting Started
 
-### 🧰 Prerequisites
+### Prerequisites
 
 - Node.js v18+
-- npm / yarn / pnpm
-- Git
-- Google Gemini API key
+- pnpm (or npm/yarn)
+- An OpenAI-compatible API key (e.g. OpenAI, Groq, etc.)
 
-### 🚀 Installation
+### Installation
 
 1. **Clone the repository**
    ```bash
    git clone https://github.com/sdivyanshu90/my_portfolio.git
    cd my_portfolio
-    ```
+   ```
 
 2. **Install dependencies**
-
    ```bash
-   npm install
+   pnpm install
    ```
 
-3. **Set up environment variables**
-
+3. **Configure environment variables**
    ```bash
    cp .env.example .env.local
-   # Add your Google Gemini API key here
+   ```
+   Edit `.env.local` and add your API key:
+   ```env
+   OPENAI_API_KEY=your_api_key_here
+   # Optional: OPENAI_BASE_URL=https://api.groq.com/openai/v1
    ```
 
-4. **Run the dev server**
-
+4. **Start the dev server**
    ```bash
-   npm run dev
+   pnpm dev
    ```
-
-5. Open `http://localhost:3000` in your browser.
+   Open [http://localhost:3000](http://localhost:3000).
 
 ---
 
-## 🔧 Configuration
+## Configuration
 
-All portfolio data is configured through `portfolio-config.json`.
+Edit `portfolio-config.json` to set your personal info, projects, skills, and more:
 
 ```json
 {
-  "name": "Divanshu",
-  "title": "Full Stack Developer",
-  "about": "Passionate about building scalable and efficient web applications.",
+  "personal": {
+    "name": "Your Name",
+    "title": "Your Title",
+    "bio": "Short bio...",
+    "email": "you@example.com"
+  },
   "projects": [...],
   "skills": [...],
-  "theme": "dark",
-  "aiChatEnabled": true
+  "chatbot": { ... }
 }
 ```
 
-You can also modify:
-
-* Chat tool responses
-* UI theme and layout
-* Social profiles
-* SEO meta tags
+The AI chatbot reads this config at runtime via tool-calls, so updates take effect without redeployment.
 
 ---
 
-## ☁️ Deployment
+## Deployment
 
-> Easily deploy using **[Vercel](https://vercel.com/)** (recommended), **Netlify**, or **GitHub Pages**
-
-### 📦 Vercel (1-click)
+### Vercel (recommended)
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/sdivyanshu90/my_portfolio)
 
-Or deploy manually with:
+Set your environment variables in the Vercel dashboard, then deploy.
+
+### Manual build
 
 ```bash
-npm run build
-npm start
+pnpm build
+pnpm start
 ```
 
 ---
 
-## 🧪 Testing
+## Scripts
 
 ```bash
-npm run lint         # Code linting
-npm run type-check   # TypeScript validation
-npm run format       # Code formatting
-npm run test         # Run tests (when available)
+pnpm dev          # Start development server
+pnpm build        # Production build
+pnpm start        # Start production server
+pnpm lint         # ESLint
 ```
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
-We love contributions from the community! 💜
+See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for guidelines.
 
-Start with:
-
-* [CONTRIBUTING.md](/docs/CONTRIBUTING.md)
-* [Open Issues](https://github.com/sdivyanshu90/my_portfolio/issues)
-* [Discussions](https://github.com/sdivyanshu90/my_portfolio/discussions)
-
-All contributors will be credited in the README, releases, and upcoming contributor board.
+- [Open an issue](https://github.com/sdivyanshu90/my_portfolio/issues)
+- [Start a discussion](https://github.com/sdivyanshu90/my_portfolio/discussions)
 
 ---
 
-## 🧾 License
+## License
 
-This project is licensed under the **MIT License**.
-See [`LICENSE`](/docs/LICENSE) for details.
-
----
-
-## 🙋‍♂️ About Me
-
-**Divanshu** — Full Stack Developer, tech enthusiast, and open-source contributor.
-GitHub: [@sdivyanshu90](https://github.com/sdivyanshu90)
-
----
-
-## 📣 Feedback & Support
-
-Have suggestions or need help?
-
-* 💬 [Open a discussion](https://github.com/sdivyanshu90/my_portfolio/discussions)
-* 🐛 [Report a bug](https://github.com/sdivyanshu90/my_portfolio/issues)
-
----
-
-## 🌟 Star This Repo
-
-If you like this project, **star it on GitHub** to help others discover it:
-
-[👉 Star Now](https://github.com/sdivyanshu90/my_portfolio)
+MIT — see [docs/LICENSE](docs/LICENSE).
