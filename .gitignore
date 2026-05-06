@@ -43,3 +43,6 @@ next-env.d.ts
 
 # landing page repo (separate repository)
 /landing-page/
+
+# npm lockfile (project uses pnpm)
+package-lock.json
