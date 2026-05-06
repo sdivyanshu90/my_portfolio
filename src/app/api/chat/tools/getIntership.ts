@@ -1,67 +1,52 @@
 import { tool } from "ai";
 import { z } from "zod";
 import { getConfig } from "@/lib/config-loader";
+import { take, truncateText } from "./tool-result-utils";
 
 export const getInternship = tool({
   description:
     "Provides comprehensive information about internship opportunities, career preferences, and professional availability for recruiters and HR professionals.",
-  parameters: z.object({}),
+  parameters: z.object({}).passthrough(),
   execute: async () => {
     const config = getConfig();
 
     return {
       availability: config.internship.availability,
       preferences: {
-        roleTypes: config.internship.focusAreas,
+        roleTypes: take(config.internship.focusAreas, 4),
         workMode: config.internship.preferredLocation,
         location: config.personal.location,
         startDate: config.internship.startDate,
         duration: config.internship.duration,
       },
-      experience: {
-        internshipCompleted: config.experience.find(
-          (exp) => exp.type === "Internship"
-        )?.company
-          ? `${config.experience.find((exp) => exp.type === "Internship")?.position} at ${config.experience.find((exp) => exp.type === "Internship")?.company} (${config.experience.find((exp) => exp.type === "Internship")?.duration})`
-          : "No formal internship completed yet",
-      },
       skills: {
         technical: [
-          ...config.skills.programming,
-          ...config.skills.ml_ai,
-          ...config.skills.web_development,
-          ...config.skills.databases,
-          ...config.skills.devops_cloud,
-        ],
-        soft: [
-          "Problem Solving",
-          "Team Leadership",
-          "Project Management",
-          "Communication",
-          "Learning Agility",
-          "Innovation",
+          ...take(config.skills.programming, 3),
+          ...take(config.skills.ml_ai, 3),
+          ...take(config.skills.web_development, 2),
         ],
       },
-      achievements: config.education.achievements || [],
+      achievements: take(config.education.achievements, 3),
       lookingFor: {
-        goals: config.internship.goals,
+        goals: truncateText(config.internship.goals, 160),
         workStyle: config.internship.workStyle,
-        motivation: config.personality.motivation,
-        interests: config.personality.interests,
+        growthOpportunities:
+          "Roles with strong ownership, technical depth, and room to keep compounding quickly.",
+        technicalChallenges:
+          "Problems in ML systems, LLM applications, retrieval, privacy-preserving learning, and developer tooling.",
+        impactfulWork:
+          "Products or research that solve concrete user problems rather than demo-only prototypes.",
+        collaboration:
+          "Teams that value rigor, fast iteration, and honest technical feedback.",
       },
       contact: {
         email: config.personal.email,
         linkedin: config.social.linkedin,
         github: config.social.github,
-        portfolio: "This AI-powered portfolio showcases my projects and skills",
+        portfolio: config.social.portfolio ?? config.personal.website ?? "",
       },
-      personality: {
-        traits: config.personality.traits,
-        funFacts: config.personality.funFacts,
-        workingStyle: config.personality.workingStyle,
-      },
-      professionalMessage:
-        "I'm actively seeking internship and full-time opportunities where I can contribute my technical skills while continuing to grow professionally. I'm particularly excited about roles that offer hands-on experience with cutting-edge technologies and the chance to work on impactful projects. What I'm looking for is an environment where I can combine technical challenges with collaborative teamwork - somewhere I can contribute meaningfully while learning from experienced professionals like yourself. I'm very adaptable and eager to take on new challenges, and I believe my technical background combined with my enthusiasm for learning would make me a valuable addition to your team. What kind of projects or challenges is your team currently working on that I might be able to contribute to?",
+      summary:
+        "I am actively looking for high-bar internships, full-time roles, and contract work where I can contribute quickly on serious AI systems and developer products.",
     };
   },
 });
