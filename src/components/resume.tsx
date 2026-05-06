@@ -1,65 +1,99 @@
 "use client";
 
-import React, { useState } from "react";
+import { getConfig } from "@/lib/config-loader";
 import { motion } from "framer-motion";
-import {
-  ArrowDownToLine,
-  Download,
-  Eye,
-  File,
-  ExternalLink,
-} from "lucide-react";
-import Image from "next/image";
+import { Download, ExternalLink, File } from "lucide-react";
+import React from "react";
 
-export function Resume() {
-  // Resume details
-  const resumeDetails = {
-    title: "Divanshu's Resume",
-    description: "Full Stack Python Developer • ML Engineer • AI Engineer",
-    fileType: "PDF",
-    lastUpdated: "March 2025",
-    fileSize: "74 KB",
-    downloadUrl:
-      "https://sdivyanshu90.github.io/sdivyanshu90/Divanshu_Resume.pdf",
+export interface ResumeCardData {
+  personalInfo?: {
+    targetRoles?: string[];
   };
+  education?: {
+    coursework?: string[];
+  };
+  experience?: Array<{
+    company: string;
+    position: string;
+    duration: string;
+  }>;
+  resume?: {
+    title?: string;
+    description?: string;
+    fileType?: string;
+    lastUpdated?: string;
+    fileSize?: string;
+    downloadUrl?: string;
+    certifications?: Array<{
+      name: string;
+      issuer: string;
+      year: string;
+    }>;
+  };
+}
+
+export function Resume({ data }: { data?: ResumeCardData }) {
+  const config = getConfig();
+  const resumeDetails = {
+    title: data?.resume?.title ?? config.resume.title,
+    description: data?.resume?.description ?? config.resume.description,
+    fileType: data?.resume?.fileType ?? config.resume.fileType,
+    lastUpdated: data?.resume?.lastUpdated ?? config.resume.lastUpdated,
+    fileSize: data?.resume?.fileSize ?? config.resume.fileSize,
+    downloadUrl: data?.resume?.downloadUrl ?? config.resume.downloadUrl,
+  };
+  const certifications =
+    data?.resume?.certifications ?? config.resume.certifications;
+  const coursework = data?.education?.coursework ?? config.education.coursework;
+  const experience = data?.experience ?? config.experience;
+  const targetRoles =
+    data?.personalInfo?.targetRoles ?? config.personal.targetRoles;
 
   const handleDownload = () => {
-    // For external URLs, open in a new tab
-    window.open(resumeDetails.downloadUrl, "_blank");
+    window.open(resumeDetails.downloadUrl, "_blank", "noopener,noreferrer");
   };
 
   return (
-    <div className="mx-auto w-full py-8 font-sans">
-      {/* Resume Card */}
+    <div className="mx-auto w-full min-w-0 py-8 font-sans">
       <motion.div
-        className="group relative overflow-hidden rounded-xl bg-accent p-0 transition-all duration-300 mb-4"
+        className="group relative mb-4 min-w-0 overflow-hidden rounded-xl bg-accent p-0 transition-all duration-300"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.0, ease: "easeOut" }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
       >
-        {/* Details area */}
         <div className="p-5">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-medium text-foreground">
+          <div className="flex min-w-0 items-center justify-between gap-4">
+            <div className="min-w-0">
+              <h3 className="text-safe-balance text-lg font-medium text-foreground">
                 {resumeDetails.title}
               </h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-safe-wrap text-sm text-muted-foreground">
                 {resumeDetails.description}
               </p>
-              <div className="mt-1 flex text-xs text-muted-foreground">
-                <span>{resumeDetails.fileType}</span>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {targetRoles.map((role) => (
+                  <span
+                    key={role}
+                    className="text-safe-wrap rounded-full bg-background px-3 py-1 text-xs text-muted-foreground"
+                  >
+                    {role}
+                  </span>
+                ))}
+              </div>
+              <div className="mt-2 flex flex-wrap text-xs text-muted-foreground">
+                <span className="text-safe-wrap">{resumeDetails.fileType}</span>
                 <span className="mx-2">•</span>
-                <span>Updated {resumeDetails.lastUpdated}</span>
+                <span className="text-safe-wrap">
+                  Updated {resumeDetails.lastUpdated}
+                </span>
                 <span className="mx-2">•</span>
-                <span>{resumeDetails.fileSize}</span>
+                <span className="text-safe-wrap">{resumeDetails.fileSize}</span>
               </div>
             </div>
 
-            {/* Download button */}
             <motion.button
               onClick={handleDownload}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-black text-white hover:bg-black/80 transition-colors"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black text-white transition-colors hover:bg-black/80"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               title="Download PDF"
@@ -70,14 +104,13 @@ export function Resume() {
         </div>
       </motion.div>
 
-      {/* PDF Preview - Always Visible */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.2 }}
-        className="w-full rounded-xl overflow-hidden border bg-white shadow-lg"
+        className="overflow-hidden rounded-xl border bg-white shadow-lg"
       >
-        <div className="bg-gray-100 px-4 py-2 flex items-center justify-between border-b">
+        <div className="flex items-center justify-between border-b bg-gray-100 px-4 py-2">
           <div className="flex items-center gap-2">
             <File className="h-4 w-4 text-gray-600" />
             <span className="text-sm font-medium text-gray-700">
@@ -86,14 +119,14 @@ export function Resume() {
           </div>
           <button
             onClick={handleDownload}
-            className="flex items-center gap-1 px-3 py-1 text-xs bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+            className="flex items-center gap-1 rounded-md bg-blue-600 px-3 py-1 text-xs text-white transition-colors hover:bg-blue-700"
           >
             <ExternalLink className="h-3 w-3" />
             Open Full
           </button>
         </div>
 
-        <div className="w-full h-[600px] bg-gray-50">
+        <div className="h-[600px] w-full bg-gray-50">
           <iframe
             src={resumeDetails.downloadUrl}
             width="100%"
@@ -103,6 +136,53 @@ export function Resume() {
           />
         </div>
       </motion.div>
+
+      <div className="mt-6 grid gap-4 md:grid-cols-2">
+        <div className="rounded-xl border bg-background p-5">
+          <h4 className="text-sm font-semibold text-foreground">
+            Certifications
+          </h4>
+          <div className="mt-3 space-y-3">
+            {certifications.map((certification) => (
+              <div
+                key={`${certification.name}-${certification.year}`}
+                className="min-w-0"
+              >
+                <p className="text-safe-wrap text-sm font-medium text-foreground">
+                  {certification.name}
+                </p>
+                <p className="text-safe-wrap text-xs text-muted-foreground">
+                  {certification.issuer} • {certification.year}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="rounded-xl border bg-background p-5">
+          <h4 className="text-sm font-semibold text-foreground">
+            Resume Highlights
+          </h4>
+          <ul className="mt-3 space-y-3 text-sm text-muted-foreground">
+            {experience.slice(0, 2).map((item) => (
+              <li
+                key={`${item.company}-${item.position}`}
+                className="text-safe-wrap"
+              >
+                <span className="font-medium text-foreground">
+                  {item.position}
+                </span>{" "}
+                at {item.company} • {item.duration}
+              </li>
+            ))}
+            {coursework.slice(0, 3).map((course) => (
+              <li key={course} className="text-safe-wrap">
+                {course}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
