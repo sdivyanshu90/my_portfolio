@@ -107,7 +107,7 @@ export function PresetReply({
           {/* Only show AI option when there's a major component - no text needed */}
           {showAIOption && (
             <ChatBubble variant="received">
-              <ChatBubbleMessage className="bg-gray-50/80 dark:bg-gray-800/80 w-full">
+              <ChatBubbleMessage className="bg-slate-50 w-full">
                 <div className="w-full min-w-0 space-y-3 p-6">
                   {onClose && (
                     <div className="flex justify-end">
@@ -125,7 +125,7 @@ export function PresetReply({
                   <div className="flex min-w-0 flex-col gap-3 px-2">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                       <div className="flex min-w-0 flex-wrap items-center gap-2">
-                        <div className="flex items-center gap-1.5 text-xs text-blue-600 dark:text-blue-400">
+                        <div className="flex items-center gap-1.5 text-xs text-indigo-600">
                           <Zap className="w-3 h-3 flex-shrink-0" />
                           <span className="font-medium">Preset Response</span>
                         </div>
@@ -152,7 +152,7 @@ export function PresetReply({
       ) : (
         // Fallback to text-based preset for tools without components
         <ChatBubble variant="received">
-          <ChatBubbleMessage className="bg-gradient-to-r from-blue-50/50 to-purple-50/50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-100/50 dark:border-blue-800/50 w-full">
+          <ChatBubbleMessage className="bg-gradient-to-r from-indigo-50/60 to-violet-50/60 border border-indigo-100/60 w-full">
             <div className="w-full min-w-0 space-y-4 p-6">
               {/* Close button */}
               {onClose && (
@@ -169,7 +169,7 @@ export function PresetReply({
               )}
 
               {/* Reply content with enhanced formatting */}
-              <div className="prose prose-sm max-w-none px-2 text-gray-700 dark:text-gray-300">
+              <div className="prose prose-sm max-w-none px-2 text-slate-700">
                 {reply.split("\n").map((line, index) => {
                   if (line.trim() === "") return <br key={index} />;
 
@@ -253,7 +253,7 @@ export function PresetReply({
                           partIndex % 2 === 1 ? (
                             <strong
                               key={partIndex}
-                              className="font-semibold text-gray-800 dark:text-gray-200"
+                              className="font-semibold text-slate-900"
                             >
                               {part}
                             </strong>
@@ -270,7 +270,7 @@ export function PresetReply({
                     return (
                       <p
                         key={index}
-                        className="text-safe-wrap mb-2 last:mb-0 text-base font-medium text-gray-800 dark:text-gray-200"
+                        className="text-safe-wrap mb-2 last:mb-0 text-base font-medium text-slate-800"
                       >
                         {line}
                       </p>
@@ -282,7 +282,7 @@ export function PresetReply({
                     return (
                       <p
                         key={index}
-                        className="text-safe-wrap mb-1 ml-4 last:mb-0 text-gray-600 dark:text-gray-400"
+                        className="text-safe-wrap mb-1 ml-4 last:mb-0 text-slate-600"
                       >
                         {line}
                       </p>
@@ -303,7 +303,7 @@ export function PresetReply({
                   <div className="flex flex-col gap-3">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <div className="flex items-center gap-1.5 text-xs text-blue-600 dark:text-blue-400">
+                        <div className="flex items-center gap-1.5 text-xs text-indigo-600">
                           <Zap className="w-3 h-3 flex-shrink-0" />
                           <span className="font-medium">
                             Optimized Response

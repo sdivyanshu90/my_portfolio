@@ -499,8 +499,8 @@ const Chat = () => {
   return (
     <div className="relative min-h-screen overflow-hidden">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-16 left-[-6%] h-72 w-72 rounded-full bg-[#00d4aa]/5 blur-3xl" />
-        <div className="absolute right-[-8%] top-[12%] h-80 w-80 rounded-full bg-[#f59e0b]/5 blur-3xl" />
+        <div className="absolute -top-16 left-[-6%] h-72 w-72 rounded-full bg-indigo-600/5 blur-3xl" />
+        <div className="absolute right-[-8%] top-[12%] h-80 w-80 rounded-full bg-amber-500/5 blur-3xl" />
         <div className="absolute bottom-[-10%] left-[20%] h-72 w-72 rounded-full bg-[#818cf8]/5 blur-3xl" />
       </div>
 
@@ -509,7 +509,7 @@ const Chat = () => {
           <aside className="panel-surface flex min-w-0 flex-col gap-6 p-5 sm:p-6">
             <div className="flex items-start justify-between gap-4">
               <Avatar />
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#1a2535] bg-[#0e1520] px-3 py-1.5 text-xs font-medium text-[#8b9db5]">
+              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-500">
                 <span className="relative flex h-2.5 w-2.5">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#22c55e] opacity-75" />
                   <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#22c55e]" />
@@ -521,20 +521,20 @@ const Chat = () => {
             <div className="min-w-0 space-y-4">
               <p className="section-kicker">Candidate Snapshot</p>
               <div className="min-w-0">
-                <h1 className="font-display text-safe-balance text-3xl font-semibold tracking-tight text-[#e2e8f0] sm:text-[2.35rem]">
-                  {portfolioConfig.personal.name}
+                <h1 className="font-display text-safe-balance text-3xl font-bold tracking-tight sm:text-[2.35rem]">
+                  <span className="gradient-text">{portfolioConfig.personal.name}</span>
                 </h1>
-                <p className="text-safe-wrap mt-2 text-base font-medium text-[#00d4aa]">
+                <p className="text-safe-wrap mt-2 text-base font-medium text-indigo-600">
                   {portfolioConfig.personal.title}
                 </p>
               </div>
-              <div className="flex min-w-0 items-center gap-2 text-sm text-[#8b9db5]">
-                <MapPin className="h-4 w-4 text-[#00d4aa]" />
+              <div className="flex min-w-0 items-center gap-2 text-sm text-slate-500">
+                <MapPin className="h-4 w-4 text-indigo-600" />
                 <span className="text-safe-wrap">
                   {portfolioConfig.personal.location}
                 </span>
               </div>
-              <p className="text-safe-wrap text-sm leading-7 text-[#8b9db5]">
+              <p className="text-safe-wrap text-sm leading-7 text-slate-500">
                 {portfolioConfig.personal.bio}
               </p>
             </div>
@@ -543,12 +543,12 @@ const Chat = () => {
               {profileStats.map((stat) => (
                 <div
                   key={stat.label}
-                  className="rounded-[24px] border border-[#1a2535] bg-[#0e1520] p-4 shadow-none"
+                  className="rounded-[24px] border border-slate-200 bg-white p-4 shadow-none"
                 >
-                  <p className="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-[#5c7080]">
+                  <p className="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-500">
                     {stat.label}
                   </p>
-                  <p className="text-safe-wrap mt-3 font-display text-xl font-semibold text-[#e2e8f0]">
+                  <p className="text-safe-wrap mt-3 font-display text-xl font-semibold text-slate-900">
                     {stat.value}
                   </p>
                 </div>
@@ -567,9 +567,9 @@ const Chat = () => {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex min-w-0 items-center gap-2 rounded-full border border-[#1a2535] bg-[#0e1520] px-4 py-2 text-sm font-medium text-[#c5d5e8] transition hover:-translate-y-0.5 hover:bg-[#1a2535]"
+                      className="inline-flex min-w-0 items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-800 transition hover:-translate-y-0.5 hover:bg-slate-100"
                     >
-                      <Icon className="h-4 w-4 text-[#00d4aa]" />
+                      <Icon className="h-4 w-4 text-indigo-600" />
                       <span className="text-safe-wrap">{link.label}</span>
                     </Link>
                   );
@@ -585,7 +585,7 @@ const Chat = () => {
                   .map((area) => (
                     <span
                       key={area}
-                      className="text-safe-wrap rounded-full border border-[#00d4aa]/20 bg-[#001a12] px-3 py-1.5 text-sm text-[#00d4aa]"
+                      className="text-safe-wrap rounded-full border border-indigo-500/20 bg-emerald-50 px-3 py-1.5 text-sm text-indigo-600"
                     >
                       {area}
                     </span>
@@ -602,12 +602,12 @@ const Chat = () => {
                     onClick={() =>
                       submitQuery(`Tell me about ${project.title}.`)
                     }
-                    className="w-full min-w-0 rounded-[24px] border border-[#1a2535] bg-[#0e1520] p-4 text-left shadow-none transition hover:-translate-y-0.5 hover:bg-[#1a2535]"
+                    className="w-full min-w-0 rounded-[24px] border border-slate-200 bg-white p-4 text-left shadow-none transition hover:-translate-y-0.5 hover:bg-slate-100"
                   >
-                    <p className="text-safe-wrap text-sm font-semibold text-[#e2e8f0]">
+                    <p className="text-safe-wrap text-sm font-semibold text-slate-900">
                       {project.title}
                     </p>
-                    <p className="text-safe-wrap mt-1 text-xs uppercase tracking-[0.2em] text-[#5c7080]">
+                    <p className="text-safe-wrap mt-1 text-xs uppercase tracking-[0.2em] text-slate-500">
                       {project.category}
                     </p>
                   </button>
@@ -617,15 +617,15 @@ const Chat = () => {
           </aside>
 
           <section className="panel-surface flex min-h-[72vh] min-w-0 flex-col overflow-hidden">
-            <header className="border-b border-[#1a2535] px-5 py-5 sm:px-6">
+            <header className="border-b border-slate-200 px-5 py-5 sm:px-6">
               <div className="flex min-w-0 flex-col gap-4 2xl:flex-row 2xl:items-start 2xl:justify-between">
                 <div className="max-w-3xl min-w-0 space-y-2">
                   <p className="section-kicker">Interview Console</p>
-                  <h2 className="font-display text-safe-balance text-3xl font-semibold tracking-tight text-[#e2e8f0] sm:text-4xl">
+                  <h2 className="font-display text-safe-balance text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
                     A recruiter-facing portfolio assistant with grounded
                     answers.
                   </h2>
-                  <p className="text-safe-wrap text-sm leading-7 text-[#8b9db5] sm:text-base">
+                  <p className="text-safe-wrap text-sm leading-7 text-slate-500 sm:text-base">
                     Ask about projects, research, product execution, system
                     design, or availability. The assistant stays scoped to real
                     portfolio data and uses tool-rendered cards when a
@@ -634,14 +634,14 @@ const Chat = () => {
                 </div>
 
                 <div className="flex flex-wrap gap-2">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-[#1a2535] bg-[#0e1520] px-3 py-1.5 text-xs font-medium text-[#8b9db5]">
-                    <Bot className="h-3.5 w-3.5 text-[#00d4aa]" />
+                  <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-500">
+                    <Bot className="h-3.5 w-3.5 text-indigo-600" />
                     {hasActiveTool
                       ? "Tool-grounded reply"
                       : "OpenRouter-powered chat"}
                   </span>
-                  <span className="inline-flex items-center gap-2 rounded-full border border-[#1a2535] bg-[#0e1520] px-3 py-1.5 text-xs font-medium text-[#8b9db5]">
-                    <ShieldCheck className="h-3.5 w-3.5 text-[#00d4aa]" />
+                  <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-500">
+                    <ShieldCheck className="h-3.5 w-3.5 text-indigo-600" />
                     Strong guardrails active
                   </span>
                 </div>
@@ -678,10 +678,10 @@ const Chat = () => {
                             </div>
                             <div className="min-w-0 space-y-4">
                               <div>
-                                <p className="section-kicker text-[#f59e0b]">
+                                <p className="section-kicker text-amber-700">
                                   {errorCardCopy.kicker}
                                 </p>
-                                <h3 className="font-display text-safe-balance mt-2 text-2xl font-semibold text-[#f59e0b]">
+                                <h3 className="font-display text-safe-balance mt-2 text-2xl font-semibold text-amber-700">
                                   {errorCardCopy.title}
                                 </h3>
                               </div>
@@ -722,7 +722,7 @@ const Chat = () => {
                                     setErrorMessage(null);
                                     router.push("/");
                                   }}
-                                  className="rounded-full border border-[#f59e0b]/30 bg-[#0e1520] px-4 py-2 text-sm font-medium text-[#f59e0b] transition hover:bg-[#1a2535]"
+                                  className="rounded-full border border-amber-600/30 bg-white px-4 py-2 text-sm font-medium text-amber-700 transition hover:bg-slate-100"
                                 >
                                   Back to presets
                                 </button>
@@ -771,7 +771,7 @@ const Chat = () => {
                   </AnimatePresence>
                 </div>
 
-                <div className="border-t border-[#1a2535] bg-[#080c12]/90 px-4 py-4 backdrop-blur-xl sm:px-6">
+                <div className="border-t border-slate-200 bg-white/90 px-4 py-4 backdrop-blur-xl sm:px-6">
                   <div className="space-y-4">
                     <HelperBoost
                       submitQuery={submitQuery}
@@ -789,7 +789,7 @@ const Chat = () => {
                 </div>
               </div>
 
-              <aside className="hidden min-w-0 border-l border-[#1a2535] bg-[#0a0f18] p-5 2xl:flex 2xl:flex-col 2xl:justify-between">
+              <aside className="hidden min-w-0 border-l border-slate-200 bg-slate-50 p-5 2xl:flex 2xl:flex-col 2xl:justify-between">
                 <div className="space-y-6">
                   <div className="space-y-3">
                     <p className="section-kicker">Fast Paths</p>
@@ -797,52 +797,52 @@ const Chat = () => {
                       onClick={() =>
                         submitQuery("What projects are you most proud of?")
                       }
-                      className="flex w-full min-w-0 items-center justify-between rounded-[22px] border border-[#1a2535] bg-[#0e1520] px-4 py-3 text-left text-sm font-medium text-[#c5d5e8] shadow-none transition hover:-translate-y-0.5"
+                      className="flex w-full min-w-0 items-center justify-between rounded-[22px] border border-slate-200 bg-white px-4 py-3 text-left text-sm font-medium text-slate-800 shadow-none transition hover:-translate-y-0.5"
                     >
                       <span className="text-safe-wrap">Project highlights</span>
-                      <ArrowUpRight className="h-4 w-4 shrink-0 text-[#00d4aa]" />
+                      <ArrowUpRight className="h-4 w-4 shrink-0 text-indigo-600" />
                     </button>
                     <button
                       onClick={() => submitQuery("What are your skills?")}
-                      className="flex w-full min-w-0 items-center justify-between rounded-[22px] border border-[#1a2535] bg-[#0e1520] px-4 py-3 text-left text-sm font-medium text-[#c5d5e8] shadow-none transition hover:-translate-y-0.5"
+                      className="flex w-full min-w-0 items-center justify-between rounded-[22px] border border-slate-200 bg-white px-4 py-3 text-left text-sm font-medium text-slate-800 shadow-none transition hover:-translate-y-0.5"
                     >
                       <span className="text-safe-wrap">Skill inventory</span>
-                      <ArrowUpRight className="h-4 w-4 shrink-0 text-[#00d4aa]" />
+                      <ArrowUpRight className="h-4 w-4 shrink-0 text-indigo-600" />
                     </button>
                     <button
                       onClick={() => submitQuery("Can I see your resume?")}
-                      className="flex w-full min-w-0 items-center justify-between rounded-[22px] border border-[#1a2535] bg-[#0e1520] px-4 py-3 text-left text-sm font-medium text-[#c5d5e8] shadow-none transition hover:-translate-y-0.5"
+                      className="flex w-full min-w-0 items-center justify-between rounded-[22px] border border-slate-200 bg-white px-4 py-3 text-left text-sm font-medium text-slate-800 shadow-none transition hover:-translate-y-0.5"
                     >
                       <span className="text-safe-wrap">
                         Resume and experience
                       </span>
-                      <ArrowUpRight className="h-4 w-4 shrink-0 text-[#00d4aa]" />
+                      <ArrowUpRight className="h-4 w-4 shrink-0 text-indigo-600" />
                     </button>
                   </div>
 
                   <div className="space-y-3">
                     <p className="section-kicker">Why This View Works</p>
-                    <div className="rounded-[24px] border border-[#1a2535] bg-[#0e1520] p-4 shadow-none">
-                      <div className="flex min-w-0 gap-3 text-sm leading-6 text-[#8b9db5]">
-                        <Bot className="mt-1 h-4 w-4 shrink-0 text-[#00d4aa]" />
+                    <div className="rounded-[24px] border border-slate-200 bg-white p-4 shadow-none">
+                      <div className="flex min-w-0 gap-3 text-sm leading-6 text-slate-500">
+                        <Bot className="mt-1 h-4 w-4 shrink-0 text-indigo-600" />
                         <p className="text-safe-wrap">
                           Tool results render portfolio data as cards instead of
                           vague summaries.
                         </p>
                       </div>
                     </div>
-                    <div className="rounded-[24px] border border-[#1a2535] bg-[#0e1520] p-4 shadow-none">
-                      <div className="flex min-w-0 gap-3 text-sm leading-6 text-[#8b9db5]">
-                        <BriefcaseBusiness className="mt-1 h-4 w-4 shrink-0 text-[#00d4aa]" />
+                    <div className="rounded-[24px] border border-slate-200 bg-white p-4 shadow-none">
+                      <div className="flex min-w-0 gap-3 text-sm leading-6 text-slate-500">
+                        <BriefcaseBusiness className="mt-1 h-4 w-4 shrink-0 text-indigo-600" />
                         <p className="text-safe-wrap">
                           Generated project covers replace the old unrelated
                           placeholder visuals.
                         </p>
                       </div>
                     </div>
-                    <div className="rounded-[24px] border border-[#1a2535] bg-[#0e1520] p-4 shadow-none">
-                      <div className="flex min-w-0 gap-3 text-sm leading-6 text-[#8b9db5]">
-                        <ShieldCheck className="mt-1 h-4 w-4 shrink-0 text-[#00d4aa]" />
+                    <div className="rounded-[24px] border border-slate-200 bg-white p-4 shadow-none">
+                      <div className="flex min-w-0 gap-3 text-sm leading-6 text-slate-500">
+                        <ShieldCheck className="mt-1 h-4 w-4 shrink-0 text-indigo-600" />
                         <p className="text-safe-wrap">
                           Requests are rate-limited, origin-checked, and
                           filtered for prompt injection and exfiltration
@@ -853,9 +853,9 @@ const Chat = () => {
                   </div>
                 </div>
 
-                <div className="rounded-[26px] border border-[#1a2535] bg-[#0e1520] p-5 shadow-none">
+                <div className="rounded-[26px] border border-slate-200 bg-white p-5 shadow-none">
                   <p className="section-kicker">Best Questions</p>
-                  <ul className="mt-4 space-y-3 text-sm leading-6 text-[#8b9db5]">
+                  <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-500">
                     <li className="text-safe-wrap">
                       Ask for one project and its tradeoffs.
                     </li>

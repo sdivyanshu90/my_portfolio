@@ -96,7 +96,7 @@ export default function ToolRenderer({ toolInvocations }: ToolRendererProps) {
               >
                 <div className="mb-2 flex items-center justify-between">
                   <h3 className="text-lg font-medium">{toolName}</h3>
-                  <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-800 dark:bg-green-900 dark:text-green-100">
+                  <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-xs text-emerald-700 border border-emerald-200">
                     Tool Result
                   </span>
                 </div>
