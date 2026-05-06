@@ -1,10 +1,7 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getConfig } from "@/lib/config-loader";
 import { motion, easeOut } from "framer-motion";
-import { Brain, Cloud, Code, Cpu, Database, Users } from "lucide-react";
 
 export interface SkillsCardData {
   technicalSkills?: {
@@ -17,145 +14,169 @@ export interface SkillsCardData {
   };
 }
 
+interface BenchmarkRow {
+  name: string;
+  level: number; // 1–5
+  category: string;
+}
+
+interface BenchmarkSection {
+  id: string;
+  label: string;
+  cmd: string;
+  color: string;
+  skills: string[];
+  levels: number[]; // per-skill level, or broadcast one value
+}
+
 const Skills = ({ data }: { data?: SkillsCardData }) => {
   const config = getConfig();
-  const technicalSkills = data?.technicalSkills;
+  const t = data?.technicalSkills;
 
-  const skillsData = [
+  const sections: BenchmarkSection[] = [
     {
-      category: "Programming Languages",
-      icon: <Code className="h-5 w-5" />,
-      skills: technicalSkills?.programming ?? config.skills.programming,
-      color: "border border-blue-200 bg-blue-50 text-blue-600",
+      id: "prog",
+      label: "Programming",
+      cmd: "skills.programming",
+      color: "#00d4aa",
+      skills: t?.programming ?? config.skills.programming,
+      levels: [5, 5, 4, 4, 5, 5, 4, 4, 4, 4],
     },
     {
-      category: "ML/AI Technologies",
-      icon: <Brain className="h-5 w-5" />,
-      skills: technicalSkills?.machineLearning ?? config.skills.ml_ai,
-      color: "border border-purple-200 bg-purple-50 text-purple-600",
+      id: "ml",
+      label: "ML / AI",
+      cmd: "skills.ml_ai",
+      color: "#a78bfa",
+      skills: t?.machineLearning ?? config.skills.ml_ai,
+      levels: [5, 5, 5, 4, 5, 5, 4, 4, 4, 4, 4, 4],
     },
     {
-      category: "Web Development",
-      icon: <Cpu className="h-5 w-5" />,
-      skills: technicalSkills?.webDevelopment ?? config.skills.web_development,
-      color: "border border-green-200 bg-green-50 text-green-600",
+      id: "web",
+      label: "Web Engineering",
+      cmd: "skills.web_dev",
+      color: "#34d399",
+      skills: t?.webDevelopment ?? config.skills.web_development,
+      levels: [5, 4, 5, 5, 4, 4, 4, 4, 4],
     },
     {
-      category: "Databases",
-      icon: <Database className="h-5 w-5" />,
-      skills: technicalSkills?.databases ?? config.skills.databases,
-      color: "border border-orange-200 bg-orange-50 text-orange-600",
+      id: "db",
+      label: "Databases",
+      cmd: "skills.databases",
+      color: "#f59e0b",
+      skills: t?.databases ?? config.skills.databases,
+      levels: [4, 4, 4, 3, 4],
     },
     {
-      category: "DevOps & Cloud",
-      icon: <Cloud className="h-5 w-5" />,
-      skills: technicalSkills?.devOpsCloud ?? config.skills.devops_cloud,
-      color: "border border-emerald-200 bg-emerald-50 text-emerald-600",
+      id: "devops",
+      label: "DevOps & Cloud",
+      cmd: "skills.devops",
+      color: "#60a5fa",
+      skills: t?.devOpsCloud ?? config.skills.devops_cloud,
+      levels: [4, 4, 3, 4, 4, 3],
     },
     {
-      category: "Soft Skills",
-      icon: <Users className="h-5 w-5" />,
-      skills: technicalSkills?.softSkills ?? config.skills.soft_skills,
-      color: "border border-amber-200 bg-amber-50 text-amber-600",
+      id: "soft",
+      label: "Soft Skills",
+      cmd: "skills.soft",
+      color: "#fb7185",
+      skills: t?.softSkills ?? config.skills.soft_skills,
+      levels: [5, 5, 5, 5, 5],
     },
-  ].filter((category) => category.skills.length > 0);
+  ].filter((s) => s.skills.length > 0);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: easeOut,
-      },
-    },
-  };
-
-  const badgeVariants = {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.3,
-        ease: easeOut,
-      },
-    },
-  };
+  const BenchPips = ({ level, color }: { level: number; color: string }) => (
+    <div className="bench-track">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <div
+          key={i}
+          className="bench-pip"
+          style={i < level ? { background: color, opacity: 0.85 } : undefined}
+        />
+      ))}
+    </div>
+  );
 
   return (
     <motion.div
-      initial={{ scale: 0.98, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
-      className="mx-auto w-full max-w-5xl rounded-4xl px-4 sm:px-6"
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: easeOut }}
+      className="mx-auto w-full max-w-5xl min-w-0 py-6 px-1 sm:px-2"
     >
-      <Card className="w-full border-none px-0 pb-8 shadow-none sm:pb-12">
-        <CardHeader className="px-0 pb-1">
-          <CardTitle className="text-primary text-safe-balance px-0 text-2xl font-bold sm:text-3xl lg:text-4xl">
-            Skills & Expertise
-          </CardTitle>
-        </CardHeader>
+      {/* Header */}
+      <div className="mb-6 px-1">
+        <p className="section-kicker">Capability Matrix</p>
+        <h2 className="font-display text-safe-balance mt-3 text-3xl font-semibold tracking-tight text-[#e2e8f0] sm:text-4xl">
+          Skills & Expertise
+        </h2>
+        <p className="text-safe-wrap mt-2 text-sm leading-6 text-[#5c7080]">
+          Depth per domain — verified by shipped systems and research output.
+        </p>
+      </div>
 
-        <CardContent className="px-0">
+      <div className="space-y-3">
+        {sections.map((section, si) => (
           <motion.div
-            className="space-y-6 px-0 sm:space-y-8"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
+            key={section.id}
+            className="console-surface overflow-hidden rounded-xl"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: easeOut, delay: si * 0.06 }}
           >
-            {skillsData.map((section) => (
-              <motion.div
-                key={section.category}
-                className="space-y-3 px-0"
-                variants={itemVariants}
+            {/* Section Header */}
+            <div className="flex items-center gap-3 border-b border-[#1a2535] bg-[#080c12]/60 px-5 py-2.5">
+              <span
+                className="font-mono text-[0.65rem] font-semibold tracking-[0.14em] uppercase"
+                style={{ color: section.color }}
               >
-                <div className="flex min-w-0 items-center gap-2">
-                  {section.icon}
-                  <h3 className="text-accent-foreground text-safe-wrap text-base font-semibold sm:text-lg">
-                    {section.category}
-                  </h3>
-                </div>
+                &gt;&gt; {section.cmd}
+              </span>
+              <span className="font-mono text-[0.62rem] text-[#2a3d55]">
+                ({section.skills.length} items)
+              </span>
+            </div>
 
-                <motion.div
-                  className="flex flex-wrap gap-1.5 sm:gap-2"
-                  variants={containerVariants}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  {section.skills.map((skill) => (
-                    <motion.div
-                      key={skill}
-                      variants={badgeVariants}
-                      whileHover={{
-                        scale: 1.04,
-                        transition: { duration: 0.2 },
-                      }}
-                    >
-                      <Badge
-                        className={`${section.color} text-safe-wrap max-w-full whitespace-normal px-2 py-1 text-center text-xs font-normal sm:px-3 sm:py-1.5 sm:text-sm`}
-                      >
-                        {skill}
-                      </Badge>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </motion.div>
-            ))}
+            {/* Skill rows */}
+            <div className="divide-y divide-[#1a2535]">
+              {section.skills.map((skill, i) => {
+                const level = section.levels[i] ?? 4;
+                return (
+                  <div
+                    key={skill}
+                    className="grid grid-cols-[1fr_auto] items-center gap-4 px-5 py-2.5 hover:bg-[#1a2535]/40 transition-colors"
+                  >
+                    <span className="text-safe-wrap text-sm text-[#c5d5e8]">
+                      {skill}
+                    </span>
+                    <BenchPips level={level} color={section.color} />
+                  </div>
+                );
+              })}
+            </div>
           </motion.div>
-        </CardContent>
-      </Card>
+        ))}
+      </div>
+
+      {/* Legend */}
+      <div className="mt-4 flex items-center gap-5 px-1">
+        <span className="font-mono text-[0.6rem] text-[#2a3d55] tracking-wider uppercase">
+          Legend
+        </span>
+        {[
+          { label: "Learning", n: 1 },
+          { label: "Familiar", n: 2 },
+          { label: "Proficient", n: 3 },
+          { label: "Advanced", n: 4 },
+          { label: "Expert", n: 5 },
+        ].map(({ label, n }) => (
+          <div key={label} className="flex items-center gap-1.5">
+            <BenchPips level={n} color="#00d4aa" />
+            <span className="font-mono text-[0.6rem] text-[#2a3d55]">
+              {label}
+            </span>
+          </div>
+        ))}
+      </div>
     </motion.div>
   );
 };
