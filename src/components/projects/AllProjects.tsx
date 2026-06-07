@@ -50,27 +50,27 @@ function ArxivCard({ project, index }: { project: Project; index: number }) {
       {/* Header row */}
       <div className="flex items-start justify-between gap-3 px-5 pt-4 pb-2">
         <div className="flex flex-wrap items-center gap-2 min-w-0">
-          <span className="font-mono text-[0.62rem] text-slate-400">[{project.date}]</span>
-          <span className="text-slate-300">·</span>
-          <span className="font-mono text-[0.62rem] uppercase tracking-[0.1em] text-slate-500">
+          <span className="font-mono text-[0.62rem] text-slate-400 dark:text-slate-500">[{project.date}]</span>
+          <span className="text-slate-300 dark:text-slate-600 dark:text-slate-300">·</span>
+          <span className="font-mono text-[0.62rem] uppercase tracking-[0.1em] text-slate-500 dark:text-slate-400">
             {project.category}
           </span>
           {project.status === "Completed" && (
             <>
-              <span className="text-slate-300">·</span>
-              <span className="font-mono text-[0.62rem] text-emerald-600">Completed</span>
+              <span className="text-slate-300 dark:text-slate-600 dark:text-slate-300">·</span>
+              <span className="font-mono text-[0.62rem] text-emerald-600 dark:text-emerald-400">Completed</span>
             </>
           )}
         </div>
         {project.featured && (
-          <span className="shrink-0 font-mono text-[0.62rem] font-semibold bg-amber-50 text-amber-700 border border-amber-200 rounded-full px-2.5 py-0.5">
+          <span className="shrink-0 font-mono text-[0.62rem] font-semibold bg-amber-50 text-amber-700 border border-amber-200 rounded-full px-2.5 py-0.5 dark:bg-amber-400/10 dark:text-amber-300 dark:border-amber-400/25">
             Featured
           </span>
         )}
       </div>
 
       {/* Title */}
-      <h3 className="font-display text-safe-balance text-base font-semibold text-slate-900 px-5 pb-3 leading-6">
+      <h3 className="font-display text-safe-balance text-base font-semibold text-slate-900 dark:text-white px-5 pb-3 leading-6">
         {project.title}
       </h3>
 
@@ -80,7 +80,7 @@ function ArxivCard({ project, index }: { project: Project; index: number }) {
           {project.techStack.slice(0, 7).map((tech) => (
             <span
               key={tech}
-              className="font-mono text-[0.62rem] rounded-lg px-2 py-0.5 bg-slate-50 border border-slate-200 text-slate-600"
+              className="font-mono text-[0.62rem] rounded-lg px-2 py-0.5 bg-slate-50 border border-slate-200 text-slate-600 dark:text-slate-300 dark:bg-white/5 dark:border-white/10"
             >
               {tech}
             </span>
@@ -89,7 +89,7 @@ function ArxivCard({ project, index }: { project: Project; index: number }) {
       )}
 
       {/* Description */}
-      <p className="text-safe-wrap text-sm leading-6 text-slate-600 px-5 pb-3">
+      <p className="text-safe-wrap text-sm leading-6 text-slate-600 dark:text-slate-300 px-5 pb-3">
         {project.description}
       </p>
 
@@ -99,7 +99,7 @@ function ArxivCard({ project, index }: { project: Project; index: number }) {
           {(expanded ? project.achievements : project.achievements.slice(0, 2)).map((a, i) => (
             <div key={i} className="flex gap-2 items-start">
               <span className="text-indigo-500 font-bold text-xs shrink-0 mt-0.5">↑</span>
-              <span className="text-safe-wrap text-xs text-slate-500 leading-5">{a}</span>
+              <span className="text-safe-wrap text-xs text-slate-500 dark:text-slate-400 leading-5">{a}</span>
             </div>
           ))}
         </div>
@@ -117,7 +117,7 @@ function ArxivCard({ project, index }: { project: Project; index: number }) {
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 font-mono text-[0.65rem] text-indigo-600 border border-indigo-100 bg-indigo-50 rounded-lg px-2.5 py-0.5 hover:bg-indigo-100 transition-colors"
+                className="inline-flex items-center gap-1 font-mono text-[0.65rem] text-indigo-600 border border-indigo-100 bg-indigo-50 rounded-lg px-2.5 py-0.5 hover:bg-indigo-100 transition-colors dark:text-indigo-300 dark:border-indigo-400/20 dark:bg-indigo-400/10 dark:hover:bg-indigo-400/20"
               >
                 {link.name}
                 <ArrowUpRight className="h-2.5 w-2.5" />
@@ -127,7 +127,7 @@ function ArxivCard({ project, index }: { project: Project; index: number }) {
         {project.achievements && project.achievements.length > 2 && (
           <button
             onClick={() => setExpanded(!expanded)}
-            className="flex items-center gap-1 font-mono text-[0.62rem] text-slate-400 hover:text-slate-600 transition-colors"
+            className="flex items-center gap-1 font-mono text-[0.62rem] text-slate-400 hover:text-slate-600 dark:text-slate-300 transition-colors"
           >
             {expanded ? (
               <> Less <ChevronUp className="h-3 w-3" /></>
@@ -149,10 +149,10 @@ export default function AllProjects({ projects }: AllProjectsProps) {
     <div className="w-full min-w-0 py-6">
       <div className="mb-7 px-1">
         <p className="section-kicker">Research & Engineering</p>
-        <h2 className="font-display text-safe-balance mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+        <h2 className="font-display text-safe-balance mt-3 text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
           Selected Work
         </h2>
-        <p className="text-safe-wrap mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+        <p className="text-safe-wrap mt-2 max-w-2xl text-sm leading-6 text-slate-500 dark:text-slate-400">
           Systems, ML products, and open-source work with measurable outcomes.
         </p>
       </div>
