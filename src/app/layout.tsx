@@ -155,6 +155,7 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="light"
           enableSystem={false}
+          disableTransitionOnChange
         >
           <main className="flex min-h-screen flex-col">{children}</main>
           <Toaster />
