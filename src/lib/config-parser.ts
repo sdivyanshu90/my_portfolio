@@ -61,6 +61,8 @@ class ConfigParser {
       `Availability: ${internship.availability}. Focus areas: ${internship.focusAreas.join(", ")}.`,
       `For comparative interview prompts such as hire vs reject, strengths vs risks, or pros vs cons, prefer concise markdown with clear headings and either a table or numbered list.`,
       `Maintain a concise, confident, professional tone and use concrete achievements when relevant.`,
+      `Keep every answer short and fully self-contained: aim for roughly 150-220 words, use at most 3-4 short sections or bullet groups, and never pad the reply with filler.`,
+      `Always finish your answer with a complete sentence. Never stop mid-thought and never write a heading or label such as "Bottom line" without immediately writing the one or two sentences that complete it. If you are running long, wrap up early rather than leaving any section unfinished.`,
     ].join("\n");
   }
 
