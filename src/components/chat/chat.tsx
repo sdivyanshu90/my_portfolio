@@ -12,21 +12,15 @@ import {
 } from "@/components/ui/chat/chat-bubble";
 import type { UIMessage } from "ai";
 import { useChat } from "@ai-sdk/react";
-import { AnimatePresence, easeOut, motion } from "framer-motion";
-import {
-  ArrowUpRight,
-  Bot,
-  BriefcaseBusiness,
-  Github,
-  Linkedin,
-  Mail,
-  MapPin,
-  ShieldCheck,
-} from "lucide-react";
+import { AnimatePresence, easeOut, motion, MotionConfig } from "framer-motion";
+import AuroraBackground from "@/components/anim/aurora-background";
+import SpotlightCursor from "@/components/anim/spotlight-cursor";
+import ThemeToggle from "@/components/anim/theme-toggle";
+import { Download, Github, Linkedin, Mail, RotateCcw, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import HelperBoost from "./HelperBoost";
 
@@ -37,24 +31,6 @@ interface PresetReplyState {
 }
 
 const portfolioConfig = getConfig();
-
-const featuredProjects = portfolioConfig.projects.filter(
-  (project) => project.featured,
-);
-const profileStats = [
-  {
-    label: "Projects",
-    value: String(portfolioConfig.projects.length).padStart(2, "0"),
-  },
-  {
-    label: "Core Focus",
-    value: "AI x Systems",
-  },
-  {
-    label: "Availability",
-    value: "Immediate",
-  },
-];
 
 const directLinks = [
   {
@@ -74,12 +50,39 @@ const directLinks = [
   },
 ].filter((link) => Boolean(link.href));
 
+const resumeUrl = portfolioConfig.resume?.downloadUrl ?? "";
+
+// Map a free-typed question to the closest instant preset answer. Used as a
+// fallback when the free OpenRouter model is slow / rate-limited, so recruiters
+// still get an instant, structured card instead of an error.
+function mapQueryToPresetKey(query: string): string | null {
+  const q = query.toLowerCase();
+  if (/\b(resume|cv|curriculum\s*vitae)\b/.test(q)) return "Can I see your resume?";
+  if (
+    /\bskills?|tech\s*stack|stack|languages?|frameworks?|tools?|expert|proficient|familiar|do you know|worked with\b/.test(
+      q,
+    )
+  )
+    return "What are your skills?";
+  if (/\bprojects?|portfolio|built|build|shipped|case\s*stud/.test(q))
+    return "What projects are you most proud of?";
+  if (/\b(contact|reach|email|connect|linkedin|github|get in touch)\b/.test(q))
+    return "How can I reach you?";
+  if (
+    /\b(who|about|yourself|introduce|intro|background|bio|hire|fit|strength|weakness|research|experience)\b/.test(
+      q,
+    )
+  )
+    return "Who are you?";
+  return null;
+}
+
 const MOTION_CONFIG = {
-  initial: { opacity: 0, y: 20 },
+  initial: { opacity: 0, y: 16 },
   animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: 20 },
+  exit: { opacity: 0, y: -10 },
   transition: {
-    duration: 0.3,
+    duration: 0.32,
     ease: easeOut,
   },
 };
@@ -119,24 +122,6 @@ function buildRequestMessages(messages: UIMessage[]) {
     .filter((message) => message.content.length > 0);
 }
 
-function Avatar() {
-  return (
-    <Link
-      href="/"
-      className="relative block h-24 w-24 overflow-hidden rounded-[28px]"
-    >
-      <Image
-        src="/avatar.png"
-        alt="Divanshu Sharma avatar"
-        fill
-        sizes="96px"
-        priority
-        className="object-cover object-[center_top_-5%] scale-95"
-      />
-    </Link>
-  );
-}
-
 const Chat = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -145,6 +130,8 @@ const Chat = () => {
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [presetReply, setPresetReply] = useState<PresetReplyState | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const messagesRef = useRef<HTMLDivElement>(null);
+  const lastQueryRef = useRef<string>("");
 
   const {
     messages,
@@ -153,6 +140,7 @@ const Chat = () => {
     isLoading,
     stop,
     setInput,
+    setMessages,
     reload,
     addToolResult,
     append,
@@ -179,6 +167,31 @@ const Chat = () => {
     onError: (error) => {
       setLoadingSubmit(false);
       console.error("Chat error:", error.message, error.cause);
+
+      // Graceful fallback: if the free model fails (rate-limit / quota / slow),
+      // surface the closest instant preset card instead of a dead error, so a
+      // recruiter still gets a real answer with zero model dependency.
+      const presetKey = mapQueryToPresetKey(lastQueryRef.current);
+      if (presetKey && presetReplies[presetKey]) {
+        const preset = presetReplies[presetKey];
+        setPresetReply({
+          question: presetKey,
+          reply: preset.reply,
+          tool: preset.tool,
+        });
+        setErrorMessage(null);
+        toast("The live model is busy — here's an instant answer instead.", {
+          duration: 4000,
+          style: {
+            background: "#eef2ff",
+            border: "1px solid #c7d2fe",
+            color: "#3730a3",
+            fontSize: "14px",
+            fontWeight: "500",
+          },
+        });
+        return;
+      }
 
       const normalizedMessage = error.message?.toLowerCase() ?? "";
 
@@ -282,7 +295,7 @@ const Chat = () => {
     },
   });
 
-  const { currentAIMessage, latestUserMessage, hasActiveTool } = useMemo(() => {
+  const { currentAIMessage, latestUserMessage } = useMemo(() => {
     const latestAIMessageIndex = messages.findLastIndex(
       (message) => message.role === "assistant",
     );
@@ -295,17 +308,7 @@ const Chat = () => {
         latestAIMessageIndex !== -1 ? messages[latestAIMessageIndex] : null,
       latestUserMessage:
         latestUserMessageIndex !== -1 ? messages[latestUserMessageIndex] : null,
-      hasActiveTool: false,
     };
-
-    if (result.currentAIMessage) {
-      result.hasActiveTool =
-        result.currentAIMessage.parts?.some(
-          (part) =>
-            part.type === "tool-invocation" &&
-            part.toolInvocation?.state === "result",
-        ) || false;
-    }
 
     if (latestAIMessageIndex < latestUserMessageIndex) {
       result.currentAIMessage = null;
@@ -313,6 +316,24 @@ const Chat = () => {
 
     return result;
   }, [messages]);
+
+  // Keep the conversation pinned to the latest content as it streams in, but
+  // only when the user is already near the bottom — never yank them back up if
+  // they've scrolled to re-read an earlier part of the answer.
+  const streamingContentLength =
+    typeof currentAIMessage?.content === "string"
+      ? currentAIMessage.content.length
+      : 0;
+
+  useEffect(() => {
+    const el = messagesRef.current;
+    if (!el) return;
+
+    const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+    if (distanceFromBottom < 240) {
+      el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+    }
+  }, [streamingContentLength, loadingSubmit, presetReply, errorMessage]);
 
   const isToolInProgress = messages.some(
     (message) =>
@@ -343,6 +364,7 @@ const Chat = () => {
 
       setLoadingSubmit(true);
       setPresetReply(null);
+      lastQueryRef.current = query;
       void append({
         role: "user",
         content: query,
@@ -358,6 +380,7 @@ const Chat = () => {
       setErrorMessage(null);
       setLoadingSubmit(true);
       setPresetReply(null);
+      lastQueryRef.current = query;
       void append({
         role: "user",
         content: query,
@@ -405,12 +428,23 @@ const Chat = () => {
     setLoadingSubmit(false);
   }, [stop]);
 
+  const resetConversation = useCallback(() => {
+    stop();
+    setMessages([]);
+    setPresetReply(null);
+    setErrorMessage(null);
+    setLoadingSubmit(false);
+    setInput("");
+  }, [setInput, setMessages, stop]);
+
   const isEmptyState =
     !currentAIMessage &&
     !latestUserMessage &&
     !loadingSubmit &&
     !presetReply &&
     !errorMessage;
+
+  const showComposerRoutes = !isEmptyState;
 
   const errorCardCopy = useMemo(() => {
     if (errorMessage === "quota_exhausted") {
@@ -497,383 +531,261 @@ const Chat = () => {
   }, [errorMessage]);
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-16 left-[-6%] h-72 w-72 rounded-full bg-indigo-600/5 blur-3xl" />
-        <div className="absolute right-[-8%] top-[12%] h-80 w-80 rounded-full bg-amber-500/5 blur-3xl" />
-        <div className="absolute bottom-[-10%] left-[20%] h-72 w-72 rounded-full bg-[#818cf8]/5 blur-3xl" />
-      </div>
+    <MotionConfig reducedMotion="user">
+      <div className="relative flex h-[100dvh] flex-col overflow-hidden">
+        <AuroraBackground />
+        <SpotlightCursor />
 
-      <div className="relative mx-auto flex min-h-screen max-w-[1400px] flex-col px-4 py-4 sm:px-6 lg:px-8 lg:py-8">
-        <div className="grid min-w-0 flex-1 gap-6 xl:grid-cols-[340px_minmax(0,1fr)]">
-          <aside className="panel-surface flex min-w-0 flex-col gap-6 p-5 sm:p-6">
-            <div className="flex items-start justify-between gap-4">
-              <Avatar />
-              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-500">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#22c55e] opacity-75" />
-                  <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#22c55e]" />
+        {/* ── Identity bar ── */}
+        <motion.header
+          initial={{ opacity: 0, y: -14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, ease: easeOut }}
+          className="relative z-10 shrink-0 px-3 pt-3 sm:px-5 sm:pt-5"
+        >
+          <div className="glass-panel mx-auto flex w-full max-w-3xl items-center justify-between gap-3 rounded-[22px] px-3 py-2.5 sm:px-4">
+            <Link
+              href="/"
+              className="group flex min-w-0 items-center gap-3"
+              aria-label={`${portfolioConfig.personal.name} — home`}
+            >
+              <span className="relative block h-11 w-11 shrink-0 overflow-hidden rounded-[14px] ring-2 ring-white/70 transition-transform duration-300 group-hover:scale-[1.04]">
+                <Image
+                  src="/avatar.png"
+                  alt={`${portfolioConfig.personal.name} avatar`}
+                  fill
+                  sizes="44px"
+                  priority
+                  className="object-cover object-[center_top]"
+                />
+              </span>
+              <span className="min-w-0 leading-tight">
+                <span className="block truncate font-display text-sm font-bold tracking-tight text-slate-900 dark:text-white sm:text-base">
+                  {portfolioConfig.personal.name}
                 </span>
-                Open to strong teams
-              </div>
-            </div>
-
-            <div className="min-w-0 space-y-4">
-              <p className="section-kicker">Candidate Snapshot</p>
-              <div className="min-w-0">
-                <h1 className="font-display text-safe-balance text-3xl font-bold tracking-tight sm:text-[2.35rem]">
-                  <span className="gradient-text">{portfolioConfig.personal.name}</span>
-                </h1>
-                <p className="text-safe-wrap mt-2 text-base font-medium text-indigo-600">
+                <span className="block truncate text-xs font-medium text-indigo-600 dark:text-indigo-300">
                   {portfolioConfig.personal.title}
-                </p>
-              </div>
-              <div className="flex min-w-0 items-center gap-2 text-sm text-slate-500">
-                <MapPin className="h-4 w-4 text-indigo-600" />
-                <span className="text-safe-wrap">
-                  {portfolioConfig.personal.location}
                 </span>
-              </div>
-              <p className="text-safe-wrap text-sm leading-7 text-slate-500">
-                {portfolioConfig.personal.bio}
-              </p>
-            </div>
+              </span>
+            </Link>
 
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-1">
-              {profileStats.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="rounded-[24px] border border-slate-200 bg-white p-4 shadow-none"
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              {resumeUrl && (
+                <a
+                  href={resumeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Download résumé"
+                  className="shine inline-flex items-center gap-1.5 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm shadow-indigo-500/30 transition hover:-translate-y-0.5 hover:shadow-md hover:shadow-indigo-500/50 dark:shadow-indigo-900/40"
                 >
-                  <p className="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-500">
-                    {stat.label}
-                  </p>
-                  <p className="text-safe-wrap mt-3 font-display text-xl font-semibold text-slate-900">
-                    {stat.value}
-                  </p>
-                </div>
-              ))}
-            </div>
+                  <Download className="h-3.5 w-3.5" />
+                  <span className="hidden sm:inline">Résumé</span>
+                </a>
+              )}
 
-            <div className="space-y-3">
-              <p className="section-kicker">Direct Links</p>
-              <div className="flex flex-wrap gap-2.5">
-                {directLinks.map((link) => {
-                  const Icon = link.icon;
+              <span className="hidden items-center gap-1.5 rounded-full border border-emerald-200/60 bg-emerald-50/70 px-3 py-1.5 text-xs font-semibold text-emerald-700 backdrop-blur-sm dark:border-emerald-400/25 dark:bg-emerald-400/10 dark:text-emerald-300 lg:inline-flex">
+                <span className="led-green" />
+                Open to work
+              </span>
 
-                  return (
-                    <Link
-                      key={link.label}
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex min-w-0 items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-800 transition hover:-translate-y-0.5 hover:bg-slate-100"
-                    >
-                      <Icon className="h-4 w-4 text-indigo-600" />
-                      <span className="text-safe-wrap">{link.label}</span>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <p className="section-kicker">Current Focus Areas</p>
-              <div className="flex flex-wrap gap-2">
-                {portfolioConfig.internship.focusAreas
-                  .slice(0, 5)
-                  .map((area) => (
-                    <span
-                      key={area}
-                      className="text-safe-wrap rounded-full border border-indigo-500/20 bg-emerald-50 px-3 py-1.5 text-sm text-indigo-600"
-                    >
-                      {area}
-                    </span>
-                  ))}
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <p className="section-kicker">Featured Builds</p>
-              <div className="space-y-3">
-                {featuredProjects.slice(0, 3).map((project) => (
-                  <button
-                    key={project.title}
-                    onClick={() =>
-                      submitQuery(`Tell me about ${project.title}.`)
-                    }
-                    className="w-full min-w-0 rounded-[24px] border border-slate-200 bg-white p-4 text-left shadow-none transition hover:-translate-y-0.5 hover:bg-slate-100"
+              {directLinks.map((link) => {
+                const Icon = link.icon;
+                return (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={link.label}
+                    className="glass-chip glass-hover shine inline-flex h-9 w-9 items-center justify-center rounded-full"
                   >
-                    <p className="text-safe-wrap text-sm font-semibold text-slate-900">
-                      {project.title}
-                    </p>
-                    <p className="text-safe-wrap mt-1 text-xs uppercase tracking-[0.2em] text-slate-500">
-                      {project.category}
-                    </p>
-                  </button>
-                ))}
-              </div>
+                    <Icon className="h-4 w-4 text-indigo-600 dark:text-indigo-300" />
+                  </Link>
+                );
+              })}
+
+              <ThemeToggle />
+
+              {!isEmptyState && (
+                <button
+                  type="button"
+                  onClick={resetConversation}
+                  aria-label="Start a new chat"
+                  className="glass-chip glass-hover inline-flex h-9 w-9 items-center justify-center rounded-full"
+                >
+                  <RotateCcw className="h-4 w-4 text-slate-500 dark:text-slate-400" />
+                </button>
+              )}
             </div>
-          </aside>
+          </div>
+        </motion.header>
 
-          <section className="panel-surface flex min-h-[72vh] min-w-0 flex-col overflow-hidden">
-            <header className="border-b border-slate-200 px-5 py-5 sm:px-6">
-              <div className="flex min-w-0 flex-col gap-4 2xl:flex-row 2xl:items-start 2xl:justify-between">
-                <div className="max-w-3xl min-w-0 space-y-2">
-                  <p className="section-kicker">Interview Console</p>
-                  <h2 className="font-display text-safe-balance text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
-                    A recruiter-facing portfolio assistant with grounded
-                    answers.
-                  </h2>
-                  <p className="text-safe-wrap text-sm leading-7 text-slate-500 sm:text-base">
-                    Ask about projects, research, product execution, system
-                    design, or availability. The assistant stays scoped to real
-                    portfolio data and uses tool-rendered cards when a
-                    structured answer is better than plain text.
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-500">
-                    <Bot className="h-3.5 w-3.5 text-indigo-600" />
-                    {hasActiveTool
-                      ? "Tool-grounded reply"
-                      : "OpenRouter-powered chat"}
-                  </span>
-                  <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-500">
-                    <ShieldCheck className="h-3.5 w-3.5 text-indigo-600" />
-                    Strong guardrails active
-                  </span>
-                </div>
-              </div>
-            </header>
-
-            <div className="grid min-h-0 min-w-0 flex-1 2xl:grid-cols-[minmax(0,1fr)_280px]">
-              <div className="flex min-h-0 min-w-0 flex-col">
-                <div className="custom-scrollbar min-h-0 flex-1 overflow-y-auto p-4 sm:p-6">
-                  <AnimatePresence mode="wait">
-                    {isEmptyState ? (
-                      <motion.div key="landing" {...MOTION_CONFIG}>
-                        <ChatLanding
-                          submitQuery={submitQuery}
-                          handlePresetReply={handlePresetReply}
-                        />
-                      </motion.div>
-                    ) : presetReply ? (
-                      <motion.div key="preset" {...MOTION_CONFIG}>
-                        <PresetReply
-                          question={presetReply.question}
-                          reply={presetReply.reply}
-                          tool={presetReply.tool}
-                          onGetAIResponse={handleGetAIResponse}
-                          onClose={() => setPresetReply(null)}
-                        />
-                      </motion.div>
-                    ) : errorMessage ? (
-                      <motion.div key="error" {...MOTION_CONFIG}>
-                        <div className="panel-surface min-w-0 border border-[#f1d1a4] bg-[#fff4df] p-6">
-                          <div className="flex items-start gap-4">
-                            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#f4b45f] text-white">
-                              <ShieldCheck className="h-5 w-5" />
-                            </div>
-                            <div className="min-w-0 space-y-4">
-                              <div>
-                                <p className="section-kicker text-amber-700">
-                                  {errorCardCopy.kicker}
-                                </p>
-                                <h3 className="font-display text-safe-balance mt-2 text-2xl font-semibold text-amber-700">
-                                  {errorCardCopy.title}
-                                </h3>
-                              </div>
-
-                              <div className="space-y-3 text-sm leading-7 text-[#d48a20]">
-                                <p className="text-safe-wrap">
-                                  {errorCardCopy.description}
-                                </p>
-                                <ul className="list-disc space-y-1 pl-5">
-                                  {errorCardCopy.bullets.map((bullet) => (
-                                    <li key={bullet} className="text-safe-wrap">
-                                      {bullet}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-
-                              <div className="flex flex-wrap gap-3">
-                                <button
-                                  onClick={() => {
-                                    setErrorMessage(null);
-                                    const preset =
-                                      presetReplies["How can I reach you?"];
-                                    if (preset) {
-                                      setPresetReply({
-                                        question: "How can I reach you?",
-                                        reply: preset.reply,
-                                        tool: preset.tool,
-                                      });
-                                    }
-                                  }}
-                                  className="rounded-full bg-[#92400e] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#78350f]"
-                                >
-                                  Show contact card
-                                </button>
-                                <button
-                                  onClick={() => {
-                                    setErrorMessage(null);
-                                    router.push("/");
-                                  }}
-                                  className="rounded-full border border-amber-600/30 bg-white px-4 py-2 text-sm font-medium text-amber-700 transition hover:bg-slate-100"
-                                >
-                                  Back to presets
-                                </button>
-                              </div>
-                            </div>
-                          </div>
+        {/* ── Conversation + composer ── */}
+        <main className="relative z-10 flex min-h-0 flex-1 flex-col items-center px-3 pb-3 sm:px-5 sm:pb-5">
+          <div
+            ref={messagesRef}
+            className="custom-scrollbar w-full max-w-3xl min-h-0 flex-1 overflow-y-auto"
+          >
+            <AnimatePresence mode="wait">
+              {isEmptyState ? (
+                <motion.div
+                  key="landing"
+                  {...MOTION_CONFIG}
+                  className="flex min-h-full flex-col items-center justify-center py-8"
+                >
+                  <ChatLanding
+                    submitQuery={submitQuery}
+                    handlePresetReply={handlePresetReply}
+                  />
+                </motion.div>
+              ) : presetReply ? (
+                <motion.div key="preset" {...MOTION_CONFIG} className="py-6">
+                  <PresetReply
+                    question={presetReply.question}
+                    reply={presetReply.reply}
+                    tool={presetReply.tool}
+                    onGetAIResponse={handleGetAIResponse}
+                    onClose={() => setPresetReply(null)}
+                  />
+                </motion.div>
+              ) : errorMessage ? (
+                <motion.div key="error" {...MOTION_CONFIG} className="py-6">
+                  <div className="glass-card mx-auto w-full max-w-2xl rounded-[26px] border border-amber-200/70 bg-amber-50/70 p-6">
+                    <div className="flex items-start gap-4">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 text-white shadow-sm">
+                        <ShieldCheck className="h-5 w-5" />
+                      </div>
+                      <div className="min-w-0 space-y-4">
+                        <div>
+                          <p className="section-kicker text-amber-700">
+                            {errorCardCopy.kicker}
+                          </p>
+                          <h3 className="font-display text-safe-balance mt-2 text-2xl font-semibold text-amber-800">
+                            {errorCardCopy.title}
+                          </h3>
                         </div>
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        key="conversation"
-                        {...MOTION_CONFIG}
-                        className="space-y-4"
-                      >
-                        {latestUserMessage ? (
-                          <div className="flex justify-end">
-                            <ChatBubble variant="sent" className="max-w-2xl">
-                              <ChatBubbleMessage>
-                                <ChatMessageContent
-                                  message={latestUserMessage}
-                                  isLast={true}
-                                  isLoading={false}
-                                  reload={() => Promise.resolve(null)}
-                                />
-                              </ChatBubbleMessage>
-                            </ChatBubble>
-                          </div>
-                        ) : null}
 
-                        {currentAIMessage ? (
-                          <SimplifiedChatView
-                            message={currentAIMessage}
-                            isLoading={isLoading}
-                            reload={reload}
-                            addToolResult={addToolResult}
+                        <div className="space-y-3 text-sm leading-7 text-amber-900/80">
+                          <p className="text-safe-wrap">
+                            {errorCardCopy.description}
+                          </p>
+                          <ul className="list-disc space-y-1 pl-5">
+                            {errorCardCopy.bullets.map((bullet) => (
+                              <li key={bullet} className="text-safe-wrap">
+                                {bullet}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        <div className="flex flex-wrap gap-3">
+                          <button
+                            onClick={() => {
+                              setErrorMessage(null);
+                              const preset =
+                                presetReplies["How can I reach you?"];
+                              if (preset) {
+                                setPresetReply({
+                                  question: "How can I reach you?",
+                                  reply: preset.reply,
+                                  tool: preset.tool,
+                                });
+                              }
+                            }}
+                            className="rounded-full bg-amber-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-amber-800"
+                          >
+                            Show contact card
+                          </button>
+                          <button
+                            onClick={() => {
+                              setErrorMessage(null);
+                              router.push("/");
+                            }}
+                            className="rounded-full border border-amber-600/30 bg-white/70 px-4 py-2 text-sm font-medium text-amber-700 transition hover:bg-white"
+                          >
+                            Back to start
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="conversation"
+                  {...MOTION_CONFIG}
+                  className="space-y-4 py-6"
+                >
+                  {latestUserMessage ? (
+                    <div className="flex justify-end">
+                      <ChatBubble variant="sent" className="max-w-2xl">
+                        <ChatBubbleMessage>
+                          <ChatMessageContent
+                            message={latestUserMessage}
+                            isLast={true}
+                            isLoading={false}
+                            reload={() => Promise.resolve(null)}
                           />
-                        ) : (
-                          loadingSubmit && (
-                            <ChatBubble variant="received">
-                              <ChatBubbleMessage isLoading />
-                            </ChatBubble>
-                          )
-                        )}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
+                        </ChatBubbleMessage>
+                      </ChatBubble>
+                    </div>
+                  ) : null}
 
-                <div className="border-t border-slate-200 bg-white/90 px-4 py-4 backdrop-blur-xl sm:px-6">
-                  <div className="space-y-4">
-                    <HelperBoost
-                      submitQuery={submitQuery}
-                      handlePresetReply={handlePresetReply}
-                    />
-                    <ChatBottombar
-                      input={input}
-                      handleInputChange={handleInputChange}
-                      handleSubmit={onSubmit}
+                  {currentAIMessage ? (
+                    <SimplifiedChatView
+                      message={currentAIMessage}
                       isLoading={isLoading}
-                      stop={handleStop}
-                      isToolInProgress={isToolInProgress}
+                      reload={reload}
+                      addToolResult={addToolResult}
                     />
-                  </div>
-                </div>
-              </div>
+                  ) : (
+                    loadingSubmit && (
+                      <ChatBubble variant="received">
+                        <ChatBubbleMessage isLoading />
+                      </ChatBubble>
+                    )
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
 
-              <aside className="hidden min-w-0 border-l border-slate-200 bg-slate-50 p-5 2xl:flex 2xl:flex-col 2xl:justify-between">
-                <div className="space-y-6">
-                  <div className="space-y-3">
-                    <p className="section-kicker">Fast Paths</p>
-                    <button
-                      onClick={() =>
-                        submitQuery("What projects are you most proud of?")
-                      }
-                      className="flex w-full min-w-0 items-center justify-between rounded-[22px] border border-slate-200 bg-white px-4 py-3 text-left text-sm font-medium text-slate-800 shadow-none transition hover:-translate-y-0.5"
-                    >
-                      <span className="text-safe-wrap">Project highlights</span>
-                      <ArrowUpRight className="h-4 w-4 shrink-0 text-indigo-600" />
-                    </button>
-                    <button
-                      onClick={() => submitQuery("What are your skills?")}
-                      className="flex w-full min-w-0 items-center justify-between rounded-[22px] border border-slate-200 bg-white px-4 py-3 text-left text-sm font-medium text-slate-800 shadow-none transition hover:-translate-y-0.5"
-                    >
-                      <span className="text-safe-wrap">Skill inventory</span>
-                      <ArrowUpRight className="h-4 w-4 shrink-0 text-indigo-600" />
-                    </button>
-                    <button
-                      onClick={() => submitQuery("Can I see your resume?")}
-                      className="flex w-full min-w-0 items-center justify-between rounded-[22px] border border-slate-200 bg-white px-4 py-3 text-left text-sm font-medium text-slate-800 shadow-none transition hover:-translate-y-0.5"
-                    >
-                      <span className="text-safe-wrap">
-                        Resume and experience
-                      </span>
-                      <ArrowUpRight className="h-4 w-4 shrink-0 text-indigo-600" />
-                    </button>
-                  </div>
+          {/* ── Docked composer ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: easeOut, delay: 0.1 }}
+            className="w-full max-w-3xl shrink-0 pt-3"
+          >
+            <AnimatePresence initial={false}>
+              {showComposerRoutes && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.25, ease: easeOut }}
+                  className="mb-3 overflow-hidden"
+                >
+                  <HelperBoost
+                    submitQuery={submitQuery}
+                    handlePresetReply={handlePresetReply}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-                  <div className="space-y-3">
-                    <p className="section-kicker">Why This View Works</p>
-                    <div className="rounded-[24px] border border-slate-200 bg-white p-4 shadow-none">
-                      <div className="flex min-w-0 gap-3 text-sm leading-6 text-slate-500">
-                        <Bot className="mt-1 h-4 w-4 shrink-0 text-indigo-600" />
-                        <p className="text-safe-wrap">
-                          Tool results render portfolio data as cards instead of
-                          vague summaries.
-                        </p>
-                      </div>
-                    </div>
-                    <div className="rounded-[24px] border border-slate-200 bg-white p-4 shadow-none">
-                      <div className="flex min-w-0 gap-3 text-sm leading-6 text-slate-500">
-                        <BriefcaseBusiness className="mt-1 h-4 w-4 shrink-0 text-indigo-600" />
-                        <p className="text-safe-wrap">
-                          Generated project covers replace the old unrelated
-                          placeholder visuals.
-                        </p>
-                      </div>
-                    </div>
-                    <div className="rounded-[24px] border border-slate-200 bg-white p-4 shadow-none">
-                      <div className="flex min-w-0 gap-3 text-sm leading-6 text-slate-500">
-                        <ShieldCheck className="mt-1 h-4 w-4 shrink-0 text-indigo-600" />
-                        <p className="text-safe-wrap">
-                          Requests are rate-limited, origin-checked, and
-                          filtered for prompt injection and exfiltration
-                          patterns.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="rounded-[26px] border border-slate-200 bg-white p-5 shadow-none">
-                  <p className="section-kicker">Best Questions</p>
-                  <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-500">
-                    <li className="text-safe-wrap">
-                      Ask for one project and its tradeoffs.
-                    </li>
-                    <li className="text-safe-wrap">
-                      Ask how research work translated into product execution.
-                    </li>
-                    <li className="text-safe-wrap">
-                      Ask for role fit, availability, and direct contact in one
-                      pass.
-                    </li>
-                  </ul>
-                </div>
-              </aside>
-            </div>
-          </section>
-        </div>
+            <ChatBottombar
+              input={input}
+              handleInputChange={handleInputChange}
+              handleSubmit={onSubmit}
+              isLoading={isLoading}
+              stop={handleStop}
+              isToolInProgress={isToolInProgress}
+            />
+          </motion.div>
+        </main>
       </div>
-    </div>
+    </MotionConfig>
   );
 };
 
