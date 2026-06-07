@@ -107,7 +107,7 @@ export function PresetReply({
           {/* Only show AI option when there's a major component - no text needed */}
           {showAIOption && (
             <ChatBubble variant="received">
-              <ChatBubbleMessage className="bg-slate-50 w-full">
+              <ChatBubbleMessage className="glass-card w-full">
                 <div className="w-full min-w-0 space-y-3 p-6">
                   {onClose && (
                     <div className="flex justify-end">
