@@ -39,12 +39,12 @@ export function Contact({ data }: { data?: ContactCardData }) {
 
   return (
     <div className="mx-auto mt-8 w-full min-w-0">
-      <div className="bg-[#0e1520] w-full min-w-0 overflow-hidden rounded-3xl px-6 py-8 font-sans sm:px-10 md:px-16 md:py-12">
+      <div className="bg-white dark:bg-slate-900 dark:ring-1 dark:ring-white/10 w-full min-w-0 overflow-hidden rounded-3xl px-6 py-8 font-sans sm:px-10 md:px-16 md:py-12">
         <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-[#e2e8f0] text-3xl font-semibold md:text-4xl">
+          <h2 className="text-slate-900 dark:text-white text-3xl font-semibold md:text-4xl">
             Contacts
           </h2>
-          <span className="text-safe-wrap mt-2 sm:mt-0">{handle}</span>
+          <span className="text-safe-wrap mt-2 text-slate-400 dark:text-slate-500 sm:mt-0">{handle}</span>
         </div>
 
         <div className="mt-8 flex flex-col md:mt-10">
@@ -60,7 +60,7 @@ export function Contact({ data }: { data?: ContactCardData }) {
             </div>
           </div>
 
-          <div className="mb-6 flex flex-col gap-2 text-sm text-[#8b9db5]">
+          <div className="mb-6 flex flex-col gap-2 text-sm text-slate-500 dark:text-slate-400">
             {phone ? <span className="text-safe-wrap">{phone}</span> : null}
             {portfolio ? (
               <button
@@ -83,7 +83,7 @@ export function Contact({ data }: { data?: ContactCardData }) {
             {socials.map((social) => (
               <button
                 key={social.name}
-                className="text-[#8b9db5] hover:text-[#e2e8f0] cursor-pointer text-sm transition-colors"
+                className="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white cursor-pointer text-sm transition-colors"
                 onClick={() => openLink(social.url)}
                 title={social.name}
               >
