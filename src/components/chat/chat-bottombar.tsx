@@ -2,8 +2,8 @@
 
 import { ChatRequestOptions } from "ai";
 import { motion } from "framer-motion";
-import { Square } from "lucide-react";
-import React, { useEffect } from "react";
+import { ArrowUp, Square } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface ChatBottombarProps {
   handleInputChange: (
@@ -21,6 +21,14 @@ interface ChatBottombarProps {
   isToolInProgress: boolean;
 }
 
+const PLACEHOLDERS = [
+  "Ask me anything about my work…",
+  "Why should you hire me?",
+  "Tell me about your research at Yale…",
+  "Which projects are you most proud of?",
+  "What does your tech stack look like?",
+];
+
 export default function ChatBottombar({
   input,
   handleInputChange,
@@ -29,7 +37,8 @@ export default function ChatBottombar({
   stop,
   isToolInProgress,
 }: ChatBottombarProps) {
-  const inputRef = React.useRef<HTMLTextAreaElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const [phIndex, setPhIndex] = useState(0);
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (
@@ -46,8 +55,9 @@ export default function ChatBottombar({
 
   useEffect(() => {
     if (inputRef.current) inputRef.current.focus();
-  }, [inputRef]);
+  }, []);
 
+  // Auto-grow the textarea with its content.
   useEffect(() => {
     const textarea = inputRef.current;
     if (!textarea) return;
@@ -55,115 +65,103 @@ export default function ChatBottombar({
     textarea.style.height = `${Math.min(textarea.scrollHeight, 180)}px`;
   }, [input]);
 
+  // Gently rotate the placeholder while the field is empty.
+  useEffect(() => {
+    if (input) return;
+    const id = setInterval(
+      () => setPhIndex((i) => (i + 1) % PLACEHOLDERS.length),
+      3600,
+    );
+    return () => clearInterval(id);
+  }, [input]);
+
   const isDisabled = isToolInProgress || isLoading;
-  const canSubmit = !isDisabled && input.trim();
+  const canSubmit = Boolean(!isDisabled && input.trim());
+  const placeholder = isToolInProgress
+    ? "Running tool call…"
+    : isLoading
+      ? "Generating response…"
+      : PLACEHOLDERS[phIndex];
 
   return (
-    <motion.div
+    <motion.form
+      onSubmit={handleSubmit}
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
-      className="w-full"
+      className="relative w-full"
     >
-      <form onSubmit={handleSubmit} className="relative w-full">
-        <motion.div
-          animate={{
-            boxShadow: isDisabled
-              ? "0 0 0 1px rgba(226,232,240,1), 0 4px 16px rgba(15,23,42,0.04)"
-              : "0 0 0 2px rgba(79,70,229,0.18), 0 4px 24px rgba(79,70,229,0.08)",
+      <div className="input-shell glass-inset flex items-end gap-2 rounded-[26px] border border-white/50 p-2 pl-5 dark:border-white/10">
+        <textarea
+          ref={inputRef}
+          value={input}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyPress}
+          rows={1}
+          placeholder={placeholder}
+          disabled={isDisabled}
+          aria-label="Message"
+          className="min-h-[44px] max-h-[180px] flex-1 resize-none bg-transparent py-3 text-[0.95rem] leading-6 text-slate-800 placeholder:text-slate-400 focus:outline-none dark:text-white dark:placeholder:text-slate-500"
+        />
+
+        <motion.button
+          type="submit"
+          disabled={!canSubmit && !isLoading}
+          whileTap={{ scale: 0.9 }}
+          onClick={(e) => {
+            if (isLoading) {
+              e.preventDefault();
+              stop();
+            }
           }}
-          transition={{ duration: 0.2 }}
-          className="rounded-2xl border border-slate-200 bg-white overflow-hidden"
+          aria-label={isLoading ? "Stop generation" : "Send message"}
+          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-all duration-200 ${
+            isLoading
+              ? "bg-amber-500 text-white hover:bg-amber-600"
+              : canSubmit
+                ? "bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-lg shadow-indigo-500/30 hover:scale-105 hover:shadow-indigo-500/50 active:scale-95 dark:shadow-indigo-900/50"
+                : "cursor-not-allowed bg-slate-200/70 text-slate-400 dark:bg-white/10 dark:text-slate-500"
+          }`}
         >
-          {/* Input row */}
-          <div className="flex items-start gap-0">
-            {/* Blinking cursor when empty */}
-            {!input && !isDisabled && (
-              <span
-                className="cursor-blink pointer-events-none absolute left-[3.2rem] top-[1.05rem] font-mono text-sm text-indigo-500 opacity-70 select-none"
-                aria-hidden
-              />
-            )}
-
-            {/* Prompt glyph */}
-            <div className="flex items-start px-4 pt-[1.05rem] pb-2 select-none shrink-0">
-              <span
-                className={`font-mono text-sm font-bold transition-colors duration-150 ${
-                  isDisabled ? "text-slate-300" : "text-indigo-500"
-                }`}
-              >
-                &gt;
-              </span>
-            </div>
-
-            {/* Textarea */}
-            <div className="flex-1 min-w-0 pt-[0.9rem] pb-2 pr-4">
-              <textarea
-                ref={inputRef}
-                value={input}
-                onChange={handleInputChange}
-                onKeyDown={handleKeyPress}
-                placeholder={
-                  isToolInProgress
-                    ? "Running tool call…"
-                    : isLoading
-                      ? "Generating response…"
-                      : "Ask about projects, skills, availability, or contact…"
-                }
-                className="min-h-[56px] max-h-[180px] w-full resize-none border-none bg-transparent text-sm leading-6 text-slate-900 placeholder:text-slate-400 focus:outline-none"
-                disabled={isDisabled}
-              />
-            </div>
-          </div>
-
-          {/* Action row */}
-          <div className="flex items-center justify-between gap-3 border-t border-slate-100 px-4 py-2.5 bg-slate-50/60">
-            <div className="flex items-center gap-3">
-              <span className="font-mono text-[0.62rem] text-slate-400 tracking-wider">
-                ENTER to send · SHIFT+ENTER for newline
-              </span>
-              {input.length > 0 && (
-                <span
-                  className={`font-mono text-[0.62rem] tabular-nums ${
-                    input.length > 1800 ? "text-red-500" : "text-slate-400"
-                  }`}
-                >
-                  {input.length}/2000
-                </span>
-              )}
-            </div>
-
-            <button
-              type="submit"
-              disabled={!canSubmit && !isLoading}
-              className={`flex items-center gap-2 rounded-xl px-4 py-1.5 font-mono text-xs font-bold tracking-[0.1em] uppercase transition-all duration-150
-                ${
-                  isLoading
-                    ? "border border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100"
-                    : canSubmit
-                      ? "bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm shadow-indigo-200"
-                      : "bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200"
-                }`}
-              onClick={(e) => {
-                if (isLoading) {
-                  e.preventDefault();
-                  stop();
-                }
+          {isLoading ? (
+            <Square className="h-4 w-4 fill-current" />
+          ) : (
+            <motion.span
+              animate={canSubmit ? { y: [0, -2, 0] } : { y: 0 }}
+              transition={{
+                duration: 1.4,
+                repeat: canSubmit ? Infinity : 0,
+                ease: "easeInOut",
               }}
-              aria-label={isLoading ? "Stop generation" : "Send message"}
             >
-              {isLoading ? (
-                <>
-                  <Square className="h-3 w-3 fill-current" />
-                  Stop
-                </>
-              ) : (
-                "Send ↵"
-              )}
-            </button>
-          </div>
-        </motion.div>
-      </form>
-    </motion.div>
+              <ArrowUp className="h-5 w-5" strokeWidth={2.6} />
+            </motion.span>
+          )}
+        </motion.button>
+      </div>
+
+      <div className="mt-2.5 flex items-center justify-center gap-2.5 text-[0.62rem] text-slate-400 dark:text-slate-500">
+        <span className="inline-flex items-center gap-1">
+          <kbd className="rounded-md border border-slate-300/50 bg-white/50 px-1.5 py-0.5 font-sans text-[0.6rem] font-medium text-slate-500 dark:border-white/10 dark:bg-white/5 dark:text-slate-400">
+            Enter
+          </kbd>
+          to send
+          <span className="mx-1 text-slate-300 dark:text-slate-600">·</span>
+          <kbd className="rounded-md border border-slate-300/50 bg-white/50 px-1.5 py-0.5 font-sans text-[0.6rem] font-medium text-slate-500 dark:border-white/10 dark:bg-white/5 dark:text-slate-400">
+            Shift + Enter
+          </kbd>
+          newline
+        </span>
+        {input.length > 0 && (
+          <span
+            className={`font-mono tabular-nums ${
+              input.length > 1800 ? "text-red-500" : ""
+            }`}
+          >
+            {input.length}/2000
+          </span>
+        )}
+      </div>
+    </motion.form>
   );
 }
