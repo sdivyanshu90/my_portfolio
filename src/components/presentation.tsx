@@ -53,24 +53,18 @@ export function Presentation({ data }: { data?: PresentationData }) {
       {/* Profile card */}
       <motion.div
         variants={item}
-        className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm"
+        className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-slate-900"
       >
         {/* Gradient banner */}
-        <div
-          className="h-24 w-full"
-          style={{
-            background:
-              "linear-gradient(135deg, #eef2ff 0%, #f5f3ff 50%, #ecfdf5 100%)",
-          }}
-        />
+        <div className="h-24 w-full bg-gradient-to-br from-indigo-50 via-violet-50 to-emerald-50 dark:from-indigo-500/20 dark:via-violet-500/15 dark:to-emerald-500/10" />
 
         {/* Avatar + identity */}
         <div className="relative px-6 pb-6">
           {/* Avatar */}
           <motion.div
             variants={item}
-            className="relative -mt-12 mb-4 h-24 w-24 overflow-hidden rounded-2xl border-4 border-white shadow-md"
-            style={{ boxShadow: "0 4px 20px rgba(79,70,229,0.15), 0 0 0 4px white" }}
+            className="relative -mt-12 mb-4 h-24 w-24 overflow-hidden rounded-2xl border-4 border-white shadow-md dark:border-slate-800"
+            style={{ boxShadow: "0 4px 20px rgba(79,70,229,0.18)" }}
           >
             <Image
               src={profile.src || profile.fallbackSrc}
@@ -86,7 +80,7 @@ export function Presentation({ data }: { data?: PresentationData }) {
             <h2 className="font-display text-safe-balance text-2xl font-bold text-slate-900 sm:text-3xl">
               <span className="gradient-text">{profile.name}</span>
             </h2>
-            <p className="mt-1 text-sm font-medium text-slate-600">{profile.title}</p>
+            <p className="mt-1 text-sm font-medium text-slate-600 dark:text-slate-300">{profile.title}</p>
           </motion.div>
 
           {/* Meta row */}
@@ -95,7 +89,7 @@ export function Presentation({ data }: { data?: PresentationData }) {
             className="mt-3 flex flex-wrap items-center gap-3"
           >
             {profile.age && (
-              <span className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600">
+              <span className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
                 <Sparkles className="h-3 w-3 text-indigo-500" />
                 {profile.age}
               </span>
@@ -104,7 +98,7 @@ export function Presentation({ data }: { data?: PresentationData }) {
               <MapPin className="h-3 w-3 text-indigo-500" />
               {profile.location}
             </span>
-            <span className="flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
+            <span className="flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 dark:border-emerald-400/25 dark:bg-emerald-400/10 dark:text-emerald-300">
               <span className="led-green" style={{ width: 6, height: 6 }} />
               Available
             </span>
@@ -113,7 +107,7 @@ export function Presentation({ data }: { data?: PresentationData }) {
           {/* Bio */}
           <motion.p
             variants={item}
-            className="text-safe-wrap mt-5 text-sm leading-7 text-slate-600 max-w-2xl"
+            className="text-safe-wrap mt-5 text-sm leading-7 text-slate-600 dark:text-slate-300 max-w-2xl"
           >
             {profile.description}
           </motion.p>
@@ -129,7 +123,7 @@ export function Presentation({ data }: { data?: PresentationData }) {
                 {profile.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="text-safe-wrap rounded-xl border border-indigo-100 bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700"
+                    className="text-safe-wrap rounded-xl border border-indigo-100 bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700 dark:border-indigo-400/20 dark:bg-indigo-400/10 dark:text-indigo-300"
                   >
                     {tag}
                   </span>
