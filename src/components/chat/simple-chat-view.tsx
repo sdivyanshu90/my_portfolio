@@ -78,16 +78,21 @@ export function SimplifiedChatView({
       <div className="custom-scrollbar flex h-full w-full flex-col overflow-y-auto">
         {/* Tool invocation result - displayed at the top */}
         {hasTools && (
-          <div className="mb-4 w-full">
+          <motion.div
+            className="mb-4 w-full"
+            initial={{ opacity: 0, scale: 0.96, y: 12 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: easeOut }}
+          >
             <ToolRenderer toolInvocations={currentTool} />
-          </div>
+          </motion.div>
         )}
 
         {/* Text content - only show if meaningful and not redundant with tools */}
         {showTextContent && (
           <div className="w-full">
             <ChatBubble variant="received" className="w-full">
-              <ChatBubbleMessage className="w-full">
+              <ChatBubbleMessage className="glass-card w-full rounded-2xl p-5">
                 <ChatMessageContent
                   message={message}
                   isLast={true}
