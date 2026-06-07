@@ -5,9 +5,7 @@ import { motion } from "framer-motion";
 import {
   BriefcaseBusiness,
   BriefcaseIcon,
-  ChevronDown,
   ChevronRight,
-  ChevronUp,
   CircleEllipsis,
   CodeIcon,
   FileText,
@@ -115,7 +113,6 @@ export default function HelperBoost({
   submitQuery,
   handlePresetReply,
 }: HelperBoostProps) {
-  const [isVisible, setIsVisible] = useState(true);
   const [open, setOpen] = useState(false);
 
   const handleQuestionClick = (questionKey: string) => {
@@ -146,77 +143,37 @@ export default function HelperBoost({
     setOpen(false);
   };
 
-  const toggleVisibility = () => {
-    setIsVisible(!isVisible);
-  };
-
   return (
     <>
       <Drawer.Root open={open} onOpenChange={setOpen}>
-        <div className="w-full min-w-0 space-y-3">
-          <div className="flex items-start justify-between gap-4">
-            <div className="min-w-0">
-              <p className="section-kicker">Quick Routes</p>
-              <p className="text-safe-wrap mt-1 text-sm leading-6 text-slate-500">
-                Recruiter shortcuts for the questions that usually matter first.
-              </p>
-            </div>
-
+        <div className="custom-scrollbar flex w-full min-w-0 items-center gap-2 overflow-x-auto pb-1">
+          {questionConfig.map(({ key, color, icon: Icon }) => (
             <button
-              onClick={toggleVisibility}
-              className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-500 transition hover:bg-white"
+              key={key}
+              onClick={() => handleQuestionClick(key)}
+              className="glass-chip glass-hover shine flex h-auto flex-shrink-0 cursor-pointer items-center gap-2 rounded-full px-3.5 py-2 active:scale-[0.98]"
             >
-              {isVisible ? (
-                <>
-                  <ChevronDown size={14} />
-                  Hide routes
-                </>
-              ) : (
-                <>
-                  <ChevronUp size={14} />
-                  Show routes
-                </>
-              )}
+              <Icon size={15} strokeWidth={2} color={color} />
+              <span className="text-safe-wrap text-left font-mono text-xs font-medium text-slate-800 dark:text-slate-200">
+                {key}
+              </span>
             </button>
-          </div>
+          ))}
 
-          {isVisible && (
-            <div className="flex w-full min-w-0 flex-wrap gap-2">
-              {questionConfig.map(({ key, color, icon: Icon }) => (
-                <button
-                  key={key}
-                  onClick={() => handleQuestionClick(key)}
-                  className="flex h-auto min-w-[100px] max-w-full flex-shrink-0 cursor-pointer items-center gap-2.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-indigo-500/30 hover:bg-slate-100 active:scale-[0.98]"
-                >
-                  <span className="font-mono text-[0.62rem] font-semibold text-indigo-600 opacity-60">
-                    &gt;&gt;
-                  </span>
-                  <Icon size={16} strokeWidth={2} color={color} />
-                  <span className="text-safe-wrap text-left font-mono text-xs font-medium text-slate-800">
-                    {key}
-                  </span>
-                </button>
-              ))}
-
-              <Drawer.Trigger className="group relative flex flex-shrink-0 items-center justify-center">
-                <motion.div
-                  className="flex h-auto cursor-pointer items-center gap-2.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs text-slate-500 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-indigo-500/30 hover:bg-slate-100"
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <CircleEllipsis
-                    className="h-[16px] w-[16px]"
-                    strokeWidth={2}
-                  />
-                  <span className="font-mono text-xs font-medium">more</span>
-                </motion.div>
-              </Drawer.Trigger>
-            </div>
-          )}
+          <Drawer.Trigger className="group relative flex flex-shrink-0 items-center justify-center">
+            <motion.div
+              className="glass-chip glass-hover shine flex h-auto cursor-pointer items-center gap-2 rounded-full px-3.5 py-2 text-xs text-slate-500 dark:text-slate-300"
+              whileTap={{ scale: 0.98 }}
+            >
+              <CircleEllipsis className="h-[15px] w-[15px]" strokeWidth={2} />
+              <span className="font-mono text-xs font-medium">more</span>
+            </motion.div>
+          </Drawer.Trigger>
         </div>
 
         <Drawer.Portal>
           <Drawer.Overlay className="fixed inset-0 z-100 bg-slate-900/40 backdrop-blur-lg" />
-          <Drawer.Content className="fixed right-0 bottom-0 left-0 z-100 mt-24 flex h-[84%] flex-col rounded-t-[28px] border border-slate-200 bg-slate-50 outline-none lg:h-[68%]">
+          <Drawer.Content className="fixed right-0 bottom-0 left-0 z-100 mt-24 flex h-[84%] flex-col rounded-t-[28px] border border-slate-200 bg-slate-50 outline-none lg:h-[68%] dark:border-white/10 dark:bg-slate-900">
             <div className="flex-1 overflow-y-auto rounded-t-[28px] p-4 sm:p-6">
               <div className="mx-auto max-w-md space-y-4">
                 <div
@@ -225,7 +182,7 @@ export default function HelperBoost({
                 />
                 <div className="mx-auto w-full max-w-md">
                   <p className="section-kicker">Question Library</p>
-                  <h3 className="font-display text-safe-balance mt-3 text-3xl font-semibold tracking-tight text-slate-900">
+                  <h3 className="font-display text-safe-balance mt-3 text-3xl font-semibold tracking-tight text-slate-900 dark:text-white">
                     Browse the deeper prompt set.
                   </h3>
                   <div className="space-y-8 pb-16">
@@ -267,12 +224,12 @@ function CategorySection({
     <div className="space-y-3">
       <div className="flex items-center gap-2.5 px-1">
         <Icon className="h-5 w-5 text-indigo-600" />
-        <Drawer.Title className="font-display text-[22px] font-medium text-slate-900">
+        <Drawer.Title className="font-display text-[22px] font-medium text-slate-900 dark:text-white">
           {name}
         </Drawer.Title>
       </div>
 
-      <Separator className="my-4 bg-slate-200" />
+      <Separator className="my-4 bg-slate-200 dark:bg-white/10" />
 
       <div className="space-y-3">
         {questions.map((question) => (
@@ -306,19 +263,14 @@ function QuestionItem({ question, onClick, isSpecial }: QuestionItemProps) {
         "transition-all",
         "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0b544b]",
         isSpecial
-          ? "border-transparent bg-indigo-600 text-white"
-          : "border-slate-200 bg-white text-slate-800",
+          ? "border-transparent bg-indigo-600 text-white hover:bg-indigo-700"
+          : "border-slate-200 bg-white text-slate-800 hover:bg-slate-50 dark:border-white/10 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700",
       )}
       onClick={onClick}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      whileHover={{
-        backgroundColor: isSpecial ? undefined : "#ffffff",
-      }}
-      whileTap={{
-        scale: 0.98,
-        backgroundColor: isSpecial ? undefined : "#f8fafc",
-      }}
+      whileHover={{ y: -1 }}
+      whileTap={{ scale: 0.98 }}
     >
       <div className="flex min-w-0 items-center">
         {isSpecial && <Sparkles className="mr-2 h-4 w-4 text-white" />}
