@@ -69,11 +69,11 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-white mx-auto mt-8 w-full max-w-4xl min-w-0 rounded-3xl px-6 py-8 font-sans sm:px-10 md:px-16 md:py-12"
+      className="bg-white dark:bg-slate-900 dark:ring-1 dark:ring-white/10 mx-auto mt-8 w-full max-w-4xl min-w-0 rounded-3xl px-6 py-8 font-sans sm:px-10 md:px-16 md:py-12"
     >
       <div className="mb-6 flex flex-col items-center sm:flex-row sm:items-center sm:justify-between">
         <div className="flex min-w-0 items-center gap-4">
-          <div className="bg-slate-100 h-16 w-16 overflow-hidden rounded-full ">
+          <div className="bg-slate-100 dark:bg-slate-800 h-16 w-16 overflow-hidden rounded-full ">
             <Image
               src="/profile.jpg"
               alt="Divanshu Sharma avatar"
@@ -83,10 +83,10 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
             />
           </div>
           <div className="min-w-0">
-            <h2 className="text-safe-balance text-slate-900 text-2xl font-semibold">
+            <h2 className="text-safe-balance text-slate-900 dark:text-white text-2xl font-semibold">
               Divanshu Sharma
             </h2>
-            <p className="text-safe-wrap text-slate-500 text-sm">
+            <p className="text-safe-wrap text-slate-500 dark:text-slate-400 text-sm">
               Available for Opportunities
             </p>
           </div>
@@ -100,33 +100,33 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
             </span>
             Available Now
           </span>
-          <p className="text-center text-xs text-slate-500 sm:text-right">
+          <p className="text-center text-xs text-slate-500 dark:text-slate-400 sm:text-right">
             Open to full-time & internship roles
           </p>
         </div>
       </div>
 
-      <div className="mb-8 rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-indigo-50 p-6">
+      <div className="mb-8 rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-indigo-50 p-6 dark:border-emerald-400/20 dark:from-emerald-500/10 dark:to-indigo-500/10">
         <div className="mb-4 flex items-center gap-3">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500">
             <Briefcase className="h-4 w-4 text-white" />
           </div>
-          <h3 className="text-lg font-semibold text-slate-900">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
             Current Availability Status
           </h3>
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <p className="mb-1 text-sm font-medium text-slate-900">Status</p>
-            <p className="text-safe-wrap text-sm font-semibold text-emerald-700">
+            <p className="mb-1 text-sm font-medium text-slate-900 dark:text-white">Status</p>
+            <p className="text-safe-wrap text-sm font-semibold text-emerald-700 dark:text-emerald-300">
               {data?.availability ?? config.internship.availability}
             </p>
           </div>
           <div>
-            <p className="mb-1 text-sm font-medium text-slate-900">
+            <p className="mb-1 text-sm font-medium text-slate-900 dark:text-white">
               Looking for
             </p>
-            <p className="text-safe-wrap text-sm font-semibold text-indigo-600">
+            <p className="text-safe-wrap text-sm font-semibold text-indigo-600 dark:text-indigo-300">
               {roleTypes.slice(0, 3).join(", ")}
             </p>
           </div>
@@ -137,8 +137,8 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
         <div className="flex items-start gap-3">
           <CalendarDays className="mt-1 h-5 w-5 text-blue-500" />
           <div>
-            <p className="text-slate-900 text-sm font-medium">Duration</p>
-            <p className="text-safe-wrap text-slate-500 text-sm">
+            <p className="text-slate-900 dark:text-white text-sm font-medium">Duration</p>
+            <p className="text-safe-wrap text-slate-500 dark:text-slate-400 text-sm">
               {duration}
             </p>
           </div>
@@ -146,8 +146,8 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
         <div className="flex items-start gap-3">
           <Globe className="mt-1 h-5 w-5 text-green-500" />
           <div>
-            <p className="text-slate-900 text-sm font-medium">Location</p>
-            <p className="text-safe-wrap text-slate-500 text-sm">
+            <p className="text-slate-900 dark:text-white text-sm font-medium">Location</p>
+            <p className="text-safe-wrap text-slate-500 dark:text-slate-400 text-sm">
               {location} • {workMode}
             </p>
           </div>
@@ -156,8 +156,8 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
         <div className="flex items-start gap-3 sm:col-span-2">
           <Code2 className="mt-1 h-5 w-5 text-purple-500" />
           <div className="w-full">
-            <p className="text-slate-900 text-sm font-medium">Tech stack</p>
-            <div className="text-slate-500 grid grid-cols-1 gap-y-1 text-sm sm:grid-cols-2">
+            <p className="text-slate-900 dark:text-white text-sm font-medium">Tech stack</p>
+            <div className="text-slate-500 dark:text-slate-400 grid grid-cols-1 gap-y-1 text-sm sm:grid-cols-2">
               <ul className="list-disc pl-4">
                 {technicalSkills.slice(0, 4).map((skill) => (
                   <li key={skill} className="text-safe-wrap">
@@ -186,10 +186,10 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
       </div>
 
       <div className="mt-10">
-        <p className="mb-2 text-lg font-semibold text-slate-900">
+        <p className="mb-2 text-lg font-semibold text-slate-900 dark:text-white">
           What I bring
         </p>
-        <ul className="space-y-2 text-sm text-slate-500">
+        <ul className="space-y-2 text-sm text-slate-500 dark:text-slate-400">
           {achievements.slice(0, 3).map((achievement) => (
             <li key={achievement} className="text-safe-wrap">
               {achievement}
@@ -199,8 +199,8 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
       </div>
 
       <div className="mt-8">
-        <p className="mb-2 text-lg font-semibold text-slate-900">Goal</p>
-        <p className="text-safe-wrap text-sm text-slate-900">
+        <p className="mb-2 text-lg font-semibold text-slate-900 dark:text-white">Goal</p>
+        <p className="text-safe-wrap text-sm text-slate-900 dark:text-white">
           {lookingFor?.growthOpportunities ||
             "Looking for roles that offer strong ownership, learning velocity, and long-term growth."}{" "}
           I want to work on{" "}
@@ -219,7 +219,7 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
       <div className="mt-10 flex justify-center">
         <button
           onClick={handleContactClick}
-          className="cursor-pointer rounded-full bg-black px-6 py-3 font-semibold text-white transition-colors duration-300 hover:bg-zinc-800"
+          className="cursor-pointer rounded-full bg-black px-6 py-3 font-semibold text-white transition-colors duration-300 hover:bg-zinc-800 dark:bg-indigo-600 dark:hover:bg-indigo-500"
         >
           Contact me
         </button>
