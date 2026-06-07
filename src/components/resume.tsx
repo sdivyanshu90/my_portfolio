@@ -56,7 +56,7 @@ export function Resume({ data }: { data?: ResumeCardData }) {
   return (
     <div className="mx-auto w-full min-w-0 py-8 font-sans">
       <motion.div
-        className="group relative mb-4 min-w-0 overflow-hidden rounded-xl bg-[#0e1520] p-0 transition-all duration-300"
+        className="group relative mb-4 min-w-0 overflow-hidden rounded-xl bg-white p-0 transition-all duration-300 dark:bg-slate-900 dark:ring-1 dark:ring-white/10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.2, ease: "easeOut" }}
@@ -64,23 +64,23 @@ export function Resume({ data }: { data?: ResumeCardData }) {
         <div className="p-5">
           <div className="flex min-w-0 items-center justify-between gap-4">
             <div className="min-w-0">
-              <h3 className="text-safe-balance text-lg font-medium text-[#e2e8f0]">
+              <h3 className="text-safe-balance text-lg font-medium text-slate-900 dark:text-white">
                 {resumeDetails.title}
               </h3>
-              <p className="text-safe-wrap text-sm text-[#8b9db5]">
+              <p className="text-safe-wrap text-sm text-slate-500 dark:text-slate-400">
                 {resumeDetails.description}
               </p>
               <div className="mt-2 flex flex-wrap gap-2">
                 {targetRoles.map((role) => (
                   <span
                     key={role}
-                    className="text-safe-wrap rounded-full bg-background px-3 py-1 text-xs text-[#8b9db5]"
+                    className="text-safe-wrap rounded-full bg-background px-3 py-1 text-xs text-slate-500 dark:text-slate-400"
                   >
                     {role}
                   </span>
                 ))}
               </div>
-              <div className="mt-2 flex flex-wrap text-xs text-[#8b9db5]">
+              <div className="mt-2 flex flex-wrap text-xs text-slate-500 dark:text-slate-400">
                 <span className="text-safe-wrap">{resumeDetails.fileType}</span>
                 <span className="mx-2">•</span>
                 <span className="text-safe-wrap">
@@ -93,7 +93,7 @@ export function Resume({ data }: { data?: ResumeCardData }) {
 
             <motion.button
               onClick={handleDownload}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black text-white transition-colors hover:bg-black/80"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black text-white transition-colors hover:bg-black/80 dark:bg-indigo-600 dark:hover:bg-indigo-500"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               title="Download PDF"
@@ -108,12 +108,12 @@ export function Resume({ data }: { data?: ResumeCardData }) {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.2 }}
-        className="overflow-hidden rounded-xl border bg-[#0e1520] "
+        className="overflow-hidden rounded-xl border bg-white dark:bg-slate-900"
       >
-        <div className="flex items-center justify-between border-b bg-gray-100 px-4 py-2">
+        <div className="flex items-center justify-between border-b bg-gray-100 px-4 py-2 dark:bg-white/5">
           <div className="flex items-center gap-2">
-            <File className="h-4 w-4 text-gray-600" />
-            <span className="text-sm font-medium text-gray-700">
+            <File className="h-4 w-4 text-gray-600 dark:text-slate-400" />
+            <span className="text-sm font-medium text-gray-700 dark:text-slate-200">
               Resume Preview
             </span>
           </div>
@@ -126,7 +126,7 @@ export function Resume({ data }: { data?: ResumeCardData }) {
           </button>
         </div>
 
-        <div className="h-[600px] w-full bg-gray-50">
+        <div className="h-[600px] w-full bg-gray-50 dark:bg-slate-800">
           <iframe
             src={resumeDetails.downloadUrl}
             width="100%"
@@ -139,7 +139,7 @@ export function Resume({ data }: { data?: ResumeCardData }) {
 
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         <div className="rounded-xl border bg-background p-5">
-          <h4 className="text-sm font-semibold text-[#e2e8f0]">
+          <h4 className="text-sm font-semibold text-slate-900 dark:text-white">
             Certifications
           </h4>
           <div className="mt-3 space-y-3">
@@ -148,10 +148,10 @@ export function Resume({ data }: { data?: ResumeCardData }) {
                 key={`${certification.name}-${certification.year}`}
                 className="min-w-0"
               >
-                <p className="text-safe-wrap text-sm font-medium text-[#e2e8f0]">
+                <p className="text-safe-wrap text-sm font-medium text-slate-900 dark:text-white">
                   {certification.name}
                 </p>
-                <p className="text-safe-wrap text-xs text-[#8b9db5]">
+                <p className="text-safe-wrap text-xs text-slate-500 dark:text-slate-400">
                   {certification.issuer} • {certification.year}
                 </p>
               </div>
@@ -160,16 +160,16 @@ export function Resume({ data }: { data?: ResumeCardData }) {
         </div>
 
         <div className="rounded-xl border bg-background p-5">
-          <h4 className="text-sm font-semibold text-[#e2e8f0]">
+          <h4 className="text-sm font-semibold text-slate-900 dark:text-white">
             Resume Highlights
           </h4>
-          <ul className="mt-3 space-y-3 text-sm text-[#8b9db5]">
+          <ul className="mt-3 space-y-3 text-sm text-slate-500 dark:text-slate-400">
             {experience.slice(0, 2).map((item) => (
               <li
                 key={`${item.company}-${item.position}`}
                 className="text-safe-wrap"
               >
-                <span className="font-medium text-[#e2e8f0]">
+                <span className="font-medium text-slate-900 dark:text-white">
                   {item.position}
                 </span>{" "}
                 at {item.company} • {item.duration}
