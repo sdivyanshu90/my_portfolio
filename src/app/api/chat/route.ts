@@ -11,7 +11,7 @@ import { getProjects } from "./tools/getProjects";
 import { getResume } from "./tools/getResume";
 import { getSkills } from "./tools/getSkills";
 
-export const maxDuration = 30;
+export const maxDuration = 60;
 
 const MAX_MESSAGE_COUNT = 16;
 const MAX_MESSAGE_LENGTH = 2_000;
@@ -123,9 +123,18 @@ const portfolioEntityPhrases = [
   ...config.experience.map((experience) => experience.company),
   ...config.experience.map((experience) => experience.position),
   ...config.projects.map((project) => project.title),
+  // Treat the candidate's actual skills/tech as in-scope anchors so recruiter
+  // questions like "do you know React?" or "PyTorch experience?" are accepted.
+  ...config.skills.programming,
+  ...config.skills.ml_ai,
+  ...config.skills.web_development,
+  ...config.skills.databases,
+  ...config.skills.devops_cloud,
 ]
   .map((value) => normalizeScopeText(value))
-  .filter(Boolean);
+  // Keep phrases >= 4 chars so short tokens ("c", "go", "ml", "ai") don't
+  // match almost any message.
+  .filter((value) => value.length >= 4);
 
 type RateLimitEntry = {
   count: number;
@@ -189,10 +198,18 @@ function isDirectlyInScopeRequest(message: string) {
     return true;
   }
 
+  // Any question directed at the candidate ("you/your/yourself", "your resume",
+  // etc.) is in scope — recruiters ask "do you know React?", "can you build X?",
+  // "have you done system design?". The system prompt keeps the model on-topic;
+  // this coarse gate should only block obviously unrelated spam, not legitimate
+  // recruiter prompts.
+  if (CANDIDATE_ANCHOR_PATTERN.test(normalizedMessage)) {
+    return true;
+  }
+
   return (
-    CANDIDATE_ANCHOR_PATTERN.test(normalizedMessage) &&
-    (PORTFOLIO_TOPIC_PATTERN.test(normalizedMessage) ||
-      PORTFOLIO_TRANSFORM_PATTERN.test(normalizedMessage))
+    PORTFOLIO_TOPIC_PATTERN.test(normalizedMessage) ||
+    PORTFOLIO_TRANSFORM_PATTERN.test(normalizedMessage)
   );
 }
 
@@ -684,6 +701,11 @@ export async function POST(req: Request) {
       tools,
       experimental_repairToolCall: repairPortfolioToolCall,
       temperature: 0.2,
+      // Give the model a definite output budget so it can finish a complete
+      // answer instead of being truncated mid-sentence by the provider's
+      // implicit default cap. Paired with the conciseness rules in the system
+      // prompt, this is comfortably enough for a full recruiter-facing reply.
+      maxTokens: 1800,
       maxSteps: 2,
     });
 
