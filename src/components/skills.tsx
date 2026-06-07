@@ -120,10 +120,10 @@ const Skills = ({ data }: { data?: SkillsCardData }) => {
     >
       <div className="mb-7 px-1">
         <p className="section-kicker">Capability Matrix</p>
-        <h2 className="font-display text-safe-balance mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+        <h2 className="font-display text-safe-balance mt-3 text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
           Skills & Expertise
         </h2>
-        <p className="text-safe-wrap mt-2 text-sm leading-6 text-slate-500">
+        <p className="text-safe-wrap mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400 dark:text-slate-500">
           Depth per domain — verified by shipped systems and research output.
         </p>
       </div>
@@ -132,13 +132,13 @@ const Skills = ({ data }: { data?: SkillsCardData }) => {
         {sections.map((section, si) => (
           <motion.div
             key={section.id}
-            className={`overflow-hidden rounded-2xl border ${section.border} bg-white shadow-sm`}
+            className={`overflow-hidden rounded-2xl border ${section.border} bg-white shadow-sm dark:border-white/10 dark:bg-slate-900`}
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: easeOut, delay: si * 0.07 }}
           >
             {/* Header */}
-            <div className={`flex items-center gap-3 border-b ${section.border} ${section.bg} px-5 py-3`}>
+            <div className={`flex items-center gap-3 border-b ${section.border} ${section.bg} px-5 py-3 dark:border-white/10 dark:bg-white/[0.04]`}>
               <span
                 className="h-2 w-2 rounded-full flex-shrink-0"
                 style={{ background: section.accent }}
@@ -146,21 +146,21 @@ const Skills = ({ data }: { data?: SkillsCardData }) => {
               <span className={`font-mono text-[0.7rem] font-bold tracking-[0.18em] uppercase ${section.textColor}`}>
                 {section.label}
               </span>
-              <span className="font-mono text-[0.62rem] text-slate-400 ml-auto">
+              <span className="font-mono text-[0.62rem] text-slate-400 dark:text-slate-500 ml-auto">
                 {section.skills.length} skills
               </span>
             </div>
 
             {/* Skill rows */}
-            <div className="divide-y divide-slate-50">
+            <div className="divide-y divide-slate-50 dark:divide-white/5">
               {section.skills.map((skill, i) => {
                 const level = section.levels[i] ?? 4;
                 return (
                   <div
                     key={skill}
-                    className="flex items-center gap-4 px-5 py-3 hover:bg-slate-50 transition-colors"
+                    className="flex items-center gap-4 px-5 py-3 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
                   >
-                    <span className="text-safe-wrap w-40 shrink-0 text-sm font-medium text-slate-800">
+                    <span className="text-safe-wrap w-40 shrink-0 text-sm font-medium text-slate-800 dark:text-slate-200">
                       {skill}
                     </span>
                     <div className="flex-1 min-w-0">
@@ -170,7 +170,7 @@ const Skills = ({ data }: { data?: SkillsCardData }) => {
                         delay={si * 0.05 + i * 0.03}
                       />
                     </div>
-                    <span className="font-mono text-[0.65rem] text-slate-400 tabular-nums w-6 text-right shrink-0">
+                    <span className="font-mono text-[0.65rem] text-slate-400 dark:text-slate-500 tabular-nums w-6 text-right shrink-0">
                       {level}/5
                     </span>
                   </div>
@@ -183,7 +183,7 @@ const Skills = ({ data }: { data?: SkillsCardData }) => {
 
       {/* Legend */}
       <div className="mt-5 flex flex-wrap items-center gap-4 px-1">
-        <span className="font-mono text-[0.6rem] text-slate-400 tracking-wider uppercase">Legend</span>
+        <span className="font-mono text-[0.6rem] text-slate-400 dark:text-slate-500 tracking-wider uppercase">Legend</span>
         {["Learning", "Familiar", "Proficient", "Advanced", "Expert"].map((label, i) => (
           <div key={label} className="flex items-center gap-1.5">
             <div className="skill-track w-10">
@@ -192,7 +192,7 @@ const Skills = ({ data }: { data?: SkillsCardData }) => {
                 style={{ width: `${((i + 1) / 5) * 100}%`, background: "#4f46e5" }}
               />
             </div>
-            <span className="font-mono text-[0.6rem] text-slate-400">{label}</span>
+            <span className="font-mono text-[0.6rem] text-slate-400 dark:text-slate-500">{label}</span>
           </div>
         ))}
       </div>
