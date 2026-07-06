@@ -1,167 +1,85 @@
-# Developer Portfolio
+# DIV-1 — an AI-native portfolio
 
-> A modern, AI-enhanced developer portfolio built with Next.js, Tailwind CSS, and the Vercel AI SDK.
+> **One screen. No scrolling. Ask, and watch the answer assemble.**
+> DIV-1 presents Divanshu Sharma as a queryable model on a single
+> non-scrolling stage: behind the answer card hangs a constellation in which
+> **every star is one of his real systems** — 31 from-scratch repos clustered
+> by stack layer plus 6 case studies. Type a question and the relevant stars
+> begin to glow; run it and they converge into the answer.
 
-![License](https://img.shields.io/badge/License-MIT-yellow.svg)
-![Next.js](https://img.shields.io/badge/Next.js-15-black)
-![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue)
-![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v4-38b2ac)
+**Live:** [https://div90.vercel.app/](https://div90.vercel.app/)
 
----
+## Why this isn't another portfolio chatbot
 
-## Live Demo
+The 2026 "AI portfolio" genre is a chat bubble over a résumé. DIV-1 is an
+**inference stage with generative UI**:
 
-**[https://div90.vercel.app/](https://div90.vercel.app/)**
+| | Chat-bubble portfolios | DIV-1 |
+|---|---|---|
+| Surface | a scrolling page + widget | **one viewport**: constellation, answer card, command bar |
+| Answers | prose | **typed artifacts** — case-study figures, the filterable from-scratch index, an experience changelog, capability matrix, contact cards — composed per query |
+| The background | decoration | **the data**: every star is a real repo — hover names it, click opens it, answers visibly condense from the stars they cite |
+| Mechanism | hidden | **transparent trace**: `intent → get_index(Inference & serving) → synthesis: <model> · 1.8s` + provenance chips |
+| Audience | one-size | **modes** — Recruiter / Engineer / Founder swap presets & tone |
+| Model down | dead site | **fully functional** — deterministic router renders exact artifacts; narration falls back honestly |
+| First paint | empty chat | **pre-answered `whoami` boot card** (statically rendered) with key results & contact chrome |
 
----
+Aesthetic: the genre default is neon terminal; DIV-1 is a **hand-drawn star
+chart on paper** — warm paper, iron-gall ink, rubrication red, Newsreader +
+IBM Plex Mono — with a *microfiche* dark mode.
 
-## About
+**The animation system** (bounded, adaptive 30/60fps, fully
+`prefers-reduced-motion`-safe): constellation ignition · drift, cluster
+breathing, twinkle, shooting stars · pointer parallax · typing-stir with
+live constellation threads · the signature **astrolabe sweep** (a scan ring
+sweeps the sky when a run starts) · **ink comets** flying the cited stars
+into the card, which ripples on impact and **typesets itself** in a cascade
+· dismiss-sparks · a circular **ink-flood theme wipe** (View Transitions) ·
+odometer count-ups, staggered rows, sliding ink chips, input shake, blinking
+caret. Try `sudo hire` — and press `/` anywhere to focus the prompt.
 
-A fully customizable portfolio template for developers and engineers. Personalize it entirely through `portfolio-config.json` — no code changes required for content. Features an AI-powered chatbot that answers questions about your skills, projects, and experience using tool-calling.
+**Security:** a deterministic injection screen quarantines prompt-attack
+queries before any model sees them (they get the sealed system card and a
+*ward* animation instead); model identifiers are sanitized in the UI; the
+narrator treats visitor messages as data, never instructions, and questions
+about the console itself always get a fixed, handwritten answer. Per-IP
+throttling on `/api/ask`.
 
----
-
-## Features
-
-- **Config-driven** — all personal data, projects, and skills live in `portfolio-config.json`
-- **AI chatbot** — powered by Vercel AI SDK with OpenAI-compatible models; uses tool-calling to answer contextual questions
-- **Dynamic sections** — projects, resume, skills, internships, and contact
-- **Dark mode** — theme support with `next-themes`
-- **Responsive** — mobile-first layout with Framer Motion animations
-- **SEO ready** — meta tags and `sitemap.xml` included
-
----
-
-## Tech Stack
-
-| Technology        | Role                          |
-|-------------------|-------------------------------|
-| **Next.js 15**    | React framework (App Router)  |
-| **TypeScript**    | Type-safe development         |
-| **Tailwind CSS**  | Utility-first styling         |
-| **Vercel AI SDK** | AI chat with tool-calling     |
-| **Framer Motion** | Animations                    |
-| **Radix UI**      | Accessible UI primitives      |
-| **Vercel**        | Recommended deployment        |
-
----
-
-## Project Structure
+## Architecture
 
 ```
-src/
-├── app/
-│   ├── page.tsx              # Home page
-│   ├── layout.tsx            # Root layout
-│   └── api/chat/             # AI chat API route + tools
-├── components/               # UI and section components
-│   └── chat/                 # Chat UI components
-├── lib/                      # Config loader and utilities
-└── types/                    # TypeScript types
-public/                       # Static assets
-docs/                         # Contributing guide and license
-portfolio-config.json         # All portfolio content
+question ──▶ /api/ask ──▶ deterministic intent router (multi-intent regex)
+                           ├─ trace events            (NDJSON stream)
+                           ├─ artifact specs ──▶ client renders from local dossier
+                           │                     └─ stars converge (canvas field)
+                           └─ narration: OpenRouter chain (12s first-token
+                              deadline per model) → else handwritten fallback
 ```
 
----
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js v18+
-- pnpm (or npm/yarn)
-- An OpenAI-compatible API key (e.g. OpenAI, Groq, etc.)
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/sdivyanshu90/my_portfolio.git
-   cd my_portfolio
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pnpm install
-   ```
-
-3. **Configure environment variables**
-   ```bash
-   cp .env.example .env.local
-   ```
-   Edit `.env.local` and add your API key:
-   ```env
-   OPENAI_API_KEY=your_api_key_here
-   # Optional: OPENAI_BASE_URL=https://api.groq.com/openai/v1
-   ```
-
-4. **Start the dev server**
-   ```bash
-   pnpm dev
-   ```
-   Open [http://localhost:3000](http://localhost:3000).
-
----
+- **Next.js 15** App Router; static shell (Lighthouse a11y 100, CLS 0, FCP 0.8s)
+- **`src/data/portfolio.ts`** — single typed dossier; every fact traces to the
+  résumé PDF, GitHub, or repo READMEs; unverified fields carry a `placeholder` mark
+- **`src/lib/intents.ts`** — router + provenance map + fallback narrations
+- **`src/components/console/field.tsx`** — the constellation (canvas, 30fps
+  cap, lazy-loaded, static under reduced motion)
+- **Tailwind CSS v4** tokens · **framer-motion** · **next-themes** · zero AI-SDK deps
 
 ## Configuration
 
-Edit `portfolio-config.json` to set your personal info, projects, skills, and more:
+Narration uses OpenRouter (optional — the console works without it):
 
-```json
-{
-  "personal": {
-    "name": "Your Name",
-    "title": "Your Title",
-    "bio": "Short bio...",
-    "email": "you@example.com"
-  },
-  "projects": [...],
-  "skills": [...],
-  "chatbot": { ... }
-}
+```
+OPENROUTER_API_KEY=sk-or-...
+OPENROUTER_MODEL=google/gemma-4-31b-it:free   # optional; chain falls back
 ```
 
-The AI chatbot reads this config at runtime via tool-calls, so updates take effect without redeployment.
-
----
-
-## Deployment
-
-### Vercel (recommended)
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/sdivyanshu90/my_portfolio)
-
-Set your environment variables in the Vercel dashboard, then deploy.
-
-### Manual build
+## Development
 
 ```bash
-pnpm build
-pnpm start
+npm install
+npm run dev    # http://localhost:3000
+npm run build  # static build + sitemap/robots/OG image generation
 ```
-
----
-
-## Scripts
-
-```bash
-pnpm dev          # Start development server
-pnpm build        # Production build
-pnpm start        # Start production server
-pnpm lint         # ESLint
-```
-
----
-
-## Contributing
-
-See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for guidelines.
-
-- [Open an issue](https://github.com/sdivyanshu90/my_portfolio/issues)
-- [Start a discussion](https://github.com/sdivyanshu90/my_portfolio/discussions)
-
----
 
 ## License
 
