@@ -1,164 +1,117 @@
 import { Analytics } from "@vercel/analytics/react";
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
-import { cn } from "@/lib/utils";
-import { getConfig } from "@/lib/config-loader";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "@/components/ui/sonner";
+import { IBM_Plex_Mono, Newsreader } from "next/font/google";
+import { ThemeProvider } from "next-themes";
+import { personal, site, socials } from "@/data/portfolio";
 import "./globals.css";
 
-// Load Inter font for non-Apple devices
-const inter = Inter({
+const newsreader = Newsreader({
   subsets: ["latin"],
-  variable: "--font-inter",
+  style: ["normal", "italic"],
+  variable: "--font-newsreader",
+  display: "swap",
 });
 
-const spaceGrotesk = Space_Grotesk({
+const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
-  variable: "--font-space-grotesk",
+  weight: ["400", "500", "600"],
+  variable: "--font-plex-mono",
+  display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-jetbrains-mono",
-  weight: ["400", "500", "600", "700"],
-});
-
-const config = getConfig();
-const siteUrl = config.meta.siteUrl;
-const ogImageUrl = new URL(config.meta.ogImage, siteUrl).toString();
-const socialLinks = Object.values(config.social).filter(Boolean);
-const structuredData = {
+const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
-  name: config.personal.name,
-  jobTitle: config.personal.title,
-  url: siteUrl,
-  image: new URL(config.personal.avatar, siteUrl).toString(),
-  sameAs: socialLinks,
-  alumniOf: {
-    "@type": "CollegeOrUniversity",
-    name: config.education.completed1.institution,
+  name: personal.name,
+  jobTitle: personal.roles.join(", "),
+  worksFor: { "@type": "Organization", name: "Uniiq", url: "https://uniiq.ai" },
+  alumniOf: { "@type": "CollegeOrUniversity", name: "University of Mumbai" },
+  email: `mailto:${personal.email}`,
+  url: site.url,
+  image: new URL(personal.avatar, site.url).toString(),
+  sameAs: socials.map((s) => s.href),
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Navi Mumbai",
+    addressCountry: "IN",
   },
-  worksFor: config.experience[0]
-    ? {
-        "@type": "Organization",
-        name: config.experience[0].company,
-      }
-    : undefined,
   knowsAbout: [
-    ...config.skills.programming.slice(0, 4),
-    ...config.skills.ml_ai.slice(0, 6),
-    ...config.skills.web_development.slice(0, 4),
+    "Machine Learning",
+    "Deep Learning",
+    "LLM Systems",
+    "Multi-Party Computation",
+    "PyTorch",
+    "Quantitative Research",
+    "MLOps",
   ],
-  description: config.meta.description,
+  description: site.description,
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#faf7f0" },
+    { media: "(prefers-color-scheme: dark)", color: "#14161a" },
+  ],
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(site.url),
   title: {
-    default: `${config.personal.name} - ${config.personal.title}`,
-    template: `%s | ${config.personal.name}`,
+    default: site.title,
+    template: `%s — ${personal.name}`,
   },
-  description: config.meta.description,
+  description: site.description,
+  alternates: { canonical: "/" },
+  authors: [{ name: personal.name, url: site.url }],
+  creator: personal.name,
   keywords: [
-    config.personal.name,
-    ...config.personal.targetRoles,
-    ...config.skills.ml_ai.slice(0, 8),
-    ...config.skills.web_development.slice(0, 6),
+    personal.name,
+    "Machine Learning Engineer",
+    "AI Engineer",
+    "LLM systems",
+    "MLOps",
+    "PyTorch",
+    "multi-party computation",
+    "from scratch",
+    "Uniiq",
   ],
-  authors: [
-    {
-      name: config.personal.name,
-      url: siteUrl,
-    },
-  ],
-  creator: config.personal.name,
-  publisher: config.personal.name,
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
   openGraph: {
-    type: "website",
+    type: "profile",
     locale: "en_US",
-    url: siteUrl,
-    title: `${config.personal.name} - ${config.personal.title}`,
-    description: config.meta.description,
-    siteName: `${config.personal.name} Portfolio`,
-    images: [
-      {
-        url: ogImageUrl,
-        width: 1200,
-        height: 630,
-        alt: `${config.personal.name} portfolio preview`,
-        type: "image/png",
-      },
-    ],
+    url: site.url,
+    title: site.title,
+    description: site.description,
+    siteName: personal.name,
   },
-  icons: {
-    icon: [
-      {
-        url: "/favicon.ico",
-        sizes: "any",
-      },
-    ],
-    shortcut: "/favicon.ico",
+  twitter: {
+    card: "summary_large_image",
+    title: site.title,
+    description: site.description,
   },
-  manifest: "/manifest.json",
   category: "technology",
-  classification: "Portfolio Website",
-  verification: config.meta.googleSiteVerification
-    ? {
-        google: config.meta.googleSiteVerification,
-      }
-    : undefined,
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+      <body
+        className={`${newsreader.variable} ${plexMono.variable} min-h-screen bg-paper font-serif text-ink antialiased`}
+      >
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData),
-          }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
-      </head>
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          inter.variable,
-          spaceGrotesk.variable,
-          jetbrainsMono.variable,
-        )}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem={false}
-          disableTransitionOnChange
-        >
-          <main className="flex min-h-screen flex-col">{children}</main>
-          <Toaster />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
         </ThemeProvider>
         <Analytics />
       </body>
