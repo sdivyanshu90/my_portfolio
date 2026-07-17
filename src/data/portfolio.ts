@@ -2,7 +2,8 @@
  * Single source of truth for every word on the site.
  *
  * Provenance rules (do not violate):
- *  - Facts come from the resume PDF, the GitHub profile/API, or repo READMEs.
+ *  - Facts come from the resume PDF, the GitHub profile/API, repo READMEs,
+ *    or Divanshu's supplied Uniiq engineering work summary.
  *  - Anything unverified is marked `placeholder: true` and rendered with a
  *    footnote asterisk instead of being stated as fact.
  */
@@ -13,7 +14,7 @@ export const site = {
   reportId: "DIV-2026.07",
   title: "Divanshu Sharma — Machine Learning & AI Engineer",
   description:
-    "Divanshu Sharma is a machine learning engineer who rebuilds the modern AI stack from first principles — CTO at Uniiq, previously ML research at Yale and quantitative research at WorldQuant BRAIN. DIV-1 is his AI-native portfolio: query it like a model and get answers as live, source-cited artifacts.",
+    "Divanshu Sharma is a machine learning engineer who rebuilds the modern AI stack from first principles — Founding Engineer at Uniiq, previously ML research at Yale and quantitative research at WorldQuant BRAIN. DIV-1 is his AI-native portfolio: query it like a model and get answers as live, source-cited artifacts.",
 } as const;
 
 export const personal = {
@@ -21,19 +22,23 @@ export const personal = {
   // Single lead identity for display (recruiters shortlist on one line);
   // `roles` stays the full IC list for metadata / JSON-LD.
   lead: "Machine Learning & AI Engineer",
-  context:
-    "Systems from first principles · currently CTO @ Uniiq · Navi Mumbai",
-  roles: ["Machine Learning Engineer", "AI Engineer", "Software Engineer"],
-  currentRole: "CTO @ Uniiq",
+  context: "Systems from first principles · Founding Engineer @ Uniiq · Mumbai",
+  roles: [
+    "Founding Engineer",
+    "Machine Learning Engineer",
+    "AI Engineer",
+    "Software Engineer",
+  ],
+  currentRole: "Founding Engineer @ Uniiq",
   openTo: "Open to AI engineering & founding roles", // verbatim from GitHub bio
-  location: "Navi Mumbai, India",
+  location: "Mumbai, India",
   email: "divyanshu74.80@gmail.com", // per resume PDF & GitHub — the old config's "divanshu…" was a typo
   phone: "+91-9594506208",
   avatar: "/profile.jpg",
   abstract: [
     "Machine learning engineer with a habit of rebuilding the modern AI stack from first principles — transformers, diffusion, RLHF, paged KV-caches, quantization, vector indexes — and publishing each system as a readable, tested repository.",
-    "Currently CTO at Uniiq, an AI-powered college advising platform. Previously: privacy-preserving deep learning research at Yale University (compiler-centric multi-party computation) and three years of quantitative alpha research at WorldQuant BRAIN.",
-    "The through-line is evaluation: consensus-fused ASR, historical OCR at 98%+ word accuracy, an eval harness built from scratch. No magic — just systems, measured.",
+    "Currently a Founding Engineer at Uniiq, where he led the technical turnaround of an AWS-deployed AI onboarding platform across React, Express, MongoDB, and Gemini. Previously: privacy-preserving deep learning research at Yale University and three years of quantitative alpha research at WorldQuant BRAIN.",
+    "The through-line is reliable AI: structured outputs, prompt and response sanitization, failure recovery, rate limiting, consensus-fused ASR, and systems measured against explicit performance budgets.",
   ],
 } as const;
 
@@ -52,10 +57,10 @@ export const keyResults = [
     note: "Hindi ASR on FLEURS",
   },
   {
-    value: 98.17,
-    display: "98.17%",
-    label: "word accuracy, historical OCR",
-    note: "16th-c. Spanish, full corpus",
+    value: 93,
+    display: "93",
+    label: "web performance score",
+    note: "up from 73 · LCP 0.7s · INP 130ms",
   },
   {
     value: 1.8,
@@ -88,8 +93,8 @@ export const socials = [
   },
   {
     label: "CodeChef",
-    href: "https://www.codechef.com/users/divanshu90",
-    handle: "divanshu90",
+    href: "https://www.codechef.com/users/psyduck90",
+    handle: "psyduck90",
   },
 ] as const;
 
@@ -117,8 +122,41 @@ export interface CaseStudy {
 
 export const caseStudies: CaseStudy[] = [
   {
-    id: "mpc-deep-learning",
+    id: "uniiq-platform",
     fig: "01",
+    title: "Uniiq — AI Student-Advising Platform",
+    domain: "Founding engineering · Full-stack AI product",
+    year: "2026",
+    problem:
+      "Student onboarding and admissions planning span incomplete profiles, follow-up questions, institution data, and long-running AI calls. The product needed a coherent intake experience without letting partial profiles, transient model failures, or inconsistent admin data leak into downstream workflows.",
+    approach:
+      "Led a technical turnaround across the AWS-deployed React, Express, MongoDB, and Gemini stack: built a three-phase conversational intake with persisted transcripts; added prompt and response sanitization, structured output validation, user-ID rate limiting, transient-503 retries, and recoverable fallbacks; enforced role-aware profile completion; normalized institution and opportunity admin workflows; and code-split 21 routes with explicit Lighthouse budgets.",
+    results: [
+      {
+        metric: "40+ critical vulnerabilities",
+        detail:
+          "resolved in inherited legacy code, including prompt-injection and data-leak risks",
+      },
+      {
+        metric: "73 → 93 performance score",
+        detail: "LCP cut from 3.3s to 0.7s; INP reduced to 130ms",
+      },
+      {
+        metric: "1,199 lines of tests",
+        detail: "automated coverage added across 12 test modules",
+      },
+      {
+        metric: "21 routes code-split",
+        detail:
+          "PR target: main entry 1.45 MB → 278 KB (81 KB gzipped); not a production measurement",
+      },
+    ],
+    stack: ["React", "TypeScript", "Express", "MongoDB", "Gemini"],
+    links: [{ label: "Uniiq", href: "https://uniiq.ai" }],
+  },
+  {
+    id: "mpc-deep-learning",
+    fig: "02",
     title: "Privacy-Preserving Deep Learning via MPC",
     domain: "ML research · Yale University",
     year: "2025–26",
@@ -152,7 +190,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     id: "indic-asr",
-    fig: "02",
+    fig: "03",
     title: "Indic ASR Optimization & Consensus Evaluation",
     domain: "Speech · Evaluation research",
     year: "2025",
@@ -184,7 +222,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     id: "renaissance-ocr",
-    fig: "03",
+    fig: "04",
     title: "RenAIssance OCR — Historical Document Pipeline",
     domain: "Computer vision · NLP",
     year: "2026",
@@ -216,7 +254,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     id: "kv-cache-engine",
-    fig: "04",
+    fig: "05",
     title: "Paged KV-Cache Engine (vLLM-style)",
     domain: "LLM inference systems",
     year: "2026",
@@ -248,7 +286,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     id: "graph-data-explorer",
-    fig: "05",
+    fig: "06",
     title: "Graph Data Explorer AI",
     domain: "Applied LLM product",
     year: "2026",
@@ -280,7 +318,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     id: "ml4sci-cms",
-    fig: "06",
+    fig: "07",
     title: "Deep Learning for CMS Detector Physics",
     domain: "Scientific ML · ML4SCI / CERN CMS",
     year: "2024",
@@ -362,6 +400,24 @@ export const scratchIndex: ScratchEntry[] = [
     lang: "Python",
     summary:
       "Production-grade ViT: training engine, FastAPI serving, ONNX export, >95% test coverage.",
+    engineered: true,
+  },
+  {
+    name: "CLIP multimodal projector",
+    repo: "sdivyanshu90/build-your-own-clip-projector",
+    layer: "Modeling & training",
+    lang: "Python",
+    summary:
+      "From-scratch dual encoders + symmetric contrastive loss, packaged as a hardened FastAPI embedding service with OpenAPI and operational guides.",
+    engineered: true,
+  },
+  {
+    name: "WhisperLite",
+    repo: "sdivyanshu90/build-your-own-whisper",
+    layer: "Modeling & training",
+    lang: "Python",
+    summary:
+      "Whisper-style ASR from scratch: log-mel frontend, byte BPE, encoder–decoder Transformer, KV-cached decoding, training and hardened serving — 216 tests.",
     engineered: true,
   },
   {
@@ -508,6 +564,15 @@ export const scratchIndex: ScratchEntry[] = [
     lang: "TypeScript",
     summary: "Multi-provider LLM gateway: routing, retries, keys.",
   },
+  {
+    name: "funcflow",
+    repo: "sdivyanshu90/funcflow",
+    layer: "Inference & serving",
+    lang: "TypeScript",
+    summary:
+      "Model-agnostic function router with validated tool registries, dependency-aware plans, parallel execution, retries and provider fallbacks.",
+    engineered: true,
+  },
   // — Retrieval & data —
   {
     name: "Vector database",
@@ -584,6 +649,33 @@ export const scratchIndex: ScratchEntry[] = [
     lang: "TypeScript",
     summary: "Input/output validation and policy enforcement for LLM apps.",
   },
+  {
+    name: "SAE interpretability toolkit",
+    repo: "sdivyanshu90/build-your-own-sae",
+    layer: "Evaluation & safety",
+    lang: "Python",
+    summary:
+      "Activation hooks → sharded SafeTensors → ReLU/Top-K sparse autoencoders → evaluation, feature inspection and causal interventions.",
+    engineered: true,
+  },
+  {
+    name: "ThinkAct agent runtime",
+    repo: "sdivyanshu90/ThinkAct",
+    layer: "Evaluation & safety",
+    lang: "Python",
+    summary:
+      "Explicit ReAct state machine with strict JSON actions, bounded memory, tool timeouts, repeat detection and prompt-injection redaction.",
+    engineered: true,
+  },
+  {
+    name: "Reasoning orchestrator",
+    repo: "sdivyanshu90/llm-orchestrator",
+    layer: "Evaluation & safety",
+    lang: "Python",
+    summary:
+      "Decompose → reason → critique → synthesize pipeline with targeted revision cycles, confidence signaling and runtime budgets.",
+    engineered: true,
+  },
 ];
 
 export interface FieldGuide {
@@ -597,7 +689,7 @@ export const fieldGuides: FieldGuide[] = [
   {
     name: "5-Day AI Agents Intensive (Google)",
     repo: "sdivyanshu90/5-Day-AI-Agents-Intensive-Course-with-Google",
-    summary: "Worked course notebooks — his most-starred repo (132★).",
+    summary: "Worked course notebooks — his most-starred repo (134★).",
   },
   {
     name: "MCP Zero to Hero",
@@ -630,6 +722,18 @@ export const fieldGuides: FieldGuide[] = [
       "12 system-design modules + 20 full walkthroughs with Python implementations.",
   },
   {
+    name: "LLD Zero to Hero",
+    repo: "sdivyanshu90/LLD-Zero-to-Hero",
+    summary:
+      "Six progressive design modules plus 30 Python problem designs spanning OOP, patterns, concurrency and thread safety.",
+  },
+  {
+    name: "Graph Zero to Hero",
+    repo: "sdivyanshu90/Graph-Zero-to-Hero",
+    summary:
+      "Six-phase graph algorithms reference from traversal fundamentals through shortest paths, MSTs, network flow and matching.",
+  },
+  {
     name: "AI — From Scratch to Scale",
     repo: "sdivyanshu90/AI-from-scratch-to-scale",
     summary:
@@ -649,8 +753,8 @@ export const fieldGuides: FieldGuide[] = [
 export const shipped = [
   {
     name: "Uniiq",
-    role: "CTO — owns AI systems & engineering direction",
-    what: "AI-powered college-advising platform pairing AI with professional counselors for global admissions.",
+    role: "Founding Engineer — full-stack AI product",
+    what: "Led the turnaround of an AWS-deployed AI onboarding platform: resolved 40+ critical vulnerabilities, added LLM sanitization and resilient conversational intake, expanded student and admin workflows, and raised web performance from 73 to 93.",
     href: "https://uniiq.ai",
     tag: "live product",
   },
@@ -736,14 +840,18 @@ export interface Release {
 export const changelog: Release[] = [
   {
     version: "v3.0",
-    span: "2026 — present",
-    role: "Chief Technology Officer",
+    span: "May 2026 — present",
+    role: "Founding Engineer",
     org: "Uniiq",
     orgHref: "https://uniiq.ai",
     summary:
-      "Leading engineering at Uniiq, an AI-powered college-advising platform — “The Honest Advisor You Never Had” — that pairs AI with professional counselors for global university admissions.",
+      "Building Uniiq's AI-powered college-advising platform across React, Express, MongoDB, and Gemini, pairing conversational guidance with professional counselors for global university admissions.",
     notes: [
-      "Owns the platform's AI advising systems and engineering direction.",
+      "Led the technical turnaround of inherited legacy code, resolving 40+ critical vulnerabilities and adding prompt and response sanitization against injection and data-leak risks.",
+      "Reworked student onboarding into a three-phase AI conversation with follow-up questions, persisted transcripts, structured validation, rate limits, and recoverable AI-failure handling.",
+      "Implemented role-aware profile-completion enforcement and international phone capture across protected APIs, sign-up, setup, and profile flows.",
+      "Expanded institution and opportunity administration with deep-partial updates, nested Mongo normalization, validation, and external-ID uniqueness safeguards; added 1,199 lines of automated tests across 12 modules.",
+      "Raised the web performance score from 73 to 93, cut LCP from 3.3s to 0.7s, and reduced INP to 130ms after code-splitting 21 routes and optimizing delivery.",
     ],
   },
   {
@@ -752,7 +860,7 @@ export const changelog: Release[] = [
     role: "ML Researcher",
     org: "Yale University",
     summary:
-      "Privacy-preserving deep learning: a from-scratch DL library built around compiler-centric multi-party computation. See Fig. 01.",
+      "Privacy-preserving deep learning: a from-scratch DL library built around compiler-centric multi-party computation. See Fig. 02.",
     notes: [
       "88.08% ChestMNIST test accuracy in 5 epochs at batch size 512 — trained under MPC.",
       "No external autograd: layers, backprop and optimizers derived by hand.",
@@ -803,7 +911,7 @@ export const capabilities: { area: string; items: string }[] = [
   {
     area: "LLM systems",
     items:
-      "RAG · SFT · LangChain / LangGraph · Model Context Protocol · prompt engineering · Qdrant · Chroma · Ollama",
+      "Gemini · structured AI outputs · RAG · SFT · LangChain / LangGraph · Model Context Protocol · prompt engineering · Qdrant · Chroma · Ollama",
   },
   {
     area: "Serving & MLOps",
@@ -856,7 +964,7 @@ export const honors = [
   "Kaggle 2× Expert",
   "LeetCode Knight · CodeChef max rating 1662 · 3,000+ problems solved",
   "GitHub: Pull Shark ×3 · Starstruck ×2 · YOLO · Quickdraw",
-  "160 public repositories · 155 stars",
+  "165 public repositories · 305 stars",
 ] as const;
 
 /* ------------------------------------------------------------------ */
@@ -866,7 +974,7 @@ export const honors = [
 export const citation = `@engineer{sharma_2026,
   author   = {Sharma, Divanshu},
   title    = {Machine Learning Engineer — systems from first principles},
-  role     = {CTO, Uniiq},
+  role     = {Founding Engineer, Uniiq},
   email    = {divyanshu74.80@gmail.com},
   url      = {https://div90.vercel.app},
   github   = {sdivyanshu90},
