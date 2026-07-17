@@ -318,9 +318,33 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
                             type="button"
                             onClick={share}
                             aria-label="Copy a shareable link to this answer"
+                            aria-live="polite"
                             className="font-mono text-[10px] tracking-wider text-ink-faint uppercase transition-colors hover:text-accent"
                           >
-                            {copied ? "✓ link copied" : "share ↗"}
+                            <AnimatePresence mode="wait" initial={false}>
+                              <motion.span
+                                key={copied ? "copied" : "share"}
+                                className="inline-block"
+                                initial={
+                                  reduce
+                                    ? false
+                                    : {
+                                        opacity: 0,
+                                        scale: 0.7,
+                                        rotate: copied ? -8 : 0,
+                                      }
+                                }
+                                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                                exit={
+                                  reduce
+                                    ? undefined
+                                    : { opacity: 0, scale: 0.75, rotate: 6 }
+                                }
+                                transition={{ duration: reduce ? 0 : 0.2 }}
+                              >
+                                {copied ? "✓ link copied" : "share ↗"}
+                              </motion.span>
+                            </AnimatePresence>
                           </button>
                         ) : null}
                         <button
