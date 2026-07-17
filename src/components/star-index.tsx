@@ -2,7 +2,7 @@ import { caseStudies, scratchIndex } from "@/data/portfolio";
 
 /**
  * Server-rendered, visually-hidden equivalent of the constellation: the same
- * 37 systems as real links. Guarantees the catalog is crawlable and reachable
+ * 44 systems as real links. Guarantees the catalog is crawlable and reachable
  * with JS off or a screen reader, independent of the canvas (which is a
  * client-only, ssr:false enhancement).
  */
