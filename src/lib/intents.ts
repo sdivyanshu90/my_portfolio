@@ -47,6 +47,10 @@ const GUARD_NARRATION =
   "Nice try. DIV-1 discusses Divanshu's work — its own instructions, keys, and internals stay sealed. What it is allowed to say about itself is on the system card below. Ask about his systems, experience, or availability instead.";
 
 export const PROJECT_HINTS: Array<[RegExp, string]> = [
+  [
+    /\buniiq|student onboarding|smartadmit|university finder/i,
+    "uniiq-platform",
+  ],
   [/\bocr|renaissance|spanish|historical|manuscript/i, "renaissance-ocr"],
   [/\basr|speech|whisper|hindi|indic|devanagari|audio/i, "indic-asr"],
   [/\bmpc|yale|secure|privacy|crypt|sequre|multi.?party/i, "mpc-deep-learning"],
@@ -57,26 +61,45 @@ export const PROJECT_HINTS: Array<[RegExp, string]> = [
 
 export const LAYER_HINTS: Array<[RegExp, Layer]> = [
   [
-    /\binference|serv(?:e|ing)|quantiz|speculative|gateway/i,
+    /\binference|serv(?:e|ing)|quantiz|speculative|gateway|funcflow|function.?call|orchestrat/i,
     "Inference & serving",
   ],
   [/\bretrieval|rag\b|vector|embedding|feature store/i, "Retrieval & data"],
   [/\brlhf|dpo\b|lora|peft|align|fine.?tun/i, "Alignment & fine-tuning"],
-  [/\beval|guardrail|safety/i, "Evaluation & safety"],
   [
-    /\bdiffusion|transformer|vit\b|mamba|ssm\b|moe\b|tokenizer|attention|distill/i,
+    /\beval|guardrail|safety|interpretability|sparse autoencoder|\bsae\b|thinkact|react agent|critic/i,
+    "Evaluation & safety",
+  ],
+  [
+    /\bdiffusion|transformer|vit\b|mamba|ssm\b|moe\b|tokenizer|attention|distill|\bclip\b|multimodal projector|whisperlite/i,
     "Modeling & training",
   ],
 ];
 
 const SOURCES: Record<ArtifactKind, string[]> = {
-  about: ["résumé.pdf", "github/sdivyanshu90"],
-  projects: ["résumé.pdf", "repo READMEs"],
-  shipped: ["repo READMEs", "uniiq.ai"],
-  index: ["github/sdivyanshu90 · 160 public repos"],
+  about: [
+    "résumé.pdf",
+    "github/sdivyanshu90",
+    "Uniiq engineering work summary (2026-07)",
+  ],
+  projects: [
+    "résumé.pdf",
+    "repo READMEs",
+    "Uniiq engineering work summary (2026-07)",
+  ],
+  shipped: [
+    "repo READMEs",
+    "uniiq.ai",
+    "Uniiq engineering work summary (2026-07)",
+  ],
+  index: ["github/sdivyanshu90 · 165 public repos"],
   oss: ["github/sdivyanshu90", "0xTCG/sequre PRs"],
-  experience: ["résumé.pdf", "GitHub bio (2026-07)"],
-  skills: ["résumé.pdf"],
+  experience: [
+    "résumé.pdf",
+    "GitHub bio (2026-07)",
+    "Uniiq engineering work summary (2026-07)",
+  ],
+  skills: ["résumé.pdf", "Uniiq engineering work summary (2026-07)"],
   credentials: ["résumé.pdf"],
   contact: ["résumé.pdf"],
   resume: ["résumé.pdf"],
@@ -132,7 +155,7 @@ function detectIntents(q: string): ArtifactKind[] {
   )
     add("projects");
   if (
-    /\bexperience|career|worked|work (?:history|experience)|history|timeline|yale|worldquant|uniiq|\bquant\b|job|role|cto\b/i.test(
+    /\bexperience|career|worked|work (?:history|experience)|history|timeline|yale|worldquant|uniiq|\bquant\b|job|role|cto\b|founding engineer/i.test(
       q,
     )
   )
@@ -273,17 +296,17 @@ export function plan(question: string, mode: Mode = "recruiter"): Plan {
 function fallbackFor(primary: ArtifactKind): string {
   switch (primary) {
     case "projects":
-      return "Six systems with measured outcomes, rendered below — privacy-preserving MPC training (88.08% ChestMNIST), Hindi ASR consensus evaluation (>48% WER reduction), 0.00%-CER historical OCR, a vLLM-style paged KV-cache engine, an LLM-guarded knowledge-graph explorer, and deep learning for CERN CMS detector physics.";
+      return "Seven systems with measured outcomes, rendered below — Uniiq's full-stack AI advising platform, privacy-preserving MPC training (88.08% ChestMNIST), Hindi ASR consensus evaluation (>48% WER reduction), 0.00%-CER historical OCR, a vLLM-style paged KV-cache engine, an LLM-guarded knowledge-graph explorer, and deep learning for CERN CMS detector physics.";
     case "shipped":
-      return "Built end-to-end and shipped, ledger below: Uniiq (CTO — owns the AI systems), this very console (designed and shipped solo, with a deterministic fallback and an injection firewall), a guarded knowledge-graph query engine over 21,393 SAP records, an agentic admissions advisor with 39 tests, a 98.17%-accuracy historical-OCR pipeline, and a GSoC data explorer. Ownership, not coursework.";
+      return "Built end-to-end and shipped, ledger below: Uniiq (Founding Engineer across its full-stack AI product), this very console (designed and shipped solo, with a deterministic fallback and an injection firewall), a guarded knowledge-graph query engine over 21,393 SAP records, an agentic admissions advisor with 39 tests, a 98.17%-accuracy historical-OCR pipeline, and a GSoC data explorer. Ownership, not coursework.";
     case "index":
       return "The from-scratch index: working reimplementations of the modern AI stack — modeling, alignment, inference, retrieval, and evaluation. These are study builds to understand the stack (a handful, marked ⚙, are engineered with tests); the shipped products are a separate query. Filter by layer below.";
     case "oss":
       return "Teaching and open source: eight public curricula (MCP, agents, LangGraph, system design) plus upstream work — four PRs proposing CNN/MPC layers to 0xTCG/sequre and 18+ fixes to the Processing Foundation's p5.js editor.";
     case "experience":
-      return "The release history: B.E. Computer Science (Mumbai, 8/10) → three years of quant research at WorldQuant BRAIN (15+ alphas, Sharpe 1.8, Gold/Top-1% Alphathon) → ML research at Yale (compiler-centric MPC) → now CTO at Uniiq.";
+      return "The release history: B.E. Computer Science (Mumbai, 8/10) → three years of quant research at WorldQuant BRAIN (15+ alphas, Sharpe 1.8, Gold/Top-1% Alphathon) → ML research at Yale (compiler-centric MPC) → now Founding Engineer at Uniiq.";
     case "skills":
-      return "Capabilities by stack layer, below: Python-first across PyTorch/TensorFlow modeling, LLM systems (RAG, LangGraph, MCP, vector stores), serving and MLOps (FastAPI, Docker, ONNX, AWS/GCP), and full-stack product work in React/Next.js.";
+      return "Capabilities by stack layer, below: Python-first across PyTorch/TensorFlow modeling, LLM systems (Gemini, structured outputs, RAG, LangGraph, MCP, vector stores), serving and MLOps (FastAPI, Docker, ONNX, AWS/GCP), and full-stack product work in React, Next.js, Express, and MongoDB.";
     case "credentials":
       return "Credentials on record: six certifications (four DeepLearning.AI specializations, Meta Front-End, Postman), Gold-level Top-1% at the 2022 Global Alphathon, Kaggle 2× Expert, LeetCode Knight, 3,000+ problems solved.";
     case "contact":
@@ -291,11 +314,11 @@ function fallbackFor(primary: ArtifactKind): string {
     case "resume":
       return "The résumé is a one-page PDF, last revised May 2026 — link below.";
     case "availability":
-      return "Open to AI engineering and founding roles (his GitHub bio, verbatim). Currently CTO at Uniiq; based in Navi Mumbai, India; remote-friendly. Email him to start a conversation.";
+      return "Open to AI engineering and founding roles (his GitHub bio, verbatim). Currently a Founding Engineer at Uniiq; based in Mumbai, India; remote-friendly. Email him to start a conversation.";
     case "system":
       return "DIV-1 is an inference console over a verified dossier. A deterministic router turns your question into typed artifacts; a language model narrates over exactly those slices; every run shows its trace and sources. The constellation behind this card is the portfolio itself — each star is one of his systems. Full details in the system card below.";
     default:
-      return "DIV-1 represents Divanshu Sharma: a machine learning engineer who rebuilds the modern AI stack from first principles — currently CTO at Uniiq, previously ML research at Yale and quantitative research at WorldQuant BRAIN. Ask about systems, the from-scratch index, experience, or availability.";
+      return "DIV-1 represents Divanshu Sharma: a machine learning engineer who rebuilds the modern AI stack from first principles — currently a Founding Engineer at Uniiq, previously ML research at Yale and quantitative research at WorldQuant BRAIN. Ask about systems, the from-scratch index, experience, or availability.";
   }
 }
 
