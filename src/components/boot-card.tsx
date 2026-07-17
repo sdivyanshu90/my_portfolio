@@ -17,12 +17,16 @@ export function BootCard() {
         { step: "synthesis", detail: "cached" },
       ]}
       narration={
-        "DIV-1 online. It answers for Divanshu Sharma — a machine learning engineer who rebuilds the modern AI stack from first principles. Currently CTO at Uniiq; previously ML research at Yale and quantitative research at WorldQuant BRAIN. Each star behind this card is one of his real systems — hover one, or ask anything and watch the answer assemble."
+        "DIV-1 online. It answers for Divanshu Sharma — a machine learning engineer who rebuilds the modern AI stack from first principles. Currently a Founding Engineer at Uniiq; previously ML research at Yale and quantitative research at WorldQuant BRAIN. Each star behind this card is one of his real systems — hover one, or ask anything and watch the answer assemble."
       }
       footer={{
         model: "cached",
         ms: "0.0s",
-        sources: ["résumé.pdf", "github/sdivyanshu90"],
+        sources: [
+          "résumé.pdf",
+          "github/sdivyanshu90",
+          "Uniiq engineering work summary (2026-07)",
+        ],
       }}
     >
       <ArtifactView spec={{ kind: "about" }} />
