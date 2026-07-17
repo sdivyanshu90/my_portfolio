@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
 import { layers, scratchIndex, type Layer } from "@/data/portfolio";
 
@@ -88,15 +88,25 @@ export function ScratchIndex({ initialLayer }: { initialLayer?: Layer }) {
               </th>
             </tr>
           </thead>
-          <tbody key={filter}>
-            {rows.map((e, i) => (
-              <motion.tr
-                key={e.repo}
-                initial={reduce ? false : { opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.25, delay: reduce ? 0 : Math.min(i * 0.022, 0.45) }}
-                className="group align-top text-[14px]"
-              >
+          <tbody>
+            <AnimatePresence initial={false} mode="sync">
+              {rows.map((e, i) => (
+                <motion.tr
+                  layout={reduce ? false : "position"}
+                  key={e.repo}
+                  initial={reduce ? false : { opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={reduce ? undefined : { opacity: 0, y: -4 }}
+                  transition={{
+                    duration: reduce ? 0 : 0.25,
+                    delay: reduce ? 0 : Math.min(i * 0.018, 0.3),
+                    layout: {
+                      duration: reduce ? 0 : 0.32,
+                      ease: [0.25, 0.1, 0.25, 1],
+                    },
+                  }}
+                  className="group align-top text-[14px]"
+                >
                 <th
                   scope="row"
                   className="py-3 pr-4 font-medium whitespace-nowrap text-ink"
@@ -129,8 +139,9 @@ export function ScratchIndex({ initialLayer }: { initialLayer?: Layer }) {
                     src ↗
                   </a>
                 </td>
-              </motion.tr>
-            ))}
+                </motion.tr>
+              ))}
+            </AnimatePresence>
           </tbody>
         </table>
       </div>
@@ -141,7 +152,7 @@ export function ScratchIndex({ initialLayer }: { initialLayer?: Layer }) {
         <span className="text-accent">⚙</span> marks the{" "}
         {scratchIndex.filter((e) => e.engineered).length} that are engineered
         libraries (tests, strict typing, production concerns); the rest are
-        study builds. Part of 160 public repos — the applied, shipped work is a
+        study builds. Part of 165 public repos — the applied, shipped work is a
         separate query (“show shipped systems”).
       </p>
     </div>
