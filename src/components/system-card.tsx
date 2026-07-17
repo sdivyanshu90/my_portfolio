@@ -21,7 +21,7 @@ const rows: { label: string; value: React.ReactNode }[] = [
     label: "Current",
     value: (
       <>
-        CTO @{" "}
+        Founding Engineer @{" "}
         <a
           href="https://uniiq.ai"
           className="underline decoration-rule underline-offset-4 transition-colors hover:text-accent hover:decoration-accent"
@@ -39,7 +39,7 @@ const rows: { label: string; value: React.ReactNode }[] = [
   },
   {
     label: "Grounding",
-    value: `résumé.pdf · github/sdivyanshu90 (160 public repos, ${scratchIndex.length} from-scratch systems) · repo READMEs`,
+    value: `résumé.pdf · github/sdivyanshu90 (165 public repos, ${scratchIndex.length} from-scratch systems) · repo READMEs · Uniiq engineering work summary`,
   },
   {
     label: "Eval results",
