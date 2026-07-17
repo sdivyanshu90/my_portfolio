@@ -1,11 +1,13 @@
 "use client";
 
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
 import { citation } from "@/data/portfolio";
 
 /** BibTeX-style contact card with a copy-to-clipboard interaction. */
 export function CiteCard() {
   const [copied, setCopied] = useState(false);
+  const reduce = useReducedMotion();
 
   async function copy() {
     try {
@@ -29,7 +31,22 @@ export function CiteCard() {
           className="font-mono text-[11px] tracking-wider text-ink-muted uppercase transition-colors hover:text-accent"
           aria-live="polite"
         >
-          {copied ? "✓ copied" : "copy"}
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={copied ? "copied" : "copy"}
+              className="inline-block"
+              initial={
+                reduce
+                  ? false
+                  : { opacity: 0, scale: 0.7, rotate: copied ? -8 : 0 }
+              }
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              exit={reduce ? undefined : { opacity: 0, scale: 0.75, rotate: 6 }}
+              transition={{ duration: reduce ? 0 : 0.2 }}
+            >
+              {copied ? "✓ copied" : "copy"}
+            </motion.span>
+          </AnimatePresence>
         </button>
       </figcaption>
       <pre className="overflow-x-auto px-4 py-4 font-mono text-[12px] leading-relaxed text-ink-muted">
