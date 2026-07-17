@@ -1,3 +1,7 @@
+"use client";
+
+import { motion, useReducedMotion } from "framer-motion";
+import { MetricDelta } from "@/components/metric-delta";
 import { Reveal } from "@/components/reveal";
 import type { CaseStudy } from "@/data/portfolio";
 
@@ -6,6 +10,8 @@ import type { CaseStudy } from "@/data/portfolio";
  * measured results, with the stack and links as the caption.
  */
 export function CaseStudyFigure({ study }: { study: CaseStudy }) {
+  const reduce = useReducedMotion();
+
   return (
     <Reveal>
       <article
@@ -49,15 +55,41 @@ export function CaseStudyFigure({ study }: { study: CaseStudy }) {
               Results
             </h4>
             <ul className="space-y-3">
-              {study.results.map((r) => (
-                <li key={r.metric} className="border-l-2 border-accent pl-3">
+              {study.results.map((r, i) => (
+                <motion.li
+                  key={r.metric}
+                  className="relative pl-3"
+                  initial={reduce ? false : { opacity: 0, y: 6 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-24px" }}
+                  transition={{
+                    duration: reduce ? 0 : 0.32,
+                    delay: reduce ? 0 : i * 0.07,
+                    ease: [0.25, 0.1, 0.25, 1],
+                  }}
+                >
+                  <motion.span
+                    aria-hidden
+                    className="absolute top-0 bottom-0 left-0 w-0.5 origin-top bg-accent"
+                    initial={reduce ? false : { scaleY: 0 }}
+                    whileInView={{ scaleY: 1 }}
+                    viewport={{ once: true, margin: "-24px" }}
+                    transition={{
+                      duration: reduce ? 0 : 0.42,
+                      delay: reduce ? 0 : i * 0.07,
+                      ease: [0.25, 0.1, 0.25, 1],
+                    }}
+                  />
                   <p className="font-mono text-[13px] leading-snug text-accent">
-                    {r.metric}
+                    <MetricDelta
+                      metric={r.metric}
+                      animated={study.id === "uniiq-platform"}
+                    />
                   </p>
                   <p className="mt-0.5 text-[13px] leading-snug text-ink-muted">
                     {r.detail}
                   </p>
-                </li>
+                </motion.li>
               ))}
             </ul>
           </div>
