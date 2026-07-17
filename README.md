@@ -3,8 +3,8 @@
 > **One screen. No scrolling. Ask, and watch the answer assemble.**
 > DIV-1 presents Divanshu Sharma as a queryable model on a single
 > non-scrolling stage: behind the answer card hangs a constellation in which
-> **every star is one of his real systems** — 31 from-scratch repos clustered
-> by stack layer plus 6 case studies. Type a question and the relevant stars
+> **every star is one of his real systems** — 37 from-scratch repos clustered
+> by stack layer plus 7 case studies. Type a question and the relevant stars
 > begin to glow; run it and they converge into the answer.
 
 **Live:** [https://div90.vercel.app/](https://div90.vercel.app/)
