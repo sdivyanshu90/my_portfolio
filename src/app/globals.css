@@ -25,6 +25,8 @@
   --accent-soft: #f3e3dd;
   --rule: #ddd5c6;
   --rule-faint: #ebe5d8;
+  /* Chart marks (validated: lightness band, chroma, ≥3:1 vs surface). */
+  --chart: #a82f1b;
 }
 
 .dark {
@@ -37,6 +39,8 @@
   --accent-soft: #33221d;
   --rule: #2b2e35;
   --rule-faint: #22252b;
+  /* Dark chart mark: its own validated step, not the UI ember (L 0.695 is out of band). */
+  --chart: #e46a4c;
 }
 
 @theme inline {
@@ -49,6 +53,7 @@
   --color-accent-soft: var(--accent-soft);
   --color-rule: var(--rule);
   --color-rule-faint: var(--rule-faint);
+  --color-chart: var(--chart);
 
   --font-serif: var(--font-newsreader), "Iowan Old Style", Georgia, serif;
   --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -79,11 +84,14 @@ section[id] {
   scroll-margin-top: 4.5rem;
 }
 
-/* Visible, consistent keyboard focus. */
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 1px;
+/* Visible, consistent keyboard focus (in the base layer so a component can
+   opt out with a utility — e.g. the prompt, whose frame shows focus). */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
 }
 
 /* Footnote asterisk marking placeholder (unverified) content. */
@@ -153,5 +161,51 @@ section[id] {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/*
+ * Print: /cv (and any document page) prints as a clean résumé —
+ * black on white, no chrome, no motion, links shown as plain text.
+ */
+@media print {
+  @page {
+    margin: 14mm 14mm 16mm;
+  }
+  :root,
+  .dark {
+    --paper: #ffffff;
+    --surface: #ffffff;
+    --ink: #000000;
+    --ink-muted: #222222;
+    --ink-faint: #555555;
+    --accent: #7a1f10;
+    --accent-soft: #ffffff;
+    --rule: #bbbbbb;
+    --rule-faint: #dddddd;
+  }
+  html,
+  body {
+    background: #ffffff !important;
+    font-size: 10.5pt;
+  }
+  main {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    max-width: none !important;
+  }
+  main h1 {
+    font-size: 22pt;
+  }
+  main section {
+    margin-top: 5mm !important;
+    break-inside: auto;
+  }
+  .cv-block {
+    break-inside: avoid;
+  }
+  a {
+    text-decoration: none !important;
+    color: inherit !important;
   }
 }

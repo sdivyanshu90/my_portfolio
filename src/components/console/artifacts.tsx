@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ContactLink } from "@/components/contact-link";
 import { CountUp } from "@/components/console/count-up";
 import { Capabilities } from "@/components/capabilities";
 import { CaseStudyFigure } from "@/components/case-study";
@@ -6,6 +7,7 @@ import { Changelog } from "@/components/changelog";
 import { Correspondence } from "@/components/correspondence";
 import { Credentials } from "@/components/credentials";
 import { FieldNotes } from "@/components/field-notes";
+import { FitPanel } from "@/components/fit-panel";
 import { ScratchIndex } from "@/components/scratch-index";
 import { SystemCard } from "@/components/system-card";
 import {
@@ -81,14 +83,14 @@ function ProjectsArtifact({ ids }: { ids?: string[] }) {
   return (
     <div className="space-y-6">
       {shown.map((s) => (
-        <CaseStudyFigure key={s.id} study={s} />
+        <CaseStudyFigure key={s.id} study={s} permalink />
       ))}
     </div>
   );
 }
 
 /** The 0→1 ledger — ownership-first, for the founder lens. */
-function ShippedArtifact() {
+export function ShippedArtifact() {
   return (
     <div>
       <p className="mb-4 max-w-prose font-mono text-[11px] leading-relaxed text-ink-faint">
@@ -128,12 +130,13 @@ function ResumeArtifact() {
           One page · PDF · rev May 2026
         </p>
       </div>
-      <a
+      <ContactLink
         href={resume.href}
+        via="availability-card"
         className="border border-accent px-4 py-2 font-mono text-[12px] tracking-wider text-accent uppercase transition-colors hover:bg-accent hover:text-paper"
       >
         Download ↓
-      </a>
+      </ContactLink>
     </div>
   );
 }
@@ -151,18 +154,20 @@ function AvailabilityArtifact() {
         typically within a day.
       </p>
       <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 font-mono text-[13px]">
-        <a
+        <ContactLink
           href={`mailto:${personal.email}`}
+          via="availability-card"
           className="text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent"
         >
           {personal.email}
-        </a>
-        <a
+        </ContactLink>
+        <ContactLink
           href={resume.href}
+          via="availability-card"
           className="text-ink-muted underline decoration-rule underline-offset-4 transition-colors hover:text-accent hover:decoration-accent"
         >
           Résumé ↓
-        </a>
+        </ContactLink>
       </div>
     </div>
   );
@@ -177,7 +182,7 @@ export function ArtifactView({ spec }: { spec: ArtifactSpec }) {
     case "shipped":
       return <ShippedArtifact />;
     case "index":
-      return <ScratchIndex initialLayer={spec.params?.layer} />;
+      return <ScratchIndex initialLayer={spec.params?.layer} highlight={spec.params?.highlight} />;
     case "oss":
       return <FieldNotes />;
     case "experience":
@@ -194,6 +199,8 @@ export function ArtifactView({ spec }: { spec: ArtifactSpec }) {
       return <AvailabilityArtifact />;
     case "system":
       return <SystemCard />;
+    case "fit":
+      return <FitPanel />;
     default:
       return null;
   }

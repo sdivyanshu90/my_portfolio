@@ -1,0 +1,305 @@
+{
+  "generatedAt": "2026-09-29",
+  "stars": {
+    "sdivyanshu90/Transformer-from-Scratch": {
+      "created": "2026-04-02",
+      "pushed": "2026-04-02",
+      "stars": 0
+    },
+    "sdivyanshu90/build-your-own-vit": {
+      "created": "2026-07-03",
+      "pushed": "2026-07-05",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-clip-projector": {
+      "created": "2026-07-08",
+      "pushed": "2026-07-14",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-whisper": {
+      "created": "2026-07-06",
+      "pushed": "2026-07-07",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-diffusion": {
+      "created": "2026-07-01",
+      "pushed": "2026-07-02",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-slm": {
+      "created": "2026-06-29",
+      "pushed": "2026-06-29",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-ssm": {
+      "created": "2026-06-27",
+      "pushed": "2026-06-28",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-moe-router": {
+      "created": "2026-06-26",
+      "pushed": "2026-06-26",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-distillation": {
+      "created": "2026-06-30",
+      "pushed": "2026-07-07",
+      "stars": 1
+    },
+    "sdivyanshu90/bpe-from-scratch": {
+      "created": "2026-03-14",
+      "pushed": "2026-03-14",
+      "stars": 1
+    },
+    "sdivyanshu90/FlashAttention-From-Scratch": {
+      "created": "2026-04-03",
+      "pushed": "2026-04-03",
+      "stars": 0
+    },
+    "sdivyanshu90/build-your-own-distributed-training": {
+      "created": "2026-06-08",
+      "pushed": "2026-06-08",
+      "stars": 2
+    },
+    "sdivyanshu90/build-your-own-rlhf": {
+      "created": "2026-06-13",
+      "pushed": "2026-06-13",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-dpo": {
+      "created": "2026-06-14",
+      "pushed": "2026-06-25",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-lora": {
+      "created": "2026-05-25",
+      "pushed": "2026-05-25",
+      "stars": 1
+    },
+    "sdivyanshu90/peft-from-scratch": {
+      "created": "2026-05-27",
+      "pushed": "2026-05-29",
+      "stars": 2
+    },
+    "sdivyanshu90/build-your-own-inference-server": {
+      "created": "2026-05-19",
+      "pushed": "2026-05-19",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-kv-cache": {
+      "created": "2026-05-23",
+      "pushed": "2026-05-23",
+      "stars": 3
+    },
+    "sdivyanshu90/speculative-decoding-from-scratch": {
+      "created": "2026-05-24",
+      "pushed": "2026-05-24",
+      "stars": 2
+    },
+    "sdivyanshu90/build-your-own-logit-processor": {
+      "created": "2026-05-16",
+      "pushed": "2026-05-18",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-prompt-cache": {
+      "created": "2026-05-15",
+      "pushed": "2026-05-15",
+      "stars": 1
+    },
+    "sdivyanshu90/FromScratchQuant": {
+      "created": "2026-06-03",
+      "pushed": "2026-06-06",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-ai-gateway": {
+      "created": "2026-06-10",
+      "pushed": "2026-06-10",
+      "stars": 1
+    },
+    "sdivyanshu90/funcflow": {
+      "created": "2026-05-09",
+      "pushed": "2026-05-09",
+      "stars": 0
+    },
+    "sdivyanshu90/Vector-Database-from-Scratch": {
+      "created": "2026-04-25",
+      "pushed": "2026-04-25",
+      "stars": 1
+    },
+    "sdivyanshu90/RAG-Pipeline-From-Scratch": {
+      "created": "2026-05-07",
+      "pushed": "2026-05-08",
+      "stars": 1
+    },
+    "sdivyanshu90/graph-rag-from-scratch": {
+      "created": "2026-05-10",
+      "pushed": "2026-05-10",
+      "stars": 1
+    },
+    "sdivyanshu90/semantic-router-from-scratch": {
+      "created": "2026-05-14",
+      "pushed": "2026-05-14",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-data-curation-pipeline": {
+      "created": "2026-06-12",
+      "pushed": "2026-06-12",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-synth-data": {
+      "created": "2026-05-16",
+      "pushed": "2026-05-16",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-feature-store": {
+      "created": "2026-06-09",
+      "pushed": "2026-06-09",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-code-interpreter": {
+      "created": "2026-06-11",
+      "pushed": "2026-06-11",
+      "stars": 1
+    },
+    "sdivyanshu90/EvalForge": {
+      "created": "2026-05-13",
+      "pushed": "2026-05-13",
+      "stars": 1
+    },
+    "sdivyanshu90/guardrails-from-scratch": {
+      "created": "2026-05-12",
+      "pushed": "2026-05-12",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-sae": {
+      "created": "2026-07-17",
+      "pushed": "2026-07-17",
+      "stars": 1
+    },
+    "sdivyanshu90/ThinkAct": {
+      "created": "2026-04-29",
+      "pushed": "2026-04-29",
+      "stars": 1
+    },
+    "sdivyanshu90/llm-orchestrator": {
+      "created": "2026-04-28",
+      "pushed": "2026-04-28",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-ai-observability": {
+      "created": "2026-08-01",
+      "pushed": "2026-08-02",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-durable-agent": {
+      "created": "2026-08-04",
+      "pushed": "2026-08-04",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-embeddings": {
+      "created": "2026-07-22",
+      "pushed": "2026-07-23",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-hybrid-distributed-training": {
+      "created": "2026-08-03",
+      "pushed": "2026-08-03",
+      "stars": 2
+    },
+    "sdivyanshu90/build-your-own-knowledge-graph": {
+      "created": "2026-07-19",
+      "pushed": "2026-07-19",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-llm-evals": {
+      "created": "2026-07-29",
+      "pushed": "2026-09-25",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-model-merger": {
+      "created": "2026-07-26",
+      "pushed": "2026-07-26",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-recommender": {
+      "created": "2026-07-20",
+      "pushed": "2026-08-17",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-text2sql": {
+      "created": "2026-07-24",
+      "pushed": "2026-07-24",
+      "stars": 1
+    },
+    "sdivyanshu90/build-your-own-tts": {
+      "created": "2026-07-18",
+      "pushed": "2026-07-18",
+      "stars": 1
+    },
+    "uniiq-platform": {
+      "created": "2026-01-01",
+      "pushed": "2026-01-01",
+      "stars": 0
+    },
+    "mpc-deep-learning": {
+      "created": "2025-01-01",
+      "pushed": "2025-01-01",
+      "stars": 0
+    },
+    "indic-asr": {
+      "created": "2022-03-15",
+      "pushed": "2026-09-17",
+      "stars": 1
+    },
+    "renaissance-ocr": {
+      "created": "2026-03-30",
+      "pushed": "2026-03-30",
+      "stars": 1
+    },
+    "kv-cache-engine": {
+      "created": "2026-05-23",
+      "pushed": "2026-05-23",
+      "stars": 3
+    },
+    "graph-data-explorer": {
+      "created": "2026-03-23",
+      "pushed": "2026-03-26",
+      "stars": 1
+    },
+    "ml4sci-cms": {
+      "created": "2024-03-26",
+      "pushed": "2024-03-31",
+      "stars": 1
+    },
+    "oss:Mastra (mastra-ai/mastra)": {
+      "created": "2026-08-28",
+      "pushed": "2026-09-27",
+      "stars": 0
+    },
+    "oss:EleutherAI lm-evaluation-harness": {
+      "created": "2026-08-10",
+      "pushed": "2026-09-26",
+      "stars": 0
+    },
+    "oss:Experiential (experientiallabs)": {
+      "created": "2026-09-08",
+      "pushed": "2026-09-28",
+      "stars": 0
+    },
+    "oss:Sequre (0xTCG)": {
+      "created": "2025-12-12",
+      "pushed": "2026-03-31",
+      "stars": 0
+    },
+    "oss:p5.js Web Editor (Processing Foundation)": {
+      "created": "2023-07-14",
+      "pushed": "2024-10-09",
+      "stars": 0
+    },
+    "oss:OpenCode (anomalyco/opencode)": {
+      "created": "2026-08-25",
+      "pushed": "2026-09-27",
+      "stars": 0
+    }
+  }
+}

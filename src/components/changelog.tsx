@@ -1,12 +1,15 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import { useHydrated } from "@/lib/use-hydrated";
 import { Reveal } from "@/components/reveal";
 import { changelog } from "@/data/portfolio";
 
 /** Experience as versioned releases, newest first. */
 export function Changelog() {
-  const reduce = useReducedMotion();
+  // Server-rendered content is never shipped hidden (see useHydrated).
+  const hydrated = useHydrated();
+  const reduce = useReducedMotion() || !hydrated;
 
   return (
     <div className="relative">

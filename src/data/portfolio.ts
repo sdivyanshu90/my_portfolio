@@ -8,13 +8,24 @@
  *    footnote asterisk instead of being stated as fact.
  */
 
+/**
+ * GitHub profile totals — a dated snapshot, not live. Update both numbers
+ * together (and `asOf`) from https://api.github.com/users/sdivyanshu90.
+ */
+export const github = {
+  user: "sdivyanshu90",
+  publicRepos: 195,
+  stars: 337, // across non-fork repos
+  asOf: "2026-09",
+} as const;
+
 export const site = {
   url: "https://div90.vercel.app",
   revision: "2026.07",
   reportId: "DIV-2026.07",
   title: "Divanshu Sharma — Machine Learning & AI Engineer",
   description:
-    "Divanshu Sharma is a machine learning engineer who rebuilds the modern AI stack from first principles — Founding Engineer at Uniiq, previously ML research at Yale and quantitative research at WorldQuant BRAIN. DIV-1 is his AI-native portfolio: query it like a model and get answers as live, source-cited artifacts.",
+    "Divanshu Sharma is a founding engineer who ships reliable AI products — leading the technical turnaround of Uniiq's AI advising platform, previously privacy-preserving ML research at Yale and quantitative research at WorldQuant BRAIN. DIV-1 is his AI-native portfolio: query it like a model and get answers as live, source-cited artifacts.",
 } as const;
 
 export const personal = {
@@ -22,7 +33,7 @@ export const personal = {
   // Single lead identity for display (recruiters shortlist on one line);
   // `roles` stays the full IC list for metadata / JSON-LD.
   lead: "Machine Learning & AI Engineer",
-  context: "Systems from first principles · Founding Engineer @ Uniiq · Mumbai",
+  context: "Reliable AI products · Founding Engineer @ Uniiq · Mumbai",
   roles: [
     "Founding Engineer",
     "Machine Learning Engineer",
@@ -30,20 +41,27 @@ export const personal = {
     "Software Engineer",
   ],
   currentRole: "Founding Engineer @ Uniiq",
-  openTo: "Open to AI engineering & founding roles", // verbatim from GitHub bio
+  openTo: "Open to AI engineering & founding roles", // confirmed by Divanshu, 2026-09 — actively looking
   location: "Mumbai, India",
+  // Phone is deliberately not published on the site (scraping/spam); it
+  // stays on the résumé PDF for people who already have a conversation open.
   email: "divyanshu74.80@gmail.com", // per resume PDF & GitHub — the old config's "divanshu…" was a typo
-  phone: "+91-9594506208",
   avatar: "/profile.jpg",
   abstract: [
-    "Machine learning engineer with a habit of rebuilding the modern AI stack from first principles — transformers, diffusion, RLHF, paged KV-caches, quantization, vector indexes — and publishing each system as a readable, tested repository.",
-    "Currently a Founding Engineer at Uniiq, where he led the technical turnaround of an AWS-deployed AI onboarding platform across React, Express, MongoDB, and Gemini. Previously: privacy-preserving deep learning research at Yale University and three years of quantitative alpha research at WorldQuant BRAIN.",
+    "Founding engineer who ships reliable AI products — currently leading the technical turnaround of Uniiq's AWS-deployed AI advising platform: 40+ critical vulnerabilities resolved, LLM sanitization and recoverable AI failures, LCP cut from 3.3s to 0.7s. Before that: privacy-preserving deep learning research at Yale and three years of quantitative research at WorldQuant BRAIN.",
+    "The depth behind it is public: a habit of rebuilding the modern AI stack from first principles — transformers, diffusion, RLHF, paged KV-caches, quantization, vector indexes — each published as a readable repository.",
     "The through-line is reliable AI: structured outputs, prompt and response sanitization, failure recovery, rate limiting, consensus-fused ASR, and systems measured against explicit performance budgets.",
   ],
 } as const;
 
 /** Four headline numbers, all traceable to the resume or repo READMEs. */
 export const keyResults = [
+  {
+    value: 40,
+    display: "40+",
+    label: "critical vulnerabilities resolved",
+    note: "Uniiq turnaround · LCP 3.3s → 0.7s",
+  },
   {
     value: 88.08,
     display: "88.08%",
@@ -55,12 +73,6 @@ export const keyResults = [
     display: ">48%",
     label: "absolute WER reduction",
     note: "Hindi ASR on FLEURS",
-  },
-  {
-    value: 93,
-    display: "93",
-    label: "web performance score",
-    note: "up from 73 · LCP 0.7s · INP 130ms",
   },
   {
     value: 1.8,
@@ -118,6 +130,11 @@ export interface CaseStudy {
   results: { metric: string; detail: string }[];
   stack: string[];
   links: { label: string; href: string }[];
+  /**
+   * Where the result figures come from — a receipt. No `href` means the
+   * source is not public, and the page says so rather than implying a link.
+   */
+  source: { label: string; href?: string };
 }
 
 export const caseStudies: CaseStudy[] = [
@@ -152,6 +169,7 @@ export const caseStudies: CaseStudy[] = [
       },
     ],
     stack: ["React", "TypeScript", "Express", "MongoDB", "Gemini"],
+    source: { label: "Uniiq engineering work summary (2026-07) — private codebase, not publicly verifiable" },
     links: [{ label: "Uniiq", href: "https://uniiq.ai" }],
   },
   {
@@ -180,6 +198,7 @@ export const caseStudies: CaseStudy[] = [
       },
     ],
     stack: ["Python", "NumPy", "MPC", "Compiler design", "Cryptography"],
+    source: { label: "résumé.pdf; the code is public in the Sequre PRs", href: "https://github.com/0xTCG/sequre/pull/41" },
     links: [
       {
         label: "Sequre PRs",
@@ -213,6 +232,7 @@ export const caseStudies: CaseStudy[] = [
       },
     ],
     stack: ["Whisper", "Transformers", "SpecAugment", "Beam search", "Librosa"],
+    source: { label: "write-up on his GitHub profile README", href: "https://github.com/sdivyanshu90/sdivyanshu90" },
     links: [
       {
         label: "Write-up",
@@ -245,6 +265,7 @@ export const caseStudies: CaseStudy[] = [
       },
     ],
     stack: ["PyTorch", "CRAFT", "CRNN", "RoBERTa", "OpenCV"],
+    source: { label: "repo README", href: "https://github.com/sdivyanshu90/RenAIssance-OCR#readme" },
     links: [
       {
         label: "GitHub",
@@ -277,6 +298,7 @@ export const caseStudies: CaseStudy[] = [
       },
     ],
     stack: ["Python", "PyTorch", "Scheduling", "Memory management"],
+    source: { label: "repo README", href: "https://github.com/sdivyanshu90/build-your-own-kv-cache#readme" },
     links: [
       {
         label: "GitHub",
@@ -309,6 +331,7 @@ export const caseStudies: CaseStudy[] = [
       },
     ],
     stack: ["FastAPI", "React Flow", "NetworkX", "SSE", "Gemini 2.5 Flash"],
+    source: { label: "repo README", href: "https://github.com/sdivyanshu90/Graph-Data-Explorer-AI#readme" },
     links: [
       {
         label: "GitHub",
@@ -341,6 +364,7 @@ export const caseStudies: CaseStudy[] = [
       },
     ],
     stack: ["PyTorch", "PyTorch Geometric", "TensorFlow", "CNN", "GCN"],
+    source: { label: "repo README", href: "https://github.com/sdivyanshu90/ProblemPioneer#readme" },
     links: [
       {
         label: "GitHub",
@@ -676,6 +700,86 @@ export const scratchIndex: ScratchEntry[] = [
       "Decompose → reason → critique → synthesize pipeline with targeted revision cycles, confidence signaling and runtime budgets.",
     engineered: true,
   },
+  // — Added 2026-09: verified against each README, source tree and CI run.
+  //   ⚙ only where CI is green or mostly green; build-your-own-nas is left out
+  //   until its own test suite passes. —
+  {
+    name: "AI observability platform",
+    repo: "sdivyanshu90/build-your-own-ai-observability",
+    layer: "Evaluation & safety",
+    lang: "Python",
+    summary: "OTLP tracing, retrieval/agent-trajectory visualization and cost accounting for LLM apps.",
+    engineered: true,
+  },
+  {
+    name: "Durable coding and research agent",
+    repo: "sdivyanshu90/build-your-own-durable-agent",
+    layer: "Evaluation & safety",
+    lang: "Python",
+    summary: "Local-first agent: SQL-backed task graph, checkpoint/resume, evidence-cited reports.",
+  },
+  {
+    name: "Text embedding model",
+    repo: "sdivyanshu90/build-your-own-embeddings",
+    layer: "Modeling & training",
+    lang: "Python",
+    summary: "Transformer text embedding model: contrastive training, export, FAISS index and serving.",
+  },
+  {
+    name: "Hybrid distributed training",
+    repo: "sdivyanshu90/build-your-own-hybrid-distributed-training",
+    layer: "Modeling & training",
+    lang: "Python",
+    summary: "DDP/FSDP/tensor/sequence parallelism from raw collectives, checked against PyTorch DDP.",
+    engineered: true,
+  },
+  {
+    name: "Knowledge graph builder",
+    repo: "sdivyanshu90/build-your-own-knowledge-graph",
+    layer: "Retrieval & data",
+    lang: "Python",
+    summary: "Documents to an evidence-linked graph: ontology validation, entity resolution, retraction.",
+  },
+  {
+    name: "LLM evaluation platform",
+    repo: "sdivyanshu90/build-your-own-llm-evals",
+    layer: "Evaluation & safety",
+    lang: "Python",
+    summary: "Typed monorepo for offline LLM/RAG/agent evals: metrics, paired statistics, gates.",
+    engineered: true,
+  },
+  {
+    name: "Model merger",
+    repo: "sdivyanshu90/build-your-own-model-merger",
+    layer: "Alignment & fine-tuning",
+    lang: "Python",
+    summary: "Model soups and SLERP checkpoint merging with bounded, streaming, per-tensor memory use.",
+    engineered: true,
+  },
+  {
+    name: "Two-tower recommender",
+    repo: "sdivyanshu90/build-your-own-recommender",
+    layer: "Retrieval & data",
+    lang: "Python",
+    summary: "Two-tower candidate retrieval: in-batch softmax, FAISS HNSW, policy-aware reranking.",
+    engineered: true,
+  },
+  {
+    name: "Text-to-SQL engine",
+    repo: "sdivyanshu90/build-your-own-text2sql",
+    layer: "Retrieval & data",
+    lang: "Python",
+    summary: "NL to SQL with AST validation, tenant rewriting, cost analysis after generation.",
+    engineered: true,
+  },
+  {
+    name: "Text-to-speech pipeline",
+    repo: "sdivyanshu90/build-your-own-tts",
+    layer: "Modeling & training",
+    lang: "Python",
+    summary: "FastSpeech2 + HiFi-GAN vocoder: data pipeline through serving; ships no trained voices.",
+    engineered: true,
+  },
 ];
 
 export interface FieldGuide {
@@ -689,7 +793,7 @@ export const fieldGuides: FieldGuide[] = [
   {
     name: "5-Day AI Agents Intensive (Google)",
     repo: "sdivyanshu90/5-Day-AI-Agents-Intensive-Course-with-Google",
-    summary: "Worked course notebooks — his most-starred repo (134★).",
+    summary: "Worked course notebooks — his most-starred repo.",
   },
   {
     name: "MCP Zero to Hero",
@@ -795,32 +899,167 @@ export const shipped = [
   },
 ] as const;
 
-export const openSource = [
+/**
+ * Upstream open source, verified against the GitHub API (2026-09-28).
+ * Every issue and PR here is his work. "merged" means merged as his PR;
+ * bugs he found and patched that were fixed upstream after a bot closed his
+ * PR are listed separately with both links. No maintainer title is claimed.
+ */
+export interface Contribution {
+  name: string;
+  href: string;
+  /** Merged PRs; 0 with `proposal` for unmerged work. */
+  merged: number;
+  /** Every PR he opened there (merged, closed, and in review). */
+  authored?: number;
+  /** PRs currently open, awaiting review. */
+  open?: number;
+  role: "Contributor" | "Proposal" | "In review" | "Author";
+  summary: string;
+  notable?: { title: string; href: string }[];
+  /**
+   * Bugs he reported *and* sent a fix for, where his PR was closed by a bot
+   * and the maintainers merged a fix for his issue. Not counted as merges:
+   * the landed fix is linked so anyone can compare.
+   */
+  reportedFixed?: { issue: number; pr: number; landed: number; title: string; credited?: boolean }[];
+  /** Repo slug for building issue/PR links. */
+  repo?: string;
+}
+
+export const openSource: Contribution[] = [
+  {
+    name: "Mastra (mastra-ai/mastra)",
+    href: "https://github.com/mastra-ai/mastra/pulls?q=is%3Apr+author%3Asdivyanshu90+is%3Amerged",
+    merged: 11,
+    role: "Contributor",
+    repo: "mastra-ai/mastra",
+    authored: 29,
+    summary:
+      "29 PRs and 18 bug reports to the TypeScript agent framework (Aug–Sep 2026). 11 merged directly — codemod and CLI fixes for its migration tooling — and all 18 bugs he found and patched are fixed upstream, one merged with him as co-author. #58 of 466 contributors by commits.",
+    notable: [
+      { title: "fix(codemod): migrate RuntimeContext DI imports", href: "https://github.com/mastra-ai/mastra/pull/24472" },
+      { title: "fix(codemod): forward jscodeshift output", href: "https://github.com/mastra-ai/mastra/pull/24530" },
+      { title: "fix(codemod): migrate message types to valid exports", href: "https://github.com/mastra-ai/mastra/pull/25104" },
+      { title: "fix(cli): retry direct network errors", href: "https://github.com/mastra-ai/mastra/pull/22622" },
+    ],
+    // Verified 2026-09-28: every issue authored by him; every landed PR fixes
+    // that same issue (#23178's source change is byte-identical to #23215's).
+    reportedFixed: [
+      { issue: 22619, pr: 22620, landed: 23091, title: "CLI file replacements corrupt values containing $", credited: true },
+      { issue: 23174, pr: 23175, landed: 23212, title: "CLI entry discovery accepts directories as files" },
+      { issue: 23176, pr: 23178, landed: 23215, title: "CLI environment writes resolve successfully after failure" },
+      { issue: 23191, pr: 23192, landed: 23211, title: "CLI package inventory ignores optional Mastra dependencies" },
+      { issue: 23193, pr: 23194, landed: 23208, title: "Peer-dependency fix suggests npm inside pnpm workspaces" },
+      { issue: 23302, pr: 23303, landed: 23607, title: "Peer-dependency warning crashes on unresolved versions" },
+      { issue: 23305, pr: 23306, landed: 23352, title: "CLI polling retries explicit cancellation" },
+      { issue: 23396, pr: 23398, landed: 23562, title: "Editor version-zero request can return cached latest" },
+      { issue: 23400, pr: 23401, landed: 23569, title: "Editor processor graphs bypass provider config schemas" },
+      { issue: 23712, pr: 23713, landed: 24095, title: "Conditional processor defaults run alongside matching rules" },
+      { issue: 23715, pr: 23717, landed: 24099, title: "Stored processor graph step IDs discarded in workflows" },
+      { issue: 23820, pr: 23821, landed: 23838, title: "Per-tool workspace settings do not round-trip" },
+      { issue: 23822, pr: 23823, landed: 23837, title: "Scorer cache eviction can remove code-defined scorers" },
+      { issue: 23963, pr: 23964, landed: 24009, title: "Inline workspace identity depends on property order" },
+      { issue: 23966, pr: 23967, landed: 24000, title: "Editor clearCache leaves version-specific agents" },
+      { issue: 24248, pr: 24249, landed: 24292, title: "Composio catalog failures returned as success" },
+      { issue: 24778, pr: 24781, landed: 24783, title: "Codemod transform failures not reported" },
+      { issue: 25245, pr: 25250, landed: 25265, title: "HttpTransport ignores zero and false retry options" },
+    ],
+  },
+  {
+    name: "EleutherAI lm-evaluation-harness",
+    href: "https://github.com/EleutherAI/lm-evaluation-harness/pulls?q=is%3Apr+author%3Asdivyanshu90+is%3Amerged",
+    merged: 4,
+    authored: 25,
+    open: 21,
+    role: "Contributor",
+    summary:
+      "25 PRs to the standard LLM evaluation harness (Aug–Sep 2026): 4 merged — CLI argument parsing, request-cache robustness, and a restored benchmark task — and 21 in review.",
+    notable: [
+      { title: "Preserve signed integer types in CLI arguments", href: "https://github.com/EleutherAI/lm-evaluation-harness/pull/4136" },
+      { title: "Allow braces in CLI key-value arguments", href: "https://github.com/EleutherAI/lm-evaluation-harness/pull/4144" },
+      { title: "Restore the FLAN RTE prompt-2 task", href: "https://github.com/EleutherAI/lm-evaluation-harness/pull/4156" },
+      { title: "Create missing request-cache parent directories", href: "https://github.com/EleutherAI/lm-evaluation-harness/pull/4047" },
+    ],
+  },
+  {
+    name: "Experiential (experientiallabs)",
+    href: "https://github.com/experientiallabs/experiential/pulls?q=is%3Apr+author%3Asdivyanshu90+is%3Amerged",
+    merged: 2,
+    authored: 20,
+    open: 18,
+    role: "Contributor",
+    summary:
+      "20 PRs (Sep 2026): 2 merged model-provider fixes — paginated Anthropic model discovery and Gemini page-token handling — and 18 in review.",
+    notable: [
+      { title: "providers: paginate Anthropic model discovery", href: "https://github.com/experientiallabs/experiential/pull/1056" },
+    ],
+  },
   {
     name: "Sequre (0xTCG)",
     href: "https://github.com/0xTCG/sequre/pulls?q=is%3Apr+author%3Asdivyanshu90",
+    merged: 0,
+    authored: 4,
+    open: 1,
+    role: "Proposal",
     summary:
-      "4 upstream PRs proposing CNN layers & an MPC ChestMNIST training pipeline to the secure-computing framework.",
+      "4 PRs bringing the Yale work upstream — CNN layers and an MPC ChestMNIST training pipeline (#41 alone: +3.5k lines across 54 files). Not merged yet; #42 is open.",
+    notable: [
+      { title: "feat: add CNN layers and ChestMNIST MPC training pipeline", href: "https://github.com/0xTCG/sequre/pull/41" },
+    ],
   },
   {
     name: "p5.js Web Editor (Processing Foundation)",
-    href: "https://github.com/processing/p5.js-web-editor",
+    href: "https://github.com/processing/p5.js-web-editor/pulls?q=is%3Apr+author%3Asdivyanshu90+is%3Amerged",
+    merged: 4,
+    authored: 10,
+    role: "Contributor",
     summary:
-      "Resolved 6+ high-priority bugs, fixed 12+ responsiveness issues, added a file-creation keyboard shortcut.",
+      "10 PRs (2023–24), 4 merged: a keyboard shortcut for adding files, the Korean translation of keyboard shortcuts, and two UI fixes.",
+    notable: [
+      { title: "Added a keyboard shortcut for adding files", href: "https://github.com/processing/p5.js-web-editor/pull/2395" },
+    ],
+  },
+  {
+    name: "OpenCode (anomalyco/opencode)",
+    href: "https://github.com/anomalyco/opencode/pulls?q=is%3Apr+author%3Asdivyanshu90",
+    merged: 0,
+    authored: 22,
+    open: 21,
+    role: "In review",
+    summary: "22 fix PRs to the open-source AI coding agent (210k★), Aug–Sep 2026 — 21 open, awaiting maintainer review.",
+  },
+  {
+    name: "Also merged: vulnerablecode, Music Blocks, PyNN",
+    href: "https://github.com/pulls?q=is%3Apr+author%3Asdivyanshu90+is%3Amerged+-user%3Asdivyanshu90",
+    merged: 3,
+    authored: 4,
+    role: "Contributor",
+    summary:
+      "A license-URL fix to aboutcode-org/vulnerablecode, a close-button fix to Sugar Labs' Music Blocks, and a docs-layout fix to NeuralEnsemble's PyNN.",
+    notable: [
+      { title: "Add license_url for GitHub Importer (vulnerablecode)", href: "https://github.com/aboutcode-org/vulnerablecode/pull/1392" },
+      { title: "Fixed Close Info Window (Music Blocks)", href: "https://github.com/sugarlabs/musicblocks/pull/3346" },
+      { title: "Fix content overflow in doc sidebar (PyNN)", href: "https://github.com/NeuralEnsemble/PyNN/pull/813" },
+    ],
   },
   {
     name: "mcp-college-counselor",
     href: "https://github.com/sdivyanshu90/mcp-college-counselor",
+    merged: 0,
+    role: "Author",
     summary:
       "Agentic admissions advisor — Playwright scraping → SQLite → MCP server → tool-calling client; 39 automated tests.",
   },
   {
     name: "GSoC Explorer",
     href: "https://github.com/sdivyanshu90/GSoC-Explorer",
+    merged: 0,
+    role: "Author",
     summary:
       "Next.js explorer for five years of Google Summer of Code orgs & projects, SQLite-cached archive API.",
   },
-] as const;
+];
 
 /* ------------------------------------------------------------------ */
 /* §03 — Changelog (experience as releases)                            */
@@ -887,11 +1126,20 @@ export const changelog: Release[] = [
     summary:
       "CGPA 8/10. Coursework: ML, deep learning, DSA, probability & statistics.",
     notes: [
-      "Open-source contributions to the Processing Foundation's p5.js Web Editor (2023).",
-      "3,000+ algorithmic problems across LeetCode (Knight), CodeChef (max 1662) and HackerRank.",
+      "Open-source contributions to the Processing Foundation's p5.js Web Editor (4 merged PRs, 2023–24).",
+      "4,400+ algorithmic problems: CodeChef 2,957 (3★, rating 1662) and LeetCode 1,466 (contest rating 1,821, top 7.5%).",
     ],
   },
 ];
+
+/** Education, verbatim from the résumé (also release v0.x above). */
+export const education = {
+  degree: "B.E. Computer Science",
+  school: "University of Mumbai",
+  span: "2021 — Jun 2025",
+  grade: "CGPA 8/10",
+  coursework: "Machine learning, deep learning, data structures & algorithms, probability & statistics",
+} as const;
 
 /* ------------------------------------------------------------------ */
 /* §04 — Capabilities                                                  */
@@ -961,10 +1209,10 @@ export const certifications = [
 
 export const honors = [
   "GOLD LEVEL (Top 1%) & Stage 1 Qualifier — WorldQuant BRAIN Global Alphathon 2022",
-  "Kaggle 2× Expert",
-  "LeetCode Knight · CodeChef max rating 1662 · 3,000+ problems solved",
+  "Kaggle 2× Expert", // résumé; confirmed by Divanshu 2026-09 (profile is captcha-walled to scrapers)
+  "LeetCode contest rating 1,821 (top 7.5%) · CodeChef 3★ (1662) · 4,400+ problems solved",
   "GitHub: Pull Shark ×3 · Starstruck ×2 · YOLO · Quickdraw",
-  "165 public repositories · 305 stars",
+  `${github.publicRepos} public repositories · ${github.stars} stars`,
 ] as const;
 
 /* ------------------------------------------------------------------ */
@@ -977,6 +1225,28 @@ export const citation = `@engineer{sharma_2026,
   role     = {Founding Engineer, Uniiq},
   email    = {divyanshu74.80@gmail.com},
   url      = {https://div90.vercel.app},
-  github   = {sdivyanshu90},
+  github   = {${github.user}},
   revision = {2026.07}
 }`;
+
+/* ------------------------------------------------------------------ */
+/* Derived counts — prose must use these, never hand-typed numbers.    */
+/* ------------------------------------------------------------------ */
+
+export const counts = {
+  systems: scratchIndex.length,
+  engineered: scratchIndex.filter((e) => e.engineered).length,
+  caseStudies: caseStudies.length,
+  fieldGuides: fieldGuides.length,
+  certifications: certifications.length,
+  releases: changelog.length,
+  /** Every star in the constellation: from-scratch systems + case studies. */
+  stars: scratchIndex.length + caseStudies.length + openSource.filter((o) => o.role !== "Author").length,
+  /** Bugs he reported with a fix, fixed upstream after a bot closed his PR. */
+  reportedFixed: openSource.reduce((n, o) => n + (o.reportedFixed?.length ?? 0), 0),
+  /** Every PR he opened in other people's projects (public repos). */
+  authoredUpstream: openSource.reduce((n, o) => n + (o.authored ?? 0), 0),
+  /** Merged upstream PRs across other people's projects. */
+  mergedUpstream: openSource.filter((o) => o.role === "Contributor").reduce((n, o) => n + o.merged, 0),
+  inLayer: (layer: Layer) => scratchIndex.filter((e) => e.layer === layer).length,
+} as const;

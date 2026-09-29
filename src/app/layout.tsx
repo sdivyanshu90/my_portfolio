@@ -2,6 +2,7 @@ import { Analytics } from "@vercel/analytics/react";
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, Newsreader } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+import { PageTracker } from "@/components/page-tracker";
 import { personal, site, socials } from "@/data/portfolio";
 import "./globals.css";
 
@@ -116,6 +117,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>
+        <PageTracker />
         <Analytics />
       </body>
     </html>

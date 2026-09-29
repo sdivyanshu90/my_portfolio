@@ -2,25 +2,37 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
-import { layers, scratchIndex, type Layer } from "@/data/portfolio";
+import { github, type Layer, layers, scratchIndex } from "@/data/portfolio";
 
-type Filter = "All" | Layer;
+type Filter = "Matched" | "All" | Layer;
 
 /**
  * The catalog table of from-scratch implementations — the console's
  * centerpiece artifact. Filterable by stack layer; every row links to
  * its repo.
  */
-export function ScratchIndex({ initialLayer }: { initialLayer?: Layer }) {
-  const [filter, setFilter] = useState<Filter>(initialLayer ?? "All");
+export function ScratchIndex({
+  initialLayer,
+  highlight,
+}: {
+  initialLayer?: Layer;
+  /** Repos the query matched: a "Matched" filter opens first, rows are marked. */
+  highlight?: string[];
+}) {
+  const matched = new Set(highlight ?? []);
+  const [filter, setFilter] = useState<Filter>(
+    matched.size ? "Matched" : (initialLayer ?? "All"),
+  );
   const reduce = useReducedMotion();
 
   const rows =
     filter === "All"
       ? scratchIndex
-      : scratchIndex.filter((e) => e.layer === filter);
+      : filter === "Matched"
+        ? scratchIndex.filter((e) => matched.has(e.repo))
+        : scratchIndex.filter((e) => e.layer === filter);
 
-  const chips: Filter[] = ["All", ...layers];
+  const chips: Filter[] = [...(matched.size ? (["Matched"] as const) : []), "All", ...layers];
 
   return (
     <div>
@@ -33,7 +45,9 @@ export function ScratchIndex({ initialLayer }: { initialLayer?: Layer }) {
           const count =
             c === "All"
               ? scratchIndex.length
-              : scratchIndex.filter((e) => e.layer === c).length;
+              : c === "Matched"
+                ? matched.size
+                : scratchIndex.filter((e) => e.layer === c).length;
           const active = filter === c;
           return (
             <button
@@ -111,6 +125,11 @@ export function ScratchIndex({ initialLayer }: { initialLayer?: Layer }) {
                   scope="row"
                   className="py-3 pr-4 font-medium whitespace-nowrap text-ink"
                 >
+                  {matched.has(e.repo) ? (
+                    <span aria-label="matches your question" className="mr-1.5 text-accent">
+                      ●
+                    </span>
+                  ) : null}
                   {e.name}
                   {e.engineered ? (
                     <span
@@ -152,7 +171,7 @@ export function ScratchIndex({ initialLayer }: { initialLayer?: Layer }) {
         <span className="text-accent">⚙</span> marks the{" "}
         {scratchIndex.filter((e) => e.engineered).length} that are engineered
         libraries (tests, strict typing, production concerns); the rest are
-        study builds. Part of 165 public repos — the applied, shipped work is a
+        study builds. Part of {github.publicRepos} public repos — the applied, shipped work is a
         separate query (“show shipped systems”).
       </p>
     </div>

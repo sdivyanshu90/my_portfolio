@@ -4,11 +4,20 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "npm run sync-github && npm run eval",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint src tests",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "eval": "vite-node --config vitest.config.mts scripts/eval.ts --",
+    "db:migrate": "vite-node --config vitest.config.mts scripts/db-migrate.ts",
+    "verify-claims": "vite-node --config vitest.config.mts scripts/verify-claims.ts",
+    "sync-github": "vite-node --config vitest.config.mts scripts/sync-github.ts",
+    "smoke": "vite-node --config vitest.config.mts scripts/smoke.ts --"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
     "@vercel/analytics": "^1.5.0",
     "framer-motion": "^12.5.0",
     "next": "15.2.8",
@@ -30,6 +39,7 @@
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^3.2.7"
   }
 }

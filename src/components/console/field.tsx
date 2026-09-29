@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { caseStudies, layers, scratchIndex } from "@/data/portfolio";
-import { LAYER_HINTS, PROJECT_HINTS } from "@/lib/intents";
+import { caseStudies, layers, scratchIndex, openSource } from "@/data/portfolio";
+import activity from "@/data/activity.json";
+import { beacon } from "@/lib/beacon";
+import { starRelevance } from "@/lib/retrieval";
 import type { ArtifactSpec } from "@/lib/protocol";
 
 /**
@@ -41,6 +43,7 @@ const CLUSTER_POS: [number, number][] = [
   [0.88, 0.72], // Retrieval & data
   [0.3, 0.1], // Evaluation & safety
   [0.62, 0.09], // Case studies
+  [0.07, 0.52], // Upstream open source
 ];
 
 // Engraved chart labels, one per cluster — the atlas names its regions.
@@ -51,6 +54,7 @@ const CLUSTER_LABELS = [
   "RETRIEVAL",
   "EVAL",
   "SYSTEMS",
+  "UPSTREAM",
 ];
 
 export const FIELD_NODES: FieldNode[] = [
@@ -68,6 +72,22 @@ export const FIELD_NODES: FieldNode[] = [
     url: c.links[0]?.href ?? "https://github.com/sdivyanshu90",
     cluster: 5,
   })),
+  // One star per upstream project he has sent PRs to.
+  ...openSource
+    .filter((o) => o.role !== "Author")
+    .map((o) => ({
+      id: `oss:${o.name}`,
+      label: o.name,
+      sub: [
+        o.merged ? `${o.merged} merged` : null,
+        o.authored ? `${o.authored} PRs` : null,
+        o.reportedFixed?.length ? `${o.reportedFixed.length} fixed upstream` : null,
+      ]
+        .filter(Boolean)
+        .join(" · "),
+      url: o.href,
+      cluster: 6,
+    })),
 ];
 
 /** Map a run's artifact specs to the stars that should converge. */
@@ -76,7 +96,8 @@ export function nodesForSpecs(specs: ArtifactSpec[]): string[] {
   for (const s of specs) {
     if (s.kind === "index") {
       for (const e of scratchIndex) {
-        if (!s.params?.layer || e.layer === s.params.layer) ids.add(e.repo);
+        const { layer, highlight } = s.params ?? {};
+        if (highlight ? highlight.includes(e.repo) : !layer || e.layer === layer) ids.add(e.repo);
       }
     } else if (s.kind === "projects") {
       for (const c of caseStudies) {
@@ -85,6 +106,8 @@ export function nodesForSpecs(specs: ArtifactSpec[]): string[] {
     } else if (s.kind === "shipped") {
       // Light the case-study stars — the shipped ledger draws on applied work.
       for (const c of caseStudies) ids.add(c.id);
+    } else if (s.kind === "oss") {
+      for (const n of FIELD_NODES) if (n.cluster === 6) ids.add(n.id);
     } else if (s.kind === "about" || s.kind === "system") {
       for (const n of FIELD_NODES) ids.add(n.id);
     }
@@ -92,16 +115,39 @@ export function nodesForSpecs(specs: ArtifactSpec[]): string[] {
   return [...ids];
 }
 
-/** Live matching while the visitor types — the relevant stars stir. */
-export function nodesForDraft(q: string): string[] {
-  if (q.trim().length < 3) return [];
-  const ids = new Set<string>();
-  for (const [re, id] of PROJECT_HINTS) if (re.test(q)) ids.add(id);
-  for (const [re, layer] of LAYER_HINTS) {
-    if (re.test(q)) for (const e of scratchIndex) if (e.layer === layer) ids.add(e.repo);
-  }
-  if (/from.?scratch|build.?your.?own/i.test(q)) for (const e of scratchIndex) ids.add(e.repo);
-  return [...ids];
+/**
+ * Live matching while the visitor types: star id → relevance 0..1. The
+ * brightness you see is the router's actual retrieval score.
+ */
+export function nodesForDraft(q: string): Map<string, number> {
+  return starRelevance(q);
+}
+
+/* ── Living sky: real GitHub dates and activity (src/data/activity.json) ── */
+
+const ACT = activity.stars as Record<string, { created: string; pushed: string; stars: number }>;
+const DAY = 86_400_000;
+const bornOf = (id: string) => (ACT[id] ? Date.parse(ACT[id].created) : 0);
+const TL_START = Math.min(...Object.values(ACT).map((a) => Date.parse(a.created)));
+/** Time-lapse length: the whole history replays in this many ms. */
+const TL_MS = 9_000;
+const ago = (d: string) => {
+  const days = Math.max(0, Math.floor((Date.now() - Date.parse(d)) / DAY));
+  return days === 0 ? "today" : days < 30 ? `${days}d ago` : days < 365 ? `${Math.floor(days / 30)}mo ago` : `${Math.floor(days / 365)}y ago`;
+};
+/** Pushed within two weeks: the star twinkles harder. */
+const isFresh = (id: string) => !!ACT[id] && Date.now() - Date.parse(ACT[id].pushed) < 14 * DAY;
+
+/** Extra tooltip line: activity, stars, and how often visitors ask. */
+function starMeta(id: string, demand: Record<string, number>): string {
+  const a = ACT[id];
+  const parts = [
+    a && !id.startsWith("oss:") && a.pushed !== a.created.slice(0, 4) + "-01-01" ? `pushed ${ago(a.pushed)}` : null,
+    a && id.startsWith("oss:") ? `since ${a.created.slice(0, 7)}` : null,
+    a?.stars ? `${a.stars}★` : null,
+    demand[id] ? `asked ${demand[id]}× lately` : null,
+  ];
+  return parts.filter(Boolean).join(" · ");
 }
 
 function hash(s: string): number {
@@ -133,7 +179,7 @@ const EASE = (p: number) => 1 - Math.pow(1 - p, 3);
 const rad = (r: number) => (Number.isFinite(r) && r > 0 ? r : 0.1);
 
 export function Field({
-  draftIds,
+  draft,
   activeIds,
   scanKey,
   convergeKey,
@@ -141,7 +187,7 @@ export function Field({
   burstKey,
   wardKey,
 }: {
-  draftIds: string[];
+  draft: Map<string, number>;
   activeIds: string[];
   scanKey: number;
   convergeKey: number;
@@ -151,6 +197,8 @@ export function Field({
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
+  /** Set by the render loop; restarts a sleeping sky. */
+  const wakeRef = useRef<() => void>(() => {});
   // Desktop hover tooltip (transient) vs. touch popover (pinned, interactive).
   const [hover, setHover] = useState<{ star: Star; px: number; py: number } | null>(null);
   const [pinned, setPinned] = useState<{ star: Star; px: number; py: number } | null>(null);
@@ -194,7 +242,7 @@ export function Field({
   }, []);
 
   const state = useRef({
-    draftSet: new Set<string>(),
+    draftSet: new Map<string, number>(),
     activeSet: new Set<string>(),
     scanKey,
     scanAt: 0,
@@ -209,8 +257,24 @@ export function Field({
     lastTouch: 0,
     hover: null as Star | null,
     pointer: { x: 0.5, y: 0.5, has: false },
+    /** Visitor demand per star (from /api/demand). */
+    demand: {} as Record<string, number>,
+    /** Time-lapse playback start (performance.now()), or null. */
+    tlAt: null as number | null,
   });
-  state.current.draftSet = useMemo(() => new Set(draftIds), [draftIds]);
+  const [demand, setDemand] = useState<Record<string, number>>({});
+  const [tlPlaying, setTlPlaying] = useState(false);
+  const tlLabel = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    fetch("/api/demand")
+      .then((r) => (r.ok ? r.json() : {}))
+      .then((d: Record<string, number>) => {
+        state.current.demand = d;
+        setDemand(d);
+      })
+      .catch(() => {});
+  }, []);
+  state.current.draftSet = draft;
   state.current.activeSet = useMemo(() => new Set(activeIds), [activeIds]);
   if (state.current.scanKey !== scanKey) {
     state.current.scanKey = scanKey;
@@ -240,6 +304,52 @@ export function Field({
     state.current.burstAt,
     state.current.wardAt,
   );
+
+  // Keyboard exploration: arrow keys walk the sky (← → within a cluster,
+  // ↑ ↓ across clusters), Enter opens the star's repo. Sighted keyboard
+  // users get the chart too, not just the screen-reader list.
+  const order = useMemo(
+    () => [...stars].sort((a, b) => a.node.cluster - b.node.cluster || a.orbitA - b.orbitA),
+    [stars],
+  );
+  const [focusIdx, setFocusIdx] = useState<number | null>(null);
+  const focusStar = (i: number) => {
+    const s = order[(i + order.length) % order.length];
+    const idx = order.indexOf(s);
+    setFocusIdx(idx);
+    state.current.hover = s;
+    state.current.lastTouch = performance.now();
+    setHover({ star: s, px: s.x, py: s.y });
+    wakeRef.current();
+  };
+  const onSkyKey = (e: React.KeyboardEvent) => {
+    const i = focusIdx ?? -1;
+    const cluster = i >= 0 ? order[i].node.cluster : -1;
+    const firstIn = (c: number) => order.findIndex((s) => s.node.cluster === c);
+    const clusters = [...new Set(order.map((s) => s.node.cluster))];
+    if (e.key === "ArrowRight") focusStar(i + 1);
+    else if (e.key === "ArrowLeft") focusStar(i <= 0 ? order.length - 1 : i - 1);
+    else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      const at = clusters.indexOf(cluster);
+      const next = clusters[(at + (e.key === "ArrowDown" ? 1 : -1) + clusters.length) % clusters.length];
+      focusStar(firstIn(next));
+    } else if (e.key === "Enter" && i >= 0) {
+      window.open(order[i].node.url, "_blank", "noopener,noreferrer");
+    } else if (e.key === "Escape") {
+      (e.currentTarget as HTMLElement).blur();
+    } else return;
+    e.preventDefault();
+  };
+  const leaveSky = () => {
+    setFocusIdx(null);
+    state.current.hover = null;
+    setHover(null);
+  };
+
+  // Any console event (run, answer, dismiss, ward) wakes a sleeping sky.
+  useEffect(() => {
+    wakeRef.current();
+  }, [draft, activeIds, scanKey, convergeKey, dismissKey, burstKey, wardKey]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -318,6 +428,16 @@ export function Field({
     let dream: { cluster: number; at: number } | null = null;
     let dreamNext = mounted + 20_000;
 
+    // Idle budget: a sky nobody is looking at shouldn't cost a laptop its
+    // battery. Past DROWSY the frame rate drops; past SLEEP no new meteors
+    // spawn, and once the last effect settles the loop stops entirely until
+    // the visitor moves, types, scrolls, or focuses something.
+    const DROWSY_MS = 12_000;
+    const SLEEP_MS = 45_000;
+    let lastActivity = mounted;
+    let sleeping = false;
+    const idleFor = (now: number) => now - Math.max(lastActivity, state.current.lastTouch);
+
     /** Is any bounded effect alive? Then we render at 60fps, else 30. */
     const effectActive = (now: number) => {
       const st = state.current;
@@ -330,8 +450,9 @@ export function Field({
         (st.wardAt && now - st.wardAt < 1200) ||
         meteors.length > 0 ||
         motes.length > 0 ||
-        st.pointer.has ||
-        st.draftSet.size > 0
+        // A resting cursor only needs frames while parallax settles.
+        (st.pointer.has && now - st.lastTouch < 2000) ||
+        st.tlAt !== null
       );
     };
 
@@ -344,6 +465,19 @@ export function Field({
       const cx = CENTER[0] * w;
       const cy = CENTER[1] * h;
       const age = now - mounted;
+      // Time-lapse: stars appear on their real creation dates.
+      let cursor: number | null = null;
+      if (st.tlAt !== null) {
+        const p = Math.min(1, (now - st.tlAt) / TL_MS);
+        cursor = TL_START + EASE(p) * (Date.now() - TL_START);
+        if (tlLabel.current) tlLabel.current.textContent = new Date(cursor).toISOString().slice(0, 7);
+        if (p >= 1) {
+          st.tlAt = null;
+          cursor = null;
+          setTlPlaying(false);
+        }
+      }
+      const unborn = (s: Star) => cursor !== null && bornOf(s.node.id) > cursor;
 
       // Parallax eases toward the pointer.
       if (!reduce) {
@@ -416,7 +550,7 @@ export function Field({
           const a = group[i];
           const b = group[(i + 1) % group.length];
           const born = reduce || age > Math.max(a.birth, b.birth) + 500;
-          if (!born) continue;
+          if (!born || unborn(a) || unborn(b)) continue;
           ctx.globalAlpha = 0.4;
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
@@ -428,7 +562,11 @@ export function Field({
 
       // Typing threads: stirred stars are sewn together with accent thread.
       if (!reduce && draftSet.size > 1) {
-        const stirred = stars.filter((s) => draftSet.has(s.node.id));
+        // Thread the most relevant stars, strongest first.
+        const stirred = stars
+          .filter((s) => draftSet.has(s.node.id))
+          .sort((a, b) => (draftSet.get(b.node.id) ?? 0) - (draftSet.get(a.node.id) ?? 0))
+          .slice(0, 9);
         ctx.strokeStyle = colors.accent;
         ctx.globalAlpha = 0.16 + Math.sin(t * 2.4) * 0.06;
         ctx.beginPath();
@@ -539,7 +677,7 @@ export function Field({
       // Dream: left alone, the sky quietly re-draws one constellation.
       if (!reduce && now - st.lastTouch > 15_000 && now - mounted > 15_000) {
         if (!dream && now > dreamNext) {
-          dream = { cluster: Math.floor((now / 1000) % 6), at: now };
+          dream = { cluster: Math.floor((now / 1000) % CLUSTER_POS.length), at: now };
         }
         if (dream) {
           const dp = (now - dream.at) / 4200;
@@ -630,7 +768,7 @@ export function Field({
         };
 
         // Lone shooting stars, frequently — a constant light drizzle.
-        if (now > nextSporadic && meteors.length < 60) {
+        if (now > nextSporadic && meteors.length < 60 && idleFor(now) < SLEEP_MS) {
           const fromLeft = Math.random() > 0.5;
           const ang = fromLeft ? Math.PI * 0.2 : Math.PI * 0.8;
           emit(
@@ -649,7 +787,7 @@ export function Field({
         // A meteor shower: a dense staggered burst from one radiant point,
         // fanning outward so streaks rain through both margins. Every so
         // often it escalates into a storm (double the meteors).
-        if (now > nextShower && meteors.length < 60) {
+        if (now > nextShower && meteors.length < 60 && idleFor(now) < SLEEP_MS) {
           const radiantX = w * (0.3 + Math.random() * 0.4);
           const radiantY = -h * 0.04;
           const storm = Math.random() < 0.3;
@@ -787,15 +925,37 @@ export function Field({
           const bp = (age - s.birth) / 500;
           birthScale = 0.3 + EASE(bp) * 0.7 + Math.sin(bp * Math.PI) * 0.9;
         }
+        if (unborn(s)) continue;
+        if (cursor !== null) {
+          // Just born in the time-lapse: a brief ignition flare.
+          const since = (cursor - bornOf(s.node.id)) / (Date.now() - TL_START);
+          if (since < 0.05) birthScale = 1 + (0.05 - since) * 24;
+        }
+        // Demand: a faint halo that grows with how often visitors ask.
+        const asked = st.demand[s.node.id] ?? 0;
+        if (asked > 0) {
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, rad(6 + Math.log2(1 + asked) * 2.4), 0, Math.PI * 2);
+          ctx.fillStyle = colors.accent;
+          ctx.globalAlpha = Math.min(0.2, 0.06 + asked * 0.012);
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
         const active = activeSet.has(s.node.id);
-        const drafted = draftSet.has(s.node.id);
+        const weight = draftSet.get(s.node.id) ?? 0;
+        const drafted = weight > 0;
         const hovered = st.hover === s;
         // Scan flare: the wavefront brushing past a star lights it briefly.
         const flare = scanR > 0 && Math.abs(Math.hypot(s.x - cx, s.y - cy) - scanR) < 26;
         // Twinkle: hash-scheduled shimmer.
-        const twinkle = reduce ? 0 : Math.max(0, Math.sin(t * 0.9 + s.phase * 7)) ** 8 * 0.3;
+        // Living sky: a repo pushed in the last two weeks twinkles harder.
+        const twinkle = reduce
+          ? 0
+          : Math.max(0, Math.sin(t * 0.9 + s.phase * 7)) ** 8 * (isFresh(s.node.id) ? 0.8 : 0.3);
         const bright = s.mag > 0.82;
-        const r = (hovered ? 5 : active ? 3.6 : drafted ? 3.2 : flare ? 3.4 : bright ? 2.7 : 2.2) * birthScale;
+        const r =
+          (hovered ? 5 : active ? 3.6 : drafted ? 2.4 + weight * 1.4 : flare ? 3.4 : bright ? 2.7 : 2.2) *
+          birthScale;
         const lit = active || hovered || drafted || flare;
 
         // Diffraction spikes on the brightest stars (and any lit star).
@@ -815,9 +975,10 @@ export function Field({
         ctx.beginPath();
         ctx.arc(s.x, s.y, rad(r), 0, Math.PI * 2);
         ctx.fillStyle = lit ? colors.accent : colors.faint;
-        ctx.globalAlpha = (active || hovered ? 1 : drafted || flare ? 0.9 : 0.7) + twinkle * 0.3;
+        ctx.globalAlpha =
+          (active || hovered ? 1 : drafted ? 0.6 + weight * 0.35 : flare ? 0.9 : 0.7) + twinkle * 0.3;
         ctx.fill();
-        if (drafted && !reduce) {
+        if (drafted && weight > 0.55 && !reduce) {
           const pulse = 4 + Math.sin(t * 3 + s.phase) * 1.5;
           ctx.beginPath();
           ctx.arc(s.x, s.y, rad(r + pulse), 0, Math.PI * 2);
@@ -841,16 +1002,37 @@ export function Field({
     let last = 0;
     const loop = (now: number) => {
       if (!running) return;
-      const interval = effectActive(now) ? 16 : 33;
+      const active = effectActive(now);
+      const idle = idleFor(now);
+      if (!active && !dream && idle > SLEEP_MS) {
+        draw(now); // settle on a still frame, then stop until woken
+        sleeping = true;
+        return;
+      }
+      const interval = active ? 16 : idle > DROWSY_MS ? 66 : 33;
       if (now - last >= interval) {
         last = now;
         draw(now);
       }
       raf = requestAnimationFrame(loop);
     };
+    const wake = () => {
+      lastActivity = performance.now();
+      if (sleeping && running && !reduce && !document.hidden) {
+        sleeping = false;
+        raf = requestAnimationFrame(loop);
+      }
+    };
+    wakeRef.current = wake;
+    const WAKE_EVENTS = ["pointermove", "pointerdown", "keydown", "wheel", "touchstart", "focusin"] as const;
+    for (const ev of WAKE_EVENTS) window.addEventListener(ev, wake, { passive: true });
     const onVisibility = () => {
       if (document.hidden) cancelAnimationFrame(raf);
-      else if (!reduce && running) raf = requestAnimationFrame(loop);
+      else if (!reduce && running) {
+        sleeping = false;
+        lastActivity = performance.now();
+        raf = requestAnimationFrame(loop);
+      }
     };
     document.addEventListener("visibilitychange", onVisibility);
 
@@ -859,6 +1041,7 @@ export function Field({
       const iv = setInterval(() => draw(performance.now()), 400);
       return () => {
         clearInterval(iv);
+        for (const ev of WAKE_EVENTS) window.removeEventListener(ev, wake);
         ro.disconnect();
         themeObserver.disconnect();
         document.removeEventListener("visibilitychange", onVisibility);
@@ -948,6 +1131,7 @@ export function Field({
 
     return () => {
       running = false;
+      for (const ev of WAKE_EVENTS) window.removeEventListener(ev, wake);
       clearTimeout(startTimer);
       cancelAnimationFrame(raf);
       ro.disconnect();
@@ -963,6 +1147,52 @@ export function Field({
     <div ref={wrapRef} className="absolute inset-0">
       <canvas ref={canvasRef} aria-hidden className="absolute inset-0" />
 
+      <div
+        tabIndex={0}
+        role="application"
+        aria-roledescription="star chart"
+        aria-label={`Constellation of ${order.length} systems. Arrow keys move between stars, up and down change region, Enter opens the repository.`}
+        onKeyDown={onSkyKey}
+        onFocus={() => {
+          if (focusIdx === null) focusStar(0);
+          beacon("sky", { via: "keyboard" });
+        }}
+        onBlur={leaveSky}
+        className="sr-only z-30 font-mono text-[11px] focus:not-sr-only focus:absolute focus:bottom-3 focus:left-3 focus:border focus:border-accent focus:bg-surface focus:px-2.5 focus:py-1.5 focus:text-ink-muted"
+      >
+        explore the sky · ← → ↑ ↓ · enter opens
+      </div>
+      {!reduce ? (
+        <button
+          type="button"
+          onClick={() => {
+            if (tlPlaying) {
+              state.current.tlAt = null;
+              setTlPlaying(false);
+              return;
+            }
+            state.current.tlAt = performance.now();
+            state.current.lastTouch = performance.now();
+            setTlPlaying(true);
+            wakeRef.current();
+            beacon("sky", { via: "timelapse" });
+          }}
+          aria-label={tlPlaying ? "Stop the time-lapse" : "Replay the sky in the order the work was built"}
+          className="absolute right-3 bottom-3 z-20 hidden border border-rule bg-surface/90 px-2.5 py-1 font-mono text-[10px] tracking-wider text-ink-faint uppercase transition-colors hover:border-accent hover:text-accent sm:block"
+        >
+          {tlPlaying ? (
+            <>
+              ■ <span ref={tlLabel} className="text-accent" />
+            </>
+          ) : (
+            "▶ time-lapse"
+          )}
+        </button>
+      ) : null}
+      <p aria-live="polite" className="sr-only">
+        {focusIdx !== null ? `${order[focusIdx].node.label} — ${order[focusIdx].node.sub}` : ""}
+      </p>
+
       {/* The crawlable/SR equivalent lives in <StarIndex/> (server-rendered). */}
 
       {/* Desktop: transient hover tooltip (the star's repo opens on click). */}
@@ -976,6 +1206,9 @@ export function Field({
           <p className="font-mono text-[10px] leading-snug text-ink-faint">
             {hover.star.node.sub} · click to open
           </p>
+          {starMeta(hover.star.node.id, demand) ? (
+            <p className="mt-0.5 font-mono text-[10px] leading-snug text-accent">{starMeta(hover.star.node.id, demand)}</p>
+          ) : null}
         </div>
       ) : null}
 
@@ -992,6 +1225,9 @@ export function Field({
           <p className="mt-0.5 font-mono text-[10px] leading-snug text-ink-faint">
             {pinned.star.node.sub}
           </p>
+          {starMeta(pinned.star.node.id, demand) ? (
+            <p className="mt-0.5 font-mono text-[10px] leading-snug text-accent">{starMeta(pinned.star.node.id, demand)}</p>
+          ) : null}
           <a
             href={pinned.star.node.url}
             target="_blank"

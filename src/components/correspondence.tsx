@@ -1,4 +1,5 @@
 import { CiteCard } from "@/components/cite-card";
+import { ContactLink } from "@/components/contact-link";
 import { personal, resume, socials } from "@/data/portfolio";
 
 /** Contact section: plain rows on the left, citation card on the right. */
@@ -16,19 +17,14 @@ export function Correspondence() {
               Email
             </dt>
             <dd>
-              <a
+              <ContactLink
                 href={`mailto:${personal.email}`}
+                via="contact-card"
                 className="underline decoration-rule underline-offset-4 transition-colors hover:text-accent hover:decoration-accent"
               >
                 {personal.email}
-              </a>
+              </ContactLink>
             </dd>
-          </div>
-          <div className="grid grid-cols-[110px_1fr] gap-4 py-3 text-[14px]">
-            <dt className="font-mono text-[11px] leading-6 tracking-[0.15em] text-ink-faint uppercase">
-              Phone
-            </dt>
-            <dd className="text-ink-muted">{personal.phone}</dd>
           </div>
           <div className="grid grid-cols-[110px_1fr] gap-4 py-3 text-[14px]">
             <dt className="font-mono text-[11px] leading-6 tracking-[0.15em] text-ink-faint uppercase">
@@ -41,12 +37,13 @@ export function Correspondence() {
               Résumé
             </dt>
             <dd>
-              <a
+              <ContactLink
                 href={resume.href}
+                via="contact-card"
                 className="underline decoration-rule underline-offset-4 transition-colors hover:text-accent hover:decoration-accent"
               >
                 {resume.label}
-              </a>
+              </ContactLink>
             </dd>
           </div>
           <div className="grid grid-cols-[110px_1fr] gap-4 py-3 text-[14px]">

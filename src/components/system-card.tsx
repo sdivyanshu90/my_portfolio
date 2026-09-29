@@ -1,5 +1,7 @@
+import { ContactLink } from "@/components/contact-link";
 import {
   changelog,
+  github,
   keyResults,
   personal,
   resume,
@@ -7,11 +9,13 @@ import {
   site,
   socials,
 } from "@/data/portfolio";
+import scorecard from "@/data/eval-scorecard.json";
+import { LiveStats } from "@/components/live-stats";
 
 const rows: { label: string; value: React.ReactNode }[] = [
   {
     label: "Model",
-    value: `DIV-1 · rev ${site.revision} — deterministic intent router + typed artifacts + LLM narration over a verified dossier`,
+    value: `DIV-1 · rev ${site.revision} — keyword rules + BM25 retrieval over a verified dossier → typed artifacts, with LLM narration`,
   },
   {
     label: "Represents",
@@ -39,29 +43,43 @@ const rows: { label: string; value: React.ReactNode }[] = [
   },
   {
     label: "Grounding",
-    value: `résumé.pdf · github/sdivyanshu90 (165 public repos, ${scratchIndex.length} from-scratch systems) · repo READMEs · Uniiq engineering work summary`,
+    value: `résumé.pdf · github/${github.user} (${github.publicRepos} public repos, ${scratchIndex.length} from-scratch systems) · repo READMEs · Uniiq engineering work summary`,
+  },
+  {
+    label: "Router eval",
+    value: `${scorecard.router.passed}/${scorecard.router.total} golden questions routed correctly · injection screen ${scorecard.guard.passed}/${scorecard.guard.total} · measured at build, ${scorecard.at}`,
   },
   {
     label: "Eval results",
     value: keyResults.map((r) => `${r.display} ${r.label}`).join(" · "),
   },
   {
+    label: "Live record",
+    value: <LiveStats />,
+  },
+  {
+    label: "Privacy",
+    value:
+      "Questions are logged to improve answers — redacted (emails, numbers, links removed), with a salted visitor hash, never an IP. Job descriptions in the fit check never leave your browser.",
+  },
+  {
     label: "Contact",
     value: (
       <span className="flex flex-wrap gap-x-5 gap-y-1">
-        <a
+        <ContactLink
           href={`mailto:${personal.email}`}
+          via="system-card"
           className="underline decoration-rule underline-offset-4 transition-colors hover:text-accent hover:decoration-accent"
         >
           {personal.email}
-        </a>
-        <span className="text-ink-muted">{personal.phone}</span>
-        <a
+        </ContactLink>
+        <ContactLink
           href={resume.href}
+          via="system-card"
           className="underline decoration-rule underline-offset-4 transition-colors hover:text-accent hover:decoration-accent"
         >
           Résumé (PDF) ↓
-        </a>
+        </ContactLink>
       </span>
     ),
   },

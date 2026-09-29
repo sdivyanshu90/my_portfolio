@@ -1,9 +1,25 @@
-import { certifications, honors } from "@/data/portfolio";
+import { certifications, education, honors } from "@/data/portfolio";
 
 /** Certifications and honors, verbatim from the résumé. */
 export function Credentials() {
   return (
     <div className="grid gap-12 lg:grid-cols-2">
+      <div className="lg:col-span-2">
+        <h3 className="font-mono text-[11px] tracking-[0.2em] text-ink-faint uppercase">
+          Education
+        </h3>
+        <p className="mt-3 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-y border-rule-faint py-3 text-[14px]">
+          <span className="text-ink">
+            {education.degree} — {education.school}
+          </span>
+          <span className="font-mono text-[12px] text-ink-faint">
+            {education.grade} · {education.span}
+          </span>
+        </p>
+        <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">
+          Coursework: {education.coursework}.
+        </p>
+      </div>
       <div>
         <h3 className="font-mono text-[11px] tracking-[0.2em] text-ink-faint uppercase">
           Certifications

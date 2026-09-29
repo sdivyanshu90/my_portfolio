@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import { useHydrated } from "@/lib/use-hydrated";
 import { MetricDelta } from "@/components/metric-delta";
 import { Reveal } from "@/components/reveal";
 import type { CaseStudy } from "@/data/portfolio";
@@ -9,8 +10,17 @@ import type { CaseStudy } from "@/data/portfolio";
  * A project presented as a figure in the report: problem → approach →
  * measured results, with the stack and links as the caption.
  */
-export function CaseStudyFigure({ study }: { study: CaseStudy }) {
-  const reduce = useReducedMotion();
+export function CaseStudyFigure({
+  study,
+  permalink,
+}: {
+  study: CaseStudy;
+  /** In the console: link out to the figure's own page. */
+  permalink?: boolean;
+}) {
+  // Server-rendered content is never shipped hidden (see useHydrated).
+  const hydrated = useHydrated();
+  const reduce = useReducedMotion() || !hydrated;
 
   return (
     <Reveal>
@@ -98,7 +108,28 @@ export function CaseStudyFigure({ study }: { study: CaseStudy }) {
         {/* Caption */}
         <footer className="flex flex-wrap items-baseline gap-x-6 gap-y-2 border-t border-rule-faint px-5 py-3.5 font-mono text-[12px] text-ink-faint sm:px-7">
           <p>{study.stack.join(" · ")}</p>
-          <p className="ml-auto flex gap-5">
+          <p className="w-full text-[11px] sm:order-last">
+            <span className="text-accent">receipt</span> · figures from{" "}
+            {study.source.href ? (
+              <a
+                href={study.source.href}
+                className="underline decoration-rule underline-offset-2 transition-colors hover:text-accent hover:decoration-accent"
+              >
+                {study.source.label} ↗
+              </a>
+            ) : (
+              study.source.label
+            )}
+          </p>
+          <p className="ml-auto flex flex-wrap gap-x-5 gap-y-1">
+            {permalink ? (
+              <a
+                href={`/work/${study.id}`}
+                className="text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent"
+              >
+                full page →
+              </a>
+            ) : null}
             {study.links.map((l) => (
               <a
                 key={l.href}

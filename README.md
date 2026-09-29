@@ -38,12 +38,15 @@ into the card, which ripples on impact and **typesets itself** in a cascade
 odometer count-ups, staggered rows, sliding ink chips, input shake, blinking
 caret. Try `sudo hire` — and press `/` anywhere to focus the prompt.
 
-**Security:** a deterministic injection screen quarantines prompt-attack
-queries before any model sees them (they get the sealed system card and a
-*ward* animation instead); model identifiers are sanitized in the UI; the
-narrator treats visitor messages as data, never instructions, and questions
-about the console itself always get a fixed, handwritten answer. Per-IP
-throttling on `/api/ask`.
+**Security:** a deterministic injection screen catches directives aimed at
+the console itself ("ignore previous instructions", "your system prompt",
+"this site's API key") and seals narration for that run — the query never
+reaches a model. It degrades rather than accuses: whatever else the question
+asked about Divanshu still renders as exact artifacts, and only a pure attack
+gets the system card and the *ward* animation. Topic words alone never trip
+it (his credentials, his prompt-caching repo, API-key handling). Model
+identifiers are sanitized in the UI; the narrator treats visitor messages as
+data; per-IP throttling on `/api/ask`.
 
 ## Architecture
 
@@ -70,7 +73,65 @@ Narration uses OpenRouter (optional — the console works without it):
 
 ```
 OPENROUTER_API_KEY=sk-or-...
-OPENROUTER_MODEL=google/gemma-4-31b-it:free   # optional; chain falls back
+OPENROUTER_MODEL=~deepseek/deepseek-v4-flash-latest  # primary; free models are the hedge chain
+NARRATION_DAILY_CAP=300      # optional; narrations per UTC day
+NARRATION_HEDGE_MS=4000      # optional; silence before a free fallback races the primary
+
+# Neon Postgres — the interaction store (questions, shared runs, feedback,
+# handoffs, fit-check counts, UI events) and shared rate limit / cache.
+DATABASE_URL=postgres://...   # or NeonDB_URI; then run `npm run db:migrate` once
+
+# Optional: Upstash Redis or Vercel KV for faster counters/cache (else Neon).
+UPSTASH_REDIS_REST_URL=...   # or KV_REST_API_URL
+UPSTASH_REDIS_REST_TOKEN=... # or KV_REST_API_TOKEN
+IP_SALT=...                  # salts the hashed visitor id used for rate limiting
+RESEND_API_KEY=re_...        # emails Divanshu each "Ask Divanshu" question (Resend)
+NOTIFY_EMAIL=...             # optional; alert recipient (default: the dossier email)
+NOTIFY_FROM=...              # optional; sender on a verified domain (default: onboarding@resend.dev)
+ADMIN_TOKEN=...              # enables GET /api/misses (Authorization: Bearer …)
+```
+
+Spend controls for paid models: presets, honest absences, canonical chips and
+guarded queries never call a model; finished narrations are cached for 24h per
+mode + question; reasoning runs at `effort: low` and is never streamed; past the
+daily cap every run is deterministic. A typical narration costs ≈ $0.0002.
+
+**Routing.** Keyword rules name *what* the visitor wants; BM25 retrieval over
+every dossier fact (`src/lib/retrieval.ts`) finds *which* repo, case study, role
+or skill. The same scores light the stars while you type. Named tech with no
+trace in the dossier gets an honest "not on record" with the closest neighbours.
+
+**Evals.** `src/lib/evals/golden.ts` is the router's golden set;
+`npm run eval` scores it (plus the injection-screen cases) and writes
+`src/data/eval-scorecard.json`, which the system card publishes. It runs before
+every build, so the live score is the score of the shipped code.
+
+**What's stored.** Every question — from the site's console, a direct `POST /api/ask`, or an AI
+agent over MCP (`source` = console | api | mcp) — lands in `div1_interactions` with the answer DIV-1 gave,
+the cards shown, the run trace and sources. Questions are redacted; job descriptions are never stored.
+
+**Admin dashboard.** `/admin` (sign in with `ADMIN_TOKEN`; the session cookie holds a hash, never the
+token): unique visitors with period-over-period change, weekly visitors (12 weeks), countries, time spent
+per session, top pages, referrers / utm, devices & browsers, every question with its answer, the "Ask
+Divanshu" inbox (reply / mark answered / dismiss), misses, conversion by first question, fit checks and
+model spend. Page analytics are first-party and privacy-first: no IPs or user agents stored, country from
+Vercel's geo header, engaged (tab-visible) time only, bots skipped, Do-Not-Track / GPC honored.
+
+**Misses inbox.** `GET /api/misses?days=14` (Bearer `ADMIN_TOKEN`) returns, from
+Neon: generic-card answers, "not on record" answers and quarantines (grouped),
+answers visitors flagged as missed, open "ask Divanshu" handoffs, the most asked
+questions, and fit-check totals. Questions are redacted; no IPs are stored.
+
+**Pages & machine door.** `/work`, `/work/<id>`, `/systems`, `/open-source`,
+`/cv` (prints as the résumé), `/fit` (job-description matcher, runs in the
+browser), `/r/<id>` (shared answers). For AI screeners: `/llms.txt`,
+`/dossier.json`, and an MCP server at `/api/mcp` (tools: `search_dossier`,
+`get_case_study`, `list_systems`, `match_requirements`, `get_contact`).
+
+**README card.** Embed a live card on the GitHub profile:
+
+```md
+[![DIV-1](https://div90.vercel.app/api/card.svg)](https://div90.vercel.app)
 ```
 
 ## Development
@@ -78,7 +139,14 @@ OPENROUTER_MODEL=google/gemma-4-31b-it:free   # optional; chain falls back
 ```bash
 npm install
 npm run dev    # http://localhost:3000
-npm run build  # static build + sitemap/robots/OG image generation
+npm test       # golden router set, guard, retrieval, store, credit-safety route tests
+npm run eval   # print the router scorecard (-- --verbose lists failures)
+npm run build  # eval scorecard + static build + sitemap/robots/OG image generation
+npm run db:migrate     # apply db/schema.sql to Neon (idempotent)
+npm run verify-claims  # re-check open-source numbers against GitHub (GITHUB_TOKEN)
+npm run sync-github    # refresh src/data/activity.json (runs before every build)
+npm run smoke          # end-to-end check of every page/API + the Neon rows (needs ADMIN_TOKEN, a running server)
+                       #   BASE=http://localhost:3100 npm run smoke -- [--live] [--email] [--keep]
 ```
 
 ## License

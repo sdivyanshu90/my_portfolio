@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import type { TraceStepName } from "@/lib/protocol";
 
 /**
  * The answer card — the single vessel every response materializes in.
@@ -11,7 +12,7 @@ import { useEffect, useRef, useState } from "react";
  */
 
 export interface TraceStep {
-  step: "intent" | "tool" | "synthesis" | "guardrail";
+  step: TraceStepName;
   detail: string;
 }
 
@@ -26,7 +27,7 @@ export function TraceStrip({
   return (
     <ol
       aria-label="Run trace"
-      className="flex flex-wrap items-baseline gap-x-4 gap-y-1 font-mono text-[10px] text-ink-faint sm:text-[11px]"
+      className="flex items-baseline gap-x-4 gap-y-1 overflow-x-auto font-mono text-[10px] text-ink-faint [scrollbar-width:none] sm:flex-wrap sm:overflow-visible sm:text-[11px] [&::-webkit-scrollbar]:hidden"
     >
       {steps.map((s, i) => (
         <motion.li
@@ -124,6 +125,8 @@ export function CardShell({
   actions,
   children,
   animated,
+  followUps,
+  onFollowUp,
 }: {
   label: string;
   question: string;
@@ -135,6 +138,8 @@ export function CardShell({
   actions?: React.ReactNode;
   children?: React.ReactNode;
   animated?: boolean;
+  followUps?: string[];
+  onFollowUp?: (q: string) => void;
 }) {
   const reduce = useReducedMotion();
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -233,6 +238,7 @@ export function CardShell({
             <Cascade animated={animated} order={2}>
               <div
                 aria-live="polite"
+                aria-busy={running || undefined}
                 className="max-w-prose text-[15px] leading-relaxed whitespace-pre-wrap text-ink"
               >
                 {narration}
@@ -250,10 +256,33 @@ export function CardShell({
         </div>
       </div>
 
+      {followUps?.length && onFollowUp ? (
+        <Cascade animated={animated} order={2}>
+          <nav
+            aria-label="Suggested next questions"
+            className="flex gap-2 overflow-x-auto border-t border-rule-faint px-5 py-2.5 [scrollbar-width:none] sm:px-7 [&::-webkit-scrollbar]:hidden"
+          >
+            <span aria-hidden className="shrink-0 self-center font-mono text-[10px] tracking-[0.18em] text-ink-faint uppercase">
+              next
+            </span>
+            {followUps.map((f) => (
+              <button
+                key={f}
+                type="button"
+                onClick={() => onFollowUp(f)}
+                className="shrink-0 border border-rule-faint px-2.5 py-1 font-mono text-[11px] whitespace-nowrap text-ink-muted transition-colors hover:border-accent hover:text-accent"
+              >
+                → {f}
+              </button>
+            ))}
+          </nav>
+        </Cascade>
+      ) : null}
+
       {footer ? (
         <Cascade animated={animated} order={1}>
-          <footer className="flex flex-wrap items-baseline gap-x-6 gap-y-1 border-t border-rule-faint px-5 py-2.5 font-mono text-[10px] text-ink-faint sm:px-7 sm:text-[11px]">
-            <span className="flex min-w-0 flex-wrap items-center gap-1.5">
+          <footer className="flex items-baseline gap-x-6 gap-y-1 border-t border-rule-faint px-5 py-2.5 font-mono text-[10px] text-ink-faint sm:flex-wrap sm:px-7 sm:text-[11px]">
+            <span className="flex min-w-0 items-center gap-1.5 overflow-x-auto whitespace-nowrap [scrollbar-width:none] sm:flex-wrap sm:overflow-visible [&::-webkit-scrollbar]:hidden">
               sources:{" "}
               {footer.sources.map((s, i) => (
                 <motion.span

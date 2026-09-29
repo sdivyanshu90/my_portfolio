@@ -1,0 +1,39 @@
+name: Verify claims
+
+# Every open-source number on the site is re-checked against the GitHub API
+# daily. Drift (a new merge, a new PR, a changed repo count) opens an issue
+# so the dossier is updated instead of quietly going stale.
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - id: verify
+        run: npm run verify-claims 2>&1 | tee verify.log
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue list --label dossier-drift --state open --json number --jq '.[0].number' > n.txt || true
+          if [ -s n.txt ]; then
+            gh issue comment "$(cat n.txt)" --body-file verify.log
+          else
+            gh label create dossier-drift --color B60205 --force
+            gh issue create --title "Dossier drift: claims no longer match GitHub" --label dossier-drift --body-file verify.log
+          fi

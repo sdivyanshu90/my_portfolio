@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import { useHydrated } from "@/lib/use-hydrated";
 
 /**
  * One-time, in-view reveal: a small rise + fade that establishes reading
@@ -18,8 +19,9 @@ export function Reveal({
   className?: string;
 }) {
   const reduce = useReducedMotion();
+  const animate = useHydrated() && !reduce;
 
-  if (reduce) {
+  if (!animate) {
     return <div className={className}>{children}</div>;
   }
 
@@ -39,8 +41,9 @@ export function Reveal({
 /** Hairline rule that draws itself left→right when it enters the viewport. */
 export function RuleDraw({ className }: { className?: string }) {
   const reduce = useReducedMotion();
+  const animate = useHydrated() && !reduce;
 
-  if (reduce) {
+  if (!animate) {
     return <div className={`h-px bg-rule ${className ?? ""}`} />;
   }
 

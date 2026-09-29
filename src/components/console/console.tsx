@@ -3,7 +3,10 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { AnswerTools, XrayNarration } from "@/components/console/answer-tools";
+import { VoiceButton } from "@/components/console/voice-button";
 import { ArtifactView } from "@/components/console/artifacts";
+import { beacon } from "@/lib/beacon";
 import { ArtifactWipe, CardShell, type TraceStep } from "@/components/console/card";
 import { nodesForDraft, nodesForSpecs } from "@/components/console/field";
 
@@ -13,6 +16,8 @@ const Field = dynamic(() => import("@/components/console/field").then((m) => m.F
 });
 import { MODE_LABELS, PRESETS } from "@/components/console/presets";
 import type { ArtifactSpec, ConsoleEvent, Mode } from "@/lib/protocol";
+
+const NO_DRAFT = new Map<string, number>();
 
 const MOON_PHASES = ["🌑", "🌒", "🌓", "🌔", "🌕", "🌖", "🌗", "🌘"];
 
@@ -43,6 +48,10 @@ interface Run {
   ms: number | null;
   model: string | null;
   sources: string[];
+  followUps: string[];
+  runId?: string;
+  usage?: { tokens: number; costUsd: number | null };
+  miss?: boolean;
 }
 
 /**
@@ -64,13 +73,16 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
   const [shaking, setShaking] = useState(false);
   const [tab, setTab] = useState(0);
   const [placeholderIdx, setPlaceholderIdx] = useState(0);
+  const [xrayOn, setXrayOn] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const nextId = useRef(1);
   const abortRef = useRef<AbortController | null>(null);
   const activeRunId = useRef(0);
+  /** Short-term memory: the last question, so "and the tests?" resolves. */
+  const lastQuestion = useRef<string | null>(null);
   const reduce = useReducedMotion();
 
-  const draftIds = useMemo(() => (busy ? [] : nodesForDraft(input)), [input, busy]);
+  const draft = useMemo(() => (busy ? NO_DRAFT : nodesForDraft(input)), [input, busy]);
 
   // Rotating placeholder — a quiet tour of what you can ask.
   const placeholders = useMemo(
@@ -101,10 +113,13 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
   const ask = useCallback(
     async (question: string) => {
       const q = question.trim();
-      if (!q || busy) return;
+      // A new question supersedes one still streaming (aborted below) rather
+      // than being silently dropped.
+      if (!q) return;
       setInput("");
       setBusy(true);
       setTab(0);
+      setXrayOn(false);
       setActiveIds([]);
       setScanKey((k) => k + 1); // astrolabe sweep begins immediately
 
@@ -127,7 +142,10 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
         ms: null,
         model: null,
         sources: [],
+        followUps: [],
       };
+      const prev = lastQuestion.current;
+      lastQuestion.current = q;
       setRun(current);
       const patch = (fn: (r: Run) => Run) => {
         if (!live()) return; // a dismissed/superseded run must not resurrect
@@ -138,8 +156,9 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
       try {
         const res = await fetch("/api/ask", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ question: q, mode }),
+          // Marks the request as the site's own console (vs. a direct API call).
+          headers: { "Content-Type": "application/json", "x-div1-client": "console" },
+          body: JSON.stringify({ question: q, mode, ...(prev ? { prev } : {}) }),
           signal: controller.signal,
         });
         if (res.status === 429) {
@@ -175,7 +194,7 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
             }
             if (e.t === "trace") {
               patch((r) => ({ ...r, trace: [...r.trace, { step: e.step, detail: e.detail }] }));
-              if (e.step === "guardrail") setWardKey((k) => k + 1);
+              if (e.step === "guardrail" && e.detail.startsWith("directive")) setWardKey((k) => k + 1);
             } else if (e.t === "artifact") {
               const first = current.artifacts.length === 0;
               patch((r) => ({ ...r, artifacts: [...r.artifacts, e.spec] }));
@@ -187,7 +206,17 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
               patch((r) => ({ ...r, note: e.text }));
               if (e.text.includes("privilege escalation")) setBurstKey((k) => k + 1);
             } else if (e.t === "done") {
-              patch((r) => ({ ...r, status: "done", ms: e.ms, model: e.model, sources: e.sources }));
+              patch((r) => ({
+                ...r,
+                status: "done",
+                ms: e.ms,
+                model: e.model,
+                sources: e.sources,
+                followUps: e.followUps ?? [],
+                runId: e.runId,
+                usage: e.usage,
+                miss: e.miss,
+              }));
             }
           }
         }
@@ -203,7 +232,7 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
         if (activeRunId.current === id) setBusy(false);
       }
     },
-    [busy, mode],
+    [mode],
   );
 
   const dismiss = useCallback(() => {
@@ -212,6 +241,7 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
     setBusy(false);
     setRun(null);
     setActiveIds([]);
+    lastQuestion.current = null;
     setDismissKey((k) => k + 1); // the answer scatters back into the sky
     if (typeof window !== "undefined" && window.location.search) {
       window.history.replaceState(null, "", window.location.pathname);
@@ -234,9 +264,13 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
   const [copied, setCopied] = useState(false);
   const share = useCallback(() => {
     if (!run) return;
-    const url = `${window.location.origin}${window.location.pathname}?q=${encodeURIComponent(run.question)}&mode=${mode}`;
-    // Reflect the current run in the address bar for easy manual copy too.
-    window.history.replaceState(null, "", url);
+    // A persisted run gets a permalink that replays it exactly; otherwise
+    // the link re-asks the question (cached narration makes that cheap).
+    const url = run.runId
+      ? `${window.location.origin}/r/${run.runId}`
+      : `${window.location.origin}${window.location.pathname}?q=${encodeURIComponent(run.question)}&mode=${mode}`;
+    if (!run.runId) window.history.replaceState(null, "", url);
+    beacon("share", { permalink: !!run.runId });
     navigator.clipboard?.writeText(url).then(
       () => {
         setCopied(true);
@@ -253,7 +287,7 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
       {/* Stage */}
       <div className="relative min-h-0 flex-1">
         <Field
-          draftIds={draftIds}
+          draft={draft}
           activeIds={activeIds}
           scanKey={scanKey}
           convergeKey={convergeKey}
@@ -283,7 +317,7 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
                     narration={
                       run.text ? (
                         <>
-                          {run.text}
+                          {xrayOn && run.status === "done" ? <XrayNarration text={run.text} /> : run.text}
                           {run.status === "running" ? (
                             <span aria-hidden className="animate-pulse text-accent motion-reduce:animate-none">
                               ▍
@@ -302,10 +336,20 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
                       ) : undefined
                     }
                     note={run.note}
+                    followUps={run.status === "done" ? run.followUps : undefined}
+                    onFollowUp={(q) => {
+                      beacon("followup", { q });
+                      ask(q);
+                    }}
                     footer={
                       run.status === "done"
                         ? {
-                            model: run.model ?? "deterministic",
+                            // Cost receipt: tokens and dollars for a live narration.
+                            model:
+                              (run.model ?? "deterministic") +
+                              (run.usage
+                                ? ` · ${run.usage.tokens} tok${run.usage.costUsd != null ? ` · $${run.usage.costUsd.toFixed(5)}` : ""}`
+                                : ""),
                             ms: run.ms != null ? `${(run.ms / 1000).toFixed(1)}s` : "—",
                             sources: run.sources,
                           }
@@ -360,6 +404,19 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
                   >
                     {run.artifacts.length ? (
                       <div>
+                        {run.status === "done" && run.text && !run.trace.some((t) => t.step === "guardrail" && t.detail.startsWith("directive")) ? (
+                          <div className="-mt-3 mb-5">
+                            <AnswerTools
+                              key={run.id}
+                              question={run.question}
+                              runId={run.runId}
+                              xrayOn={xrayOn}
+                              onXray={setXrayOn}
+                              miss={!!run.miss}
+                              canXray={run.text.length > 40}
+                            />
+                          </div>
+                        ) : null}
                         {showTabs ? (
                           <div role="group" aria-label="Answer artifacts" className="mb-4 flex gap-2">
                             {run.artifacts.map((a, i) => (
@@ -424,9 +481,10 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
       </div>
 
       {/* Command bar */}
-      <div className="border-t border-rule bg-paper px-4 pt-3 pb-3 sm:px-6">
+      <div className="border-t border-rule bg-paper px-4 pt-2.5 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-6 sm:pt-3">
         <div className="mx-auto max-w-3xl">
-          <div className="flex flex-wrap items-center gap-2">
+          {/* Modes: chips from sm up; on phones a compact select beside the presets. */}
+          <div className="hidden flex-wrap items-center gap-2 sm:flex">
             <span className="mr-1 font-mono text-[10px] tracking-[0.18em] text-ink-faint uppercase">
               mode
             </span>
@@ -435,7 +493,10 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
                 key={m}
                 type="button"
                 aria-pressed={mode === m}
-                onClick={() => setMode(m)}
+                onClick={() => {
+                  setMode(m);
+                  beacon("mode", { mode: m });
+                }}
                 className={`relative border px-2.5 py-1 font-mono text-[10px] tracking-wide uppercase transition-colors ${
                   mode === m
                     ? "border-accent text-paper"
@@ -455,7 +516,7 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
             ))}
             <button
               type="button"
-              disabled={busy}
+              aria-busy={busy}
               onClick={() => ask("Show the system card")}
               className="border border-rule px-2.5 py-1 font-mono text-[10px] tracking-wide text-ink-muted uppercase transition-colors hover:border-accent hover:text-accent disabled:opacity-50"
             >
@@ -478,7 +539,7 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
             }
             transition={{ duration: 0.35 }}
             onAnimationComplete={() => setShaking(false)}
-            className={`group mt-2.5 flex items-center gap-3 border bg-surface px-4 transition-colors focus-within:border-accent ${
+            className={`group flex items-center gap-3 border bg-surface px-4 transition-colors sm:mt-2.5 focus-within:border-accent ${
               busy ? "animate-pulse border-accent/60 motion-reduce:animate-none" : "border-rule"
             }`}
             onSubmit={(e) => {
@@ -508,8 +569,9 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
               placeholder={placeholders[placeholderIdx % placeholders.length]}
               maxLength={280}
               autoComplete="off"
-              className="min-w-0 flex-1 bg-transparent py-3 font-mono text-[14px] text-ink placeholder:text-ink-faint focus:outline-none"
+              className="min-w-0 flex-1 bg-transparent py-3 font-mono text-[14px] text-ink placeholder:text-ink-faint focus:outline-none focus-visible:outline-none"
             />
+            <VoiceButton onText={setInput} onFinal={(t) => ask(t)} />
             <kbd
               aria-hidden
               className="hidden shrink-0 border border-rule px-1.5 py-0.5 font-mono text-[10px] text-ink-faint transition-opacity duration-200 group-focus-within:opacity-0 sm:block"
@@ -518,7 +580,7 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
             </kbd>
             <button
               type="submit"
-              disabled={busy}
+              aria-busy={busy}
               className="shrink-0 border border-accent px-4 py-1.5 font-mono text-[11px] tracking-wider text-accent uppercase transition-colors hover:bg-accent hover:text-paper disabled:cursor-not-allowed disabled:opacity-40"
             >
               {busy ? <MoonSpinner /> : "run"}
@@ -529,6 +591,20 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
             key={mode}
             className="mt-2.5 flex gap-2 overflow-x-auto pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
+            <label className="shrink-0 sm:hidden">
+              <span className="sr-only">Audience mode</span>
+              <select
+                value={mode}
+                onChange={(e) => setMode(e.target.value as Mode)}
+                className="h-full border border-accent bg-paper px-2 py-1.5 font-mono text-[11px] text-accent uppercase"
+              >
+                {(Object.keys(MODE_LABELS) as Mode[]).map((m) => (
+                  <option key={m} value={m}>
+                    {MODE_LABELS[m]}
+                  </option>
+                ))}
+              </select>
+            </label>
             {PRESETS[mode].map((p, i) => (
               <motion.button
                 key={p}
@@ -536,7 +612,7 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.25, delay: reduce ? 0 : i * 0.05 }}
                 type="button"
-                disabled={busy}
+                aria-busy={busy}
                 onClick={() => ask(p)}
                 className="shrink-0 border border-rule px-3 py-1.5 font-mono text-[11px] whitespace-nowrap text-ink-muted transition-colors hover:border-accent hover:text-accent disabled:opacity-50"
               >
