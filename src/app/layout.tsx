@@ -1,21 +1,27 @@
 import { Analytics } from "@vercel/analytics/react";
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Mono, Newsreader } from "next/font/google";
+import localFont from "next/font/local";
 import { ThemeProvider } from "next-themes";
 import { PageTracker } from "@/components/page-tracker";
 import { personal, site, socials } from "@/data/portfolio";
 import "./globals.css";
 
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  style: ["normal", "italic"],
+// Self-hosted (src/app/fonts): no network at build or dev time.
+const newsreader = localFont({
+  src: [
+    { path: "./fonts/newsreader-roman.woff2", weight: "200 800", style: "normal" },
+    { path: "./fonts/newsreader-italic.woff2", weight: "200 800", style: "italic" },
+  ],
   variable: "--font-newsreader",
   display: "swap",
 });
 
-const plexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
+const plexMono = localFont({
+  src: [
+    { path: "./fonts/plex-mono-400.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/plex-mono-500.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/plex-mono-600.woff2", weight: "600", style: "normal" },
+  ],
   variable: "--font-plex-mono",
   display: "swap",
 });

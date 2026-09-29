@@ -35,7 +35,7 @@ export function FieldNotes() {
               >
                 {o.name}
               </a>{" "}
-              <span className="ml-1 font-mono text-[10px] tracking-wide text-ink-faint uppercase">
+              <span className="ml-1 font-mono text-[11px] tracking-wide text-ink-faint uppercase">
                 {o.role === "Contributor"
                   ? `${o.merged} merged`
                   : o.role === "Proposal"

@@ -80,11 +80,18 @@ export function handoffEmail(h: Handoff) {
   return { subject, text, html, replyTo };
 }
 
-/** Send the alert. Never throws; returns whether Resend accepted it. */
-export async function notifyHandoff(h: Handoff): Promise<{ sent: boolean; error?: string }> {
+export interface Email {
+  subject: string;
+  text: string;
+  html: string;
+  replyTo?: string;
+  tag: string;
+}
+
+/** Send an email to Divanshu via Resend. Never throws. */
+export async function sendToDivanshu({ subject, text, html, replyTo, tag }: Email): Promise<{ sent: boolean; error?: string }> {
   const key = process.env.RESEND_API_KEY;
   if (!key) return { sent: false, error: "RESEND_API_KEY not set" };
-  const { subject, text, html, replyTo } = handoffEmail(h);
   try {
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -96,7 +103,7 @@ export async function notifyHandoff(h: Handoff): Promise<{ sent: boolean; error?
         text,
         html,
         ...(replyTo ? { reply_to: replyTo } : {}),
-        tags: [{ name: "source", value: "portfolio_handoff" }],
+        tags: [{ name: "source", value: tag }],
       }),
       signal: AbortSignal.timeout(8000),
     });
@@ -105,4 +112,9 @@ export async function notifyHandoff(h: Handoff): Promise<{ sent: boolean; error?
   } catch (e) {
     return { sent: false, error: (e as Error).message };
   }
+}
+
+/** Send the "Ask Divanshu" alert. Never throws; returns whether Resend accepted it. */
+export async function notifyHandoff(h: Handoff): Promise<{ sent: boolean; error?: string }> {
+  return sendToDivanshu({ ...handoffEmail(h), tag: "portfolio_handoff" });
 }

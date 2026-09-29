@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { useHydrated } from "@/lib/use-hydrated";
+import { CaseDiagram } from "@/components/case-diagram";
 import { MetricDelta } from "@/components/metric-delta";
 import { Reveal } from "@/components/reveal";
 import type { CaseStudy } from "@/data/portfolio";
@@ -104,6 +105,15 @@ export function CaseStudyFigure({
             </ul>
           </div>
         </div>
+
+        {study.diagram ? (
+          <div className="border-t border-rule-faint px-5 py-5 sm:px-7">
+            <p className="mb-3 font-mono text-[11px] tracking-[0.18em] text-ink-faint uppercase">
+              {study.diagram.kind === "delta" ? "Measured" : "How it works"}
+            </p>
+            <CaseDiagram diagram={study.diagram} />
+          </div>
+        ) : null}
 
         {/* Caption */}
         <footer className="flex flex-wrap items-baseline gap-x-6 gap-y-2 border-t border-rule-faint px-5 py-3.5 font-mono text-[12px] text-ink-faint sm:px-7">

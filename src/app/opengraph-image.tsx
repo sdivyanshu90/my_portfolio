@@ -1,23 +1,10 @@
 import { ImageResponse } from "next/og";
 import { personal, site } from "@/data/portfolio";
+import { loadSerif } from "@/lib/og";
 
 export const alt = `${personal.name} — DIV-1, an AI-native queryable portfolio`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-
-/** Newsreader TTF fetched at build time (no UA header → Google serves truetype). */
-async function loadSerif(): Promise<ArrayBuffer | null> {
-  try {
-    const css = await (
-      await fetch("https://fonts.googleapis.com/css2?family=Newsreader:wght@500")
-    ).text();
-    const url = css.match(/src: url\((.+?)\) format\('(?:truetype|opentype)'\)/)?.[1];
-    if (!url) return null;
-    return await (await fetch(url)).arrayBuffer();
-  } catch {
-    return null;
-  }
-}
 
 export default async function OgImage() {
   const serif = await loadSerif();

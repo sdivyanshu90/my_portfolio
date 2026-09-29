@@ -134,6 +134,23 @@ Also: commit histories were created in single sessions (e.g. EpiCache: 297 commi
 - **Retention policy**: auto-delete interactions older than N days (cron), stated on the system card.
 - **Smoke in CI**: run `npm run smoke` against each Vercel preview deployment with a throwaway Neon branch.
 
+## Phase 6 — Top-tier profile & polish ✅ (2026-09-30)
+
+- **Positioning**: "Applied AI / ML Systems Engineer — LLM evaluation, inference & reliability" everywhere; headline numbers now include 24 merged upstream PRs (derived).
+- **DIV-1 as Fig. 08**: the portfolio itself as a verifiable production AI system (evals in CI, per-fact cache, MCP). **How he works**: four principles, each linked to evidence.
+- **Diagrams** on every case study (pipelines, fan-out, Uniiq before/after), drawn only from verified text.
+- **Résumé PDF generated from /cv** (`npm run cv:pdf`, 2 pages) and served from the site — the old GitHub Pages PDF still said "LeetCode Knight".
+- **Own visits excluded** from analytics and public counts (admin session → `owner`).
+- **Fit-check CTAs** on the boot card and command bar; **weekly digest** email (Vercel cron); **writing** section with two drafts awaiting approval.
+- UI/UX: ink spinner (no emoji), preset fade, 11px minimum text, stronger faint ink (6.1:1), mic on focus, mobile "sky" peek, quieter meteors for returning visitors, faster repeat answers, page enter animation.
+- Performance: self-hosted fonts (no Google at build/dev), cards loaded on demand, canvas starts after load + idle and adapts its frame budget. Lighthouse on this machine is noisy (45–59 local vs 67 live); blocking time locally 850ms vs 1,370ms live.
+
+### Needs Divanshu
+- **Claude certifications**: which Claude Academy course certificates (and any Claude Certified exam) he holds — with credential links. Only earned ones go on the site.
+- Approve / edit the two **writing drafts**; **candor card** text; **book-a-call** link; LinkedIn **recommendation** quotes.
+- **Reliability repos**: OK to push CI fixes to those five repos?
+- Optional: verify a sending domain in Resend so replies can go out from /admin.
+
 ## Housekeeping (~½ day, anytime)
 
 - Next 15.2 → 16, React 19.3, framer-motion 12 → 13 (or move small transitions to CSS). ESLint native flat config (`next lint` is deprecated); tsconfig target ES2022.

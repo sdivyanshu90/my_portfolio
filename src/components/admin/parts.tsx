@@ -5,7 +5,7 @@ export function Panel({ title, note, children, className = "" }: { title: string
     <section className={`border border-rule bg-surface p-4 sm:p-5 ${className}`}>
       <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-3">
         <h2 className="font-mono text-[11px] tracking-[0.18em] text-ink-faint uppercase">{title}</h2>
-        {note ? <p className="font-mono text-[10px] text-ink-faint">{note}</p> : null}
+        {note ? <p className="font-mono text-[11px] text-ink-faint">{note}</p> : null}
       </div>
       {children}
     </section>
@@ -53,7 +53,7 @@ export function BarList({ rows, unit, empty = "No data yet." }: { rows: { key: s
 /** Country-code badge (flag emoji don't render on Windows, so no emoji). */
 export function CountryCode({ code }: { code: string }) {
   return (
-    <span className="mr-1.5 inline-block w-7 border border-rule px-1 text-center font-mono text-[10px] text-ink-muted">
+    <span className="mr-1.5 inline-block w-7 border border-rule px-1 text-center font-mono text-[11px] text-ink-muted">
       {/^[A-Z]{2}$/.test(code) ? code : "—"}
     </span>
   );

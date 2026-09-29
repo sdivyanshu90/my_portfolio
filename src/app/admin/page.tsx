@@ -141,7 +141,7 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
               </Link>
             ))}
           </nav>
-          <p className="font-mono text-[10px] text-ink-faint">last {days} days · times in IST · smoke tests excluded from spend</p>
+          <p className="font-mono text-[11px] text-ink-faint">last {days} days · times in IST · your own visits and smoke tests excluded</p>
           <div className="ml-auto flex items-center gap-4">
             <Link href="/" className="font-mono text-[11px] text-ink-muted hover:text-accent">
               view site ↗
@@ -236,7 +236,7 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
           {d.pages.length ? (
             <table className="report-table w-full text-left text-[13px]">
               <thead>
-                <tr className="font-mono text-[10px] tracking-[0.15em] text-ink-faint uppercase">
+                <tr className="font-mono text-[11px] tracking-[0.15em] text-ink-faint uppercase">
                   <th className="py-2 font-medium">Page</th>
                   <th className="py-2 text-right font-medium">Views</th>
                   <th className="py-2 text-right font-medium">Avg. time</th>
@@ -266,7 +266,7 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
                   return (
                     <li key={h.id} className={`py-3 ${h.status === "new" ? "" : "opacity-60"}`}>
                       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                        <span className={`font-mono text-[10px] tracking-wider uppercase ${h.status === "new" ? "text-accent" : "text-ink-faint"}`}>
+                        <span className={`font-mono text-[11px] tracking-wider uppercase ${h.status === "new" ? "text-accent" : "text-ink-faint"}`}>
                           {h.status === "new" ? "● new" : h.status}
                         </span>
                         <span className="font-mono text-[11px] text-ink-faint">{fmtDate(h.at)}</span>
@@ -330,13 +330,13 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
                   <details className="group py-2">
                     <summary className="flex cursor-pointer flex-wrap items-baseline gap-x-3 gap-y-0.5">
                       <span className="font-mono text-[11px] text-ink-faint">{fmtDate(x.at)}</span>
-                      <span className="font-mono text-[10px] tracking-wider text-accent uppercase">{x.source}</span>
-                      <span className="font-mono text-[10px] text-ink-faint">{x.path}</span>
+                      <span className="font-mono text-[11px] tracking-wider text-accent uppercase">{x.source}</span>
+                      <span className="font-mono text-[11px] text-ink-faint">{x.path}</span>
                       <span className="min-w-0 flex-1 text-[14px] text-ink">{x.question}</span>
                     </summary>
                     <div className="mt-2 border-l-2 border-rule pl-3">
                       <p className="max-w-prose text-[14px] leading-relaxed whitespace-pre-wrap text-ink-muted">{x.answer ?? "—"}</p>
-                      <p className="mt-1.5 font-mono text-[10px] text-ink-faint">
+                      <p className="mt-1.5 font-mono text-[11px] text-ink-faint">
                         {x.model ?? "deterministic"} · {(x.ms / 1000).toFixed(1)}s
                         {x.cost_usd ? ` · $${Number(x.cost_usd).toFixed(5)}` : ""}
                         {x.run_id ? (
@@ -377,7 +377,7 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
             )}
             {d.flagged.length ? (
               <div className="mt-4 border-t border-rule-faint pt-3">
-                <p className="mb-1.5 font-mono text-[10px] tracking-wider text-ink-faint uppercase">flagged “this missed”</p>
+                <p className="mb-1.5 font-mono text-[11px] tracking-wider text-ink-faint uppercase">flagged “this missed”</p>
                 <ul className="space-y-1 text-[13px]">
                   {d.flagged.map((f, i) => (
                     <li key={i} className="text-ink-muted">
@@ -393,7 +393,7 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
             {d.conversion.length ? (
               <table className="report-table w-full text-left text-[13px]">
                 <thead>
-                  <tr className="font-mono text-[10px] tracking-[0.15em] text-ink-faint uppercase">
+                  <tr className="font-mono text-[11px] tracking-[0.15em] text-ink-faint uppercase">
                     <th className="py-2 font-medium">First question</th>
                     <th className="py-2 text-right font-medium">Visitors</th>
                     <th className="py-2 text-right font-medium">Reached out</th>

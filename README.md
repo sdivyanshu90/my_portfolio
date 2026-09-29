@@ -110,6 +110,13 @@ every build, so the live score is the score of the shipped code.
 agent over MCP (`source` = console | api | mcp) — lands in `div1_interactions` with the answer DIV-1 gave,
 the cards shown, the run trace and sources. Questions are redacted; job descriptions are never stored.
 
+**Weekly digest.** `vercel.json` schedules `/api/cron/digest` for Mondays 03:00 UTC: an email with the
+week's visitors, countries, sources, questions, misses and open inbox. Set `CRON_SECRET` on Vercel (Vercel
+sends it as a Bearer token); `ADMIN_TOKEN` also works for a manual send.
+
+**Writing.** `src/data/writing.ts` — posts stay drafts (`published: false`, visible only when signed in to
+/admin) until approved.
+
 **Admin dashboard.** `/admin` (sign in with `ADMIN_TOKEN`; the session cookie holds a hash, never the
 token): unique visitors with period-over-period change, weekly visitors (12 weeks), countries, time spent
 per session, top pages, referrers / utm, devices & browsers, every question with its answer, the "Ask
@@ -145,6 +152,7 @@ npm run build  # eval scorecard + static build + sitemap/robots/OG image generat
 npm run db:migrate     # apply src/lib/schema.ts to Neon (idempotent)
 npm run verify-claims  # re-check open-source numbers against GitHub (GITHUB_TOKEN)
 npm run sync-github    # refresh src/data/activity.json (runs before every build)
+npm run cv:pdf         # print /cv to public/Divanshu_Sharma_Resume.pdf (BASE + CHROME_PATH; running server)
 npm run smoke          # end-to-end check of every page/API + the Neon rows (needs ADMIN_TOKEN, a running server)
                        #   BASE=http://localhost:3100 npm run smoke -- [--live] [--email] [--keep]
 ```

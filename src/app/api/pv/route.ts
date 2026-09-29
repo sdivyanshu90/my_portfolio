@@ -15,6 +15,7 @@ const ID = /^[a-z0-9-]{8,64}$/i;
 export async function POST(req: Request): Promise<Response> {
   const ua = req.headers.get("user-agent");
   const visitor = await visitorId(req);
+  if (visitor === "owner") return new Response(null, { status: 204 }); // don't count his own visits
   if (visitor !== "smoke-test" && isBot(ua)) return new Response(null, { status: 204 });
   if (await overLimit(getStore(), "pv", visitor, 120)) return new Response(null, { status: 204 });
 

@@ -67,8 +67,9 @@ export function VoiceButton({ onText, onFinal }: { onText: (t: string) => void; 
       aria-pressed={listening}
       aria-label={listening ? "Stop listening" : "Ask by voice"}
       title="Ask by voice"
-      className={`shrink-0 font-mono text-[10px] tracking-wider uppercase transition-colors hover:text-accent ${
-        listening ? "animate-pulse text-accent motion-reduce:animate-none" : "text-ink-faint"
+      className={`shrink-0 font-mono text-[11px] tracking-wider uppercase transition-colors hover:text-accent ${
+        // Only offered while the prompt is in use — keeps the bar calm.
+        listening ? "animate-pulse text-accent motion-reduce:animate-none" : "hidden text-ink-faint group-focus-within:inline"
       }`}
     >
       {listening ? "● rec" : "mic"}

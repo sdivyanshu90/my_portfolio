@@ -50,12 +50,15 @@ export interface Dashboard {
 
 const num = (v: unknown) => Number(v ?? 0) || 0;
 
+/** Real visitors only: his own visits ("owner") and smoke tests are left out. */
+const REAL = "visitor IS DISTINCT FROM 'owner' AND visitor IS DISTINCT FROM 'smoke-test'";
+
 export async function loadDashboard(days: number): Promise<Dashboard | null> {
   const sql = db();
   if (!sql) return null;
   const q = (text: string, params: unknown[] = []) => sql.query(text, params) as Promise<Record<string, unknown>[]>;
-  const range = "at > now() - make_interval(days => $1)";
-  const prev = "at <= now() - make_interval(days => $1) AND at > now() - make_interval(days => $1 * 2)";
+  const range = `at > now() - make_interval(days => $1) AND ${REAL}`;
+  const prev = `at <= now() - make_interval(days => $1) AND at > now() - make_interval(days => $1 * 2) AND ${REAL}`;
 
   const [
     kpiNow,
@@ -91,13 +94,13 @@ export async function loadDashboard(days: number): Promise<Dashboard | null> {
     ),
     q(
       `SELECT count(*)::int n FROM (
-         SELECT visitor, min(at) first FROM div1_pageviews GROUP BY visitor
+         SELECT visitor, min(at) first FROM div1_pageviews WHERE ${REAL} GROUP BY visitor
        ) f WHERE first > now() - make_interval(days => $1)`,
       [days],
     ),
     q(
       `SELECT to_char(date_trunc('week', at), 'YYYY-MM-DD') w, count(DISTINCT visitor)::int v, count(*)::int n
-         FROM div1_pageviews WHERE at > date_trunc('week', now()) - interval '11 weeks'
+         FROM div1_pageviews WHERE at > date_trunc('week', now()) - interval '11 weeks' AND ${REAL}
         GROUP BY 1 ORDER BY 1`,
     ),
     q(
@@ -127,11 +130,11 @@ export async function loadDashboard(days: number): Promise<Dashboard | null> {
     q(`SELECT coalesce(browser, 'other') b, count(DISTINCT visitor)::int v FROM div1_pageviews WHERE ${range} GROUP BY 1 ORDER BY 2 DESC`, [days]),
     q(
       `SELECT count(*)::int n, coalesce(sum(cost_usd), 0)::float spend FROM div1_interactions
-        WHERE ${range} AND visitor IS DISTINCT FROM 'smoke-test'`,
+        WHERE ${range}`,
       [days],
     ),
     q(`SELECT count(DISTINCT visitor)::int n FROM div1_events WHERE ${range} AND name IN ('contact', 'resume')`, [days]),
-    q(`SELECT count(*)::int n FROM div1_handoffs WHERE status = 'new'`),
+    q(`SELECT count(*)::int n FROM div1_handoffs WHERE status = 'new' AND ${REAL}`),
     q(`SELECT source, count(*)::int n FROM div1_interactions WHERE ${range} GROUP BY 1 ORDER BY 2 DESC`, [days]),
     q(`SELECT path, count(*)::int n FROM div1_interactions WHERE ${range} GROUP BY 1 ORDER BY 2 DESC`, [days]),
     q(
@@ -148,7 +151,7 @@ export async function loadDashboard(days: number): Promise<Dashboard | null> {
     q(`SELECT at, question, note FROM div1_feedback WHERE verdict = 'missed' AND ${range} ORDER BY at DESC LIMIT 25`, [days]),
     q(
       `SELECT id::text, at, question, contact, note, status FROM div1_handoffs
-        ORDER BY (status = 'new') DESC, at DESC LIMIT 50`,
+        WHERE ${REAL} ORDER BY (status = 'new') DESC, at DESC LIMIT 50`,
     ),
     q(
       `WITH first_q AS (

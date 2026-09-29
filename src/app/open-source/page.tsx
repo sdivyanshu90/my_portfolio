@@ -34,7 +34,7 @@ export default function OpenSource() {
                 <a href={o.href} className={`text-lg font-medium text-ink ${link}`}>
                   {o.name} ↗
                 </a>
-                <span className="bg-accent-soft px-1.5 py-0.5 font-mono text-[10px] tracking-wide text-accent uppercase">
+                <span className="bg-accent-soft px-1.5 py-0.5 font-mono text-[11px] tracking-wide text-accent uppercase">
                   {o.role === "In review"
                     ? `${o.open} in review`
                     : o.role === "Proposal"
@@ -67,7 +67,7 @@ export default function OpenSource() {
                     </p>
                     <table className="report-table w-full min-w-[560px] text-left text-[12px]">
                       <thead>
-                        <tr className="font-mono text-[10px] tracking-[0.15em] text-ink-faint uppercase">
+                        <tr className="font-mono text-[11px] tracking-[0.15em] text-ink-faint uppercase">
                           <th className="py-2 pr-3 font-medium">Bug he reported</th>
                           <th className="py-2 pr-3 font-medium">His fix</th>
                           <th className="py-2 font-medium">Merged fix</th>

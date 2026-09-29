@@ -1,3 +1,5 @@
+import scorecard from "@/data/eval-scorecard.json";
+
 /**
  * Single source of truth for every word on the site.
  *
@@ -21,9 +23,9 @@ export const github = {
 
 export const site = {
   url: "https://div90.vercel.app",
-  revision: "2026.07",
-  reportId: "DIV-2026.07",
-  title: "Divanshu Sharma — Machine Learning & AI Engineer",
+  revision: "2026.09",
+  reportId: "DIV-2026.09",
+  title: "Divanshu Sharma — Applied AI / ML Systems Engineer",
   description:
     "Divanshu Sharma is a founding engineer who ships reliable AI products — leading the technical turnaround of Uniiq's AI advising platform, previously privacy-preserving ML research at Yale and quantitative research at WorldQuant BRAIN. DIV-1 is his AI-native portfolio: query it like a model and get answers as live, source-cited artifacts.",
 } as const;
@@ -32,12 +34,14 @@ export const personal = {
   name: "Divanshu Sharma",
   // Single lead identity for display (recruiters shortlist on one line);
   // `roles` stays the full IC list for metadata / JSON-LD.
-  lead: "Machine Learning & AI Engineer",
+  lead: "Applied AI / ML Systems Engineer",
+  /** The one-line specialty, as on his GitHub bio. */
+  focus: "LLM evaluation, inference & reliability",
   context: "Reliable AI products · Founding Engineer @ Uniiq · Mumbai",
   roles: [
+    "Applied AI Engineer",
+    "ML Systems Engineer",
     "Founding Engineer",
-    "Machine Learning Engineer",
-    "AI Engineer",
     "Software Engineer",
   ],
   currentRole: "Founding Engineer @ Uniiq",
@@ -54,33 +58,7 @@ export const personal = {
   ],
 } as const;
 
-/** Four headline numbers, all traceable to the resume or repo READMEs. */
-export const keyResults = [
-  {
-    value: 40,
-    display: "40+",
-    label: "critical vulnerabilities resolved",
-    note: "Uniiq turnaround · LCP 3.3s → 0.7s",
-  },
-  {
-    value: 88.08,
-    display: "88.08%",
-    label: "ChestMNIST accuracy under MPC",
-    note: "from-scratch DL library, 5 epochs",
-  },
-  {
-    value: 48,
-    display: ">48%",
-    label: "absolute WER reduction",
-    note: "Hindi ASR on FLEURS",
-  },
-  {
-    value: 1.8,
-    display: "1.8",
-    label: "avg. Sharpe ratio",
-    note: "15+ alphas · Gold, Top 1% Alphathon",
-  },
-] as const;
+
 
 export const socials = [
   {
@@ -110,9 +88,13 @@ export const socials = [
   },
 ] as const;
 
+/**
+ * The PDF is printed from /cv (`npm run cv:pdf`), so it can never disagree
+ * with the site. Regenerate it whenever the dossier changes.
+ */
 export const resume = {
-  href: "https://sdivyanshu90.github.io/sdivyanshu90/Divanshu_Resume.pdf",
-  label: "Résumé (PDF, 135 KB)",
+  href: `${site.url}/Divanshu_Sharma_Resume.pdf`,
+  label: "Résumé (PDF, 2 pages)",
 } as const;
 
 /* ------------------------------------------------------------------ */
@@ -135,6 +117,14 @@ export interface CaseStudy {
    * source is not public, and the page says so rather than implying a link.
    */
   source: { label: string; href?: string };
+  /**
+   * A figure drawn from the approach text — nothing here that the problem,
+   * approach or results don't already state.
+   */
+  diagram?:
+    | { kind: "pipeline"; steps: { label: string; sub?: string }[] }
+    | { kind: "fanout"; source: string; branches: { label: string; sub?: string }[] }
+    | { kind: "delta"; rows: { label: string; before: number; after: number; unit: string; better: "higher" | "lower" }[] };
 }
 
 export const caseStudies: CaseStudy[] = [
@@ -170,6 +160,13 @@ export const caseStudies: CaseStudy[] = [
     ],
     stack: ["React", "TypeScript", "Express", "MongoDB", "Gemini"],
     source: { label: "Uniiq engineering work summary (2026-07) — private codebase, not publicly verifiable" },
+    diagram: {
+      kind: "delta",
+      rows: [
+        { label: "Web performance score", before: 73, after: 93, unit: "", better: "higher" },
+        { label: "Largest Contentful Paint", before: 3.3, after: 0.7, unit: "s", better: "lower" },
+      ],
+    },
     links: [{ label: "Uniiq", href: "https://uniiq.ai" }],
   },
   {
@@ -199,6 +196,15 @@ export const caseStudies: CaseStudy[] = [
     ],
     stack: ["Python", "NumPy", "MPC", "Compiler design", "Cryptography"],
     source: { label: "résumé.pdf; the code is public in the Sequre PRs", href: "https://github.com/0xTCG/sequre/pull/41" },
+    diagram: {
+      kind: "pipeline",
+      steps: [
+        { label: "Private medical data", sub: "institutions can't pool it" },
+        { label: "Multi-party computation", sub: "compiler-centric architecture" },
+        { label: "From-scratch DL library", sub: "NumPy · hand-derived backprop" },
+        { label: "CNN trained under MPC", sub: "88.08% ChestMNIST" },
+      ],
+    },
     links: [
       {
         label: "Sequre PRs",
@@ -233,6 +239,16 @@ export const caseStudies: CaseStudy[] = [
     ],
     stack: ["Whisper", "Transformers", "SpecAugment", "Beam search", "Librosa"],
     source: { label: "write-up on his GitHub profile README", href: "https://github.com/sdivyanshu90/sdivyanshu90" },
+    diagram: {
+      kind: "pipeline",
+      steps: [
+        { label: "Hindi speech", sub: "FLEURS benchmark" },
+        { label: "Whisper-small, fine-tuned", sub: "SpecAugment · label smoothing · 5-beam" },
+        { label: "Devanagari normalization", sub: "phonetic reverse-transliteration" },
+        { label: "5-system consensus", sub: "word-level confusion networks" },
+        { label: ">48% WER reduction", sub: "absolute, vs. baseline" },
+      ],
+    },
     links: [
       {
         label: "Write-up",
@@ -266,6 +282,16 @@ export const caseStudies: CaseStudy[] = [
     ],
     stack: ["PyTorch", "CRAFT", "CRNN", "RoBERTa", "OpenCV"],
     source: { label: "repo README", href: "https://github.com/sdivyanshu90/RenAIssance-OCR#readme" },
+    diagram: {
+      kind: "pipeline",
+      steps: [
+        { label: "183 labeled pages", sub: "→ 12,792 samples, 7-step augmentation" },
+        { label: "CRAFT", sub: "text detection" },
+        { label: "SE-ResNet-BiLSTM CRNN", sub: "recognition · beam search" },
+        { label: "RoBERTa post-processor", sub: "corrections" },
+        { label: "CER 3.44% → 0.00%", sub: "held-out validation" },
+      ],
+    },
     links: [
       {
         label: "GitHub",
@@ -299,6 +325,16 @@ export const caseStudies: CaseStudy[] = [
     ],
     stack: ["Python", "PyTorch", "Scheduling", "Memory management"],
     source: { label: "repo README", href: "https://github.com/sdivyanshu90/build-your-own-kv-cache#readme" },
+    diagram: {
+      kind: "pipeline",
+      steps: [
+        { label: "Requests", sub: "WAITING → RUNNING → SWAPPED" },
+        { label: "Continuous batching", sub: "scheduler" },
+        { label: "Page tables", sub: "per sequence → fixed-size blocks" },
+        { label: "Copy-on-write forks", sub: "ref-counted blocks" },
+        { label: "Radix prefix cache", sub: "shared prompts, no recompute" },
+      ],
+    },
     links: [
       {
         label: "GitHub",
@@ -332,6 +368,16 @@ export const caseStudies: CaseStudy[] = [
     ],
     stack: ["FastAPI", "React Flow", "NetworkX", "SSE", "Gemini 2.5 Flash"],
     source: { label: "repo README", href: "https://github.com/sdivyanshu90/Graph-Data-Explorer-AI#readme" },
+    diagram: {
+      kind: "pipeline",
+      steps: [
+        { label: "19 SAP source tables", sub: "21,393 records" },
+        { label: "Typed knowledge graph", sub: "765 nodes · 877 edges" },
+        { label: "Guardrails", sub: "keyword filter · forbidden tokens" },
+        { label: "LLM → graph traversal", sub: "sandboxed" },
+        { label: "LLM → explanation", sub: "SSE · React Flow" },
+      ],
+    },
     links: [
       {
         label: "GitHub",
@@ -365,12 +411,64 @@ export const caseStudies: CaseStudy[] = [
     ],
     stack: ["PyTorch", "PyTorch Geometric", "TensorFlow", "CNN", "GCN"],
     source: { label: "repo README", href: "https://github.com/sdivyanshu90/ProblemPioneer#readme" },
+    diagram: {
+      kind: "fanout",
+      source: "Raw CMS detector data",
+      branches: [
+        { label: "ResNet-15 CNN", sub: "electron vs photon" },
+        { label: "Graph convolutional network", sub: "momentum regression · matches GAT" },
+        { label: "VGG-style CNNs", sub: "jet classification" },
+      ],
+    },
     links: [
       {
         label: "GitHub",
         href: "https://github.com/sdivyanshu90/ProblemPioneer",
       },
     ],
+  },
+  {
+    id: "div1-console",
+    fig: "08",
+    title: "DIV-1 — this portfolio, built as a production AI system",
+    domain: "LLM systems · Evaluation · Full-stack",
+    year: "2026",
+    problem:
+      "A portfolio that recruiters and engineers can question like a model has to be honest, cheap and dependable: it must never invent a claim, must keep working when models are rate-limited, and must not cost real money per visitor.",
+    approach:
+      "A deterministic router — keyword rules plus BM25 retrieval over a verified dossier — picks typed answer cards; a model only narrates over exactly those facts, raced across providers with a spend cap. Every answer records the facts it used, so a cached answer is invalidated only when one of its facts changes. Injection attempts are screened before any model; figures in model output are checked against the dossier. Built with evals in CI, an MCP server for AI screeners, and first-party analytics in Neon Postgres.",
+    results: [
+      {
+        metric: `${scorecard.router.passed}/${scorecard.router.total} golden questions`,
+        detail: `routed correctly, plus ${scorecard.guard.passed}/${scorecard.guard.total} prompt-injection cases — enforced in CI on every push`,
+      },
+      {
+        metric: "$0 for most answers",
+        detail: "presets, honest absences and cached repeats need no model; a narrated answer costs about $0.0002",
+      },
+      {
+        metric: "Per-fact cache invalidation",
+        detail: "answers are invalidated only when a fact they cited changes — the EpiCache idea, running live",
+      },
+      {
+        metric: "Queryable by AI agents",
+        detail: "an MCP server, llms.txt and a typed dossier.json, so screening assistants read verified data",
+      },
+    ],
+    stack: ["Next.js", "TypeScript", "BM25 retrieval", "Neon Postgres", "MCP", "Vitest", "Playwright"],
+    source: { label: "this repository — CI runs the evals", href: "https://github.com/sdivyanshu90/my_portfolio" },
+    diagram: {
+      kind: "pipeline",
+      steps: [
+        { label: "Question", sub: "console · API · MCP" },
+        { label: "Injection screen", sub: "before any model" },
+        { label: "Router", sub: "rules + BM25 over the dossier" },
+        { label: "Typed answer cards", sub: "exact, always" },
+        { label: "Narration if needed", sub: "model race · number tripwire" },
+        { label: "Recorded in Neon", sub: "answer · trace · per-fact cache" },
+      ],
+    },
+    links: [{ label: "GitHub", href: "https://github.com/sdivyanshu90/my_portfolio" }],
   },
 ];
 
@@ -1221,12 +1319,12 @@ export const honors = [
 
 export const citation = `@engineer{sharma_2026,
   author   = {Sharma, Divanshu},
-  title    = {Machine Learning Engineer — systems from first principles},
+  title    = {${personal.lead} — ${personal.focus}},
   role     = {Founding Engineer, Uniiq},
-  email    = {divyanshu74.80@gmail.com},
-  url      = {https://div90.vercel.app},
+  email    = {${personal.email}},
+  url      = {${site.url}},
   github   = {${github.user}},
-  revision = {2026.07}
+  revision = {${site.revision}}
 }`;
 
 /* ------------------------------------------------------------------ */
@@ -1250,3 +1348,61 @@ export const counts = {
   mergedUpstream: openSource.filter((o) => o.role === "Contributor").reduce((n, o) => n + o.merged, 0),
   inLayer: (layer: Layer) => scratchIndex.filter((e) => e.layer === layer).length,
 } as const;
+
+/**
+ * Four headline numbers, all traceable: the Uniiq work summary, the résumé,
+ * repo READMEs, and (for upstream PRs) the GitHub API via `counts`.
+ */
+export const keyResults = [
+  {
+    value: 40,
+    display: "40+",
+    label: "critical vulnerabilities resolved",
+    note: "Uniiq turnaround · LCP 3.3s → 0.7s",
+  },
+  {
+    value: counts.mergedUpstream,
+    display: String(counts.mergedUpstream),
+    label: "merged upstream PRs",
+    note: `Mastra · EleutherAI lm-eval · +${counts.reportedFixed} bugs fixed upstream`,
+  },
+  {
+    value: 88.08,
+    display: "88.08%",
+    label: "ChestMNIST accuracy under MPC",
+    note: "from-scratch DL library, Yale",
+  },
+  {
+    value: 48,
+    display: ">48%",
+    label: "absolute WER reduction",
+    note: "Hindi ASR on FLEURS",
+  },
+] as const;
+
+/**
+ * How he works — each principle backed by something you can open. Stated
+ * as practice, not adjectives; the evidence link is the claim.
+ */
+export const principles = [
+  {
+    title: "Evaluate first",
+    body: "Golden sets and checks come before features — this site's router is gated in CI, and his upstream work sits in the LLM evaluation stack.",
+    evidence: { label: "router eval in CI", href: "https://github.com/sdivyanshu90/my_portfolio/tree/main/src/lib/evals" },
+  },
+  {
+    title: "Honest by construction",
+    body: "Systems that say “not on record” instead of guessing: honest absences here, figures checked against the source, claims re-verified against GitHub daily.",
+    evidence: { label: "claims verification workflow", href: "https://github.com/sdivyanshu90/my_portfolio/blob/main/.github/workflows/claims.yml" },
+  },
+  {
+    title: "Pay for a model only where it helps",
+    body: "Deterministic paths first, a model where judgment adds value: most answers here cost nothing, a narrated one about $0.0002.",
+    evidence: { label: "Fig. 08", href: "/work/div1-console" },
+  },
+  {
+    title: "Ship, then harden",
+    body: "Inherit a system, measure it, fix what's dangerous first: 40+ critical vulnerabilities, recoverable AI failures, and performance budgets at Uniiq.",
+    evidence: { label: "Fig. 01", href: "/work/uniiq-platform" },
+  },
+] as const;

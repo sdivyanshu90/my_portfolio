@@ -48,7 +48,7 @@ export default function Cv() {
       lede={
         <div className="space-y-1">
           <p className="text-ink">
-            {personal.lead} · {personal.currentRole} · {personal.location}
+            {personal.lead} · {personal.focus} · {personal.currentRole} · {personal.location}
           </p>
           <p className="font-mono text-[12px]">
             <ContactLink href={`mailto:${personal.email}`} via="cv" className="underline underline-offset-2">
@@ -120,7 +120,11 @@ export default function Cv() {
               <li key={o.href} className="cv-block">
                 <span className="font-medium text-ink">{o.name}</span>{" "}
                 <span className="font-mono text-[11px] text-ink-faint">
-                  {o.role === "Contributor" ? `${o.merged} merged PRs` : "proposal, unmerged"}
+                  {o.role === "Contributor"
+                    ? `${o.merged} merged PRs`
+                    : o.role === "In review"
+                      ? `${o.open} in review`
+                      : "proposal, in review"}
                 </span>
                 <span className="text-ink-muted"> — {o.summary}</span>
               </li>

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ShippedArtifact } from "@/components/console/artifacts";
 import { DocSection, DocShell } from "@/components/doc/doc-shell";
-import { caseStudies, counts } from "@/data/portfolio";
+import { caseStudies, counts, principles } from "@/data/portfolio";
 import { Spell } from "@/lib/words";
 
 export const metadata: Metadata = {
@@ -43,6 +43,20 @@ export default function WorkIndex() {
             </li>
           ))}
         </ol>
+      </DocSection>
+
+      <DocSection id="how" title="How he works" note="each backed by something you can open">
+        <ul className="grid gap-5 sm:grid-cols-2">
+          {principles.map((p) => (
+            <li key={p.title} className="border-l-2 border-accent pl-4">
+              <p className="font-medium text-ink">{p.title}</p>
+              <p className="mt-1 text-[14px] leading-relaxed text-ink-muted">{p.body}</p>
+              <a href={p.evidence.href} className="mt-1 inline-block font-mono text-[11px] text-ink-faint underline underline-offset-2 hover:text-accent">
+                evidence: {p.evidence.label} ↗
+              </a>
+            </li>
+          ))}
+        </ul>
       </DocSection>
 
       <DocSection id="shipped" title="Shipped ledger">

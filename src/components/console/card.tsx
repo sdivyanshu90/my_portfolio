@@ -27,7 +27,7 @@ export function TraceStrip({
   return (
     <ol
       aria-label="Run trace"
-      className="flex items-baseline gap-x-4 gap-y-1 overflow-x-auto font-mono text-[10px] text-ink-faint [scrollbar-width:none] sm:flex-wrap sm:overflow-visible sm:text-[11px] [&::-webkit-scrollbar]:hidden"
+      className="flex items-baseline gap-x-4 gap-y-1 overflow-x-auto font-mono text-[11px] text-ink-faint [scrollbar-width:none] sm:flex-wrap sm:overflow-visible sm:text-[11px] [&::-webkit-scrollbar]:hidden"
     >
       {steps.map((s, i) => (
         <motion.li
@@ -73,11 +73,14 @@ function Cascade({
   order,
   children,
   className,
+  quick,
 }: {
   animated?: boolean;
   order: number;
   children: React.ReactNode;
   className?: string;
+  /** Repeat answers typeset faster: returning readers want the content. */
+  quick?: boolean;
 }) {
   const reduce = useReducedMotion();
   if (!animated || reduce) return <div className={className}>{children}</div>;
@@ -86,7 +89,7 @@ function Cascade({
       className={className}
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, delay: 0.08 * order, ease: [0.25, 0.1, 0.25, 1] }}
+      transition={{ duration: quick ? 0.2 : 0.35, delay: (quick ? 0.03 : 0.08) * order, ease: [0.25, 0.1, 0.25, 1] }}
     >
       {children}
     </motion.div>
@@ -127,6 +130,7 @@ export function CardShell({
   animated,
   followUps,
   onFollowUp,
+  quick,
 }: {
   label: string;
   question: string;
@@ -140,6 +144,7 @@ export function CardShell({
   animated?: boolean;
   followUps?: string[];
   onFollowUp?: (q: string) => void;
+  quick?: boolean;
 }) {
   const reduce = useReducedMotion();
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -200,19 +205,19 @@ export function CardShell({
           />
         </span>
       ) : null}
-      <Cascade animated={animated} order={0}>
+      <Cascade animated={animated} quick={quick} order={0}>
         <header className="flex items-baseline gap-x-4 border-b border-rule-faint px-5 py-3 sm:px-7">
           {animated ? (
             <motion.span
               initial={{ rotate: -8, scale: 1.5, opacity: 0 }}
               animate={{ rotate: 0, scale: 1, opacity: 1 }}
               transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              className="shrink-0 font-mono text-[10px] tracking-[0.18em] text-accent uppercase motion-reduce:transform-none"
+              className="shrink-0 font-mono text-[11px] tracking-[0.18em] text-accent uppercase motion-reduce:transform-none"
             >
               {label}
             </motion.span>
           ) : (
-            <span className="shrink-0 font-mono text-[10px] tracking-[0.18em] text-accent uppercase">
+            <span className="shrink-0 font-mono text-[11px] tracking-[0.18em] text-accent uppercase">
               {label}
             </span>
           )}
@@ -223,7 +228,7 @@ export function CardShell({
         </header>
       </Cascade>
 
-      <Cascade animated={animated} order={1}>
+      <Cascade animated={animated} quick={quick} order={1}>
         <div className="border-b border-rule-faint px-5 py-2.5 sm:px-7">
           <TraceStrip steps={trace} running={running} />
         </div>
@@ -235,7 +240,7 @@ export function CardShell({
       >
         <div ref={contentRef}>
           {narration ? (
-            <Cascade animated={animated} order={2}>
+            <Cascade animated={animated} quick={quick} order={2}>
               <div
                 aria-live="polite"
                 aria-busy={running || undefined}
@@ -246,7 +251,7 @@ export function CardShell({
             </Cascade>
           ) : null}
           {note ? (
-            <Cascade animated={animated} order={2}>
+            <Cascade animated={animated} quick={quick} order={2}>
               <p className="mt-3 max-w-prose font-mono text-[11px] leading-relaxed text-accent">
                 ⚿ {note}
               </p>
@@ -257,12 +262,12 @@ export function CardShell({
       </div>
 
       {followUps?.length && onFollowUp ? (
-        <Cascade animated={animated} order={2}>
+        <Cascade animated={animated} quick={quick} order={2}>
           <nav
             aria-label="Suggested next questions"
             className="flex gap-2 overflow-x-auto border-t border-rule-faint px-5 py-2.5 [scrollbar-width:none] sm:px-7 [&::-webkit-scrollbar]:hidden"
           >
-            <span aria-hidden className="shrink-0 self-center font-mono text-[10px] tracking-[0.18em] text-ink-faint uppercase">
+            <span aria-hidden className="shrink-0 self-center font-mono text-[11px] tracking-[0.18em] text-ink-faint uppercase">
               next
             </span>
             {followUps.map((f) => (
@@ -280,8 +285,8 @@ export function CardShell({
       ) : null}
 
       {footer ? (
-        <Cascade animated={animated} order={1}>
-          <footer className="flex items-baseline gap-x-6 gap-y-1 border-t border-rule-faint px-5 py-2.5 font-mono text-[10px] text-ink-faint sm:flex-wrap sm:px-7 sm:text-[11px]">
+        <Cascade animated={animated} quick={quick} order={1}>
+          <footer className="flex items-baseline gap-x-6 gap-y-1 border-t border-rule-faint px-5 py-2.5 font-mono text-[11px] text-ink-faint sm:flex-wrap sm:px-7 sm:text-[11px]">
             <span className="flex min-w-0 items-center gap-1.5 overflow-x-auto whitespace-nowrap [scrollbar-width:none] sm:flex-wrap sm:overflow-visible [&::-webkit-scrollbar]:hidden">
               sources:{" "}
               {footer.sources.map((s, i) => (

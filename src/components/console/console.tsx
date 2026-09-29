@@ -19,20 +19,16 @@ import type { ArtifactSpec, ConsoleEvent, Mode } from "@/lib/protocol";
 
 const NO_DRAFT = new Map<string, number>();
 
-const MOON_PHASES = ["🌑", "🌒", "🌓", "🌔", "🌕", "🌖", "🌗", "🌘"];
-
-/** While a run is in flight, the button waxes and wanes through the moon. */
-function MoonSpinner() {
-  const [i, setI] = useState(0);
+/**
+ * While a run is in flight: an ink ring drawing itself around (no emoji —
+ * they render inconsistently across platforms). Reduced motion: an ellipsis.
+ */
+function InkSpinner() {
   const reduce = useReducedMotion();
-  useEffect(() => {
-    if (reduce) return;
-    const iv = setInterval(() => setI((n) => (n + 1) % MOON_PHASES.length), 110);
-    return () => clearInterval(iv);
-  }, [reduce]);
+  if (reduce) return <span aria-label="working">…</span>;
   return (
-    <span aria-label="working" className="inline-block w-6 text-center">
-      {reduce ? "…" : MOON_PHASES[i]}
+    <span aria-label="working" className="inline-flex w-6 items-center justify-center">
+      <span className="block size-3 animate-spin rounded-full border-[1.5px] border-accent border-t-transparent" />
     </span>
   );
 }
@@ -74,6 +70,8 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
   const [tab, setTab] = useState(0);
   const [placeholderIdx, setPlaceholderIdx] = useState(0);
   const [xrayOn, setXrayOn] = useState(false);
+  /** Phones: hide the card for a moment to see the sky behind it. */
+  const [skyPeek, setSkyPeek] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const nextId = useRef(1);
   const abortRef = useRef<AbortController | null>(null);
@@ -294,9 +292,23 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
           dismissKey={dismissKey}
           burstKey={burstKey}
           wardKey={wardKey}
+          showTimelapse={skyPeek}
         />
 
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center px-4 py-5 sm:px-10 sm:py-7">
+        <button
+          type="button"
+          onClick={() => setSkyPeek((v) => !v)}
+          aria-pressed={skyPeek}
+          className="absolute top-2 right-3 z-30 border border-rule bg-surface/90 px-2 py-0.5 font-mono text-[11px] tracking-wider text-ink-faint uppercase sm:hidden"
+        >
+          {skyPeek ? "back to answer" : "◌ sky"}
+        </button>
+
+        <div
+          className={`pointer-events-none absolute inset-0 flex items-center justify-center px-4 py-5 transition-opacity duration-300 sm:px-10 sm:py-7 ${
+            skyPeek ? "opacity-0 [&_*]:!pointer-events-none" : ""
+          }`}
+        >
           <div className="flex h-full w-full max-w-3xl items-center justify-center">
             <AnimatePresence mode="wait" initial={false}>
               {run ? (
@@ -310,6 +322,7 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
                 >
                   <CardShell
                     animated
+                    quick={run.id > 1}
                     label={`run ${String(run.id).padStart(2, "0")}`}
                     question={run.question}
                     trace={run.trace}
@@ -363,7 +376,7 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
                             onClick={share}
                             aria-label="Copy a shareable link to this answer"
                             aria-live="polite"
-                            className="font-mono text-[10px] tracking-wider text-ink-faint uppercase transition-colors hover:text-accent"
+                            className="font-mono text-[11px] tracking-wider text-ink-faint uppercase transition-colors hover:text-accent"
                           >
                             <AnimatePresence mode="wait" initial={false}>
                               <motion.span
@@ -425,7 +438,7 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
                                 type="button"
                                 aria-pressed={tab === i}
                                 onClick={() => setTab(i)}
-                                className={`relative border px-3 py-1 font-mono text-[10px] tracking-wide uppercase transition-colors ${
+                                className={`relative border px-3 py-1 font-mono text-[11px] tracking-wide uppercase transition-colors ${
                                   tab === i
                                     ? "border-accent text-paper"
                                     : "border-rule text-ink-muted hover:border-accent hover:text-accent"
@@ -485,7 +498,7 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
         <div className="mx-auto max-w-3xl">
           {/* Modes: chips from sm up; on phones a compact select beside the presets. */}
           <div className="hidden flex-wrap items-center gap-2 sm:flex">
-            <span className="mr-1 font-mono text-[10px] tracking-[0.18em] text-ink-faint uppercase">
+            <span className="mr-1 font-mono text-[11px] tracking-[0.18em] text-ink-faint uppercase">
               mode
             </span>
             {(Object.keys(MODE_LABELS) as Mode[]).map((m) => (
@@ -497,7 +510,7 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
                   setMode(m);
                   beacon("mode", { mode: m });
                 }}
-                className={`relative border px-2.5 py-1 font-mono text-[10px] tracking-wide uppercase transition-colors ${
+                className={`relative border px-2.5 py-1 font-mono text-[11px] tracking-wide uppercase transition-colors ${
                   mode === m
                     ? "border-accent text-paper"
                     : "border-rule text-ink-muted hover:border-accent hover:text-accent"
@@ -518,11 +531,18 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
               type="button"
               aria-busy={busy}
               onClick={() => ask("Show the system card")}
-              className="border border-rule px-2.5 py-1 font-mono text-[10px] tracking-wide text-ink-muted uppercase transition-colors hover:border-accent hover:text-accent disabled:opacity-50"
+              className="border border-rule px-2.5 py-1 font-mono text-[11px] tracking-wide text-ink-muted uppercase transition-colors hover:border-accent hover:text-accent disabled:opacity-50"
             >
               system card
             </button>
-            <p className="ml-auto hidden font-mono text-[10px] text-ink-faint md:block">
+            <button
+              type="button"
+              onClick={() => ask("Match a job description")}
+              className="border border-accent px-2.5 py-1 font-mono text-[11px] tracking-wide text-accent uppercase transition-colors hover:bg-accent hover:text-paper"
+            >
+              hiring? match your JD →
+            </button>
+            <p className="ml-auto hidden font-mono text-[11px] text-ink-faint xl:block">
               © 2026 Divanshu Sharma ·{" "}
               <a
                 href="https://github.com/sdivyanshu90/my_portfolio"
@@ -574,7 +594,7 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
             <VoiceButton onText={setInput} onFinal={(t) => ask(t)} />
             <kbd
               aria-hidden
-              className="hidden shrink-0 border border-rule px-1.5 py-0.5 font-mono text-[10px] text-ink-faint transition-opacity duration-200 group-focus-within:opacity-0 sm:block"
+              className="hidden shrink-0 border border-rule px-1.5 py-0.5 font-mono text-[11px] text-ink-faint transition-opacity duration-200 group-focus-within:opacity-0 sm:block"
             >
               /
             </kbd>
@@ -583,13 +603,13 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
               aria-busy={busy}
               className="shrink-0 border border-accent px-4 py-1.5 font-mono text-[11px] tracking-wider text-accent uppercase transition-colors hover:bg-accent hover:text-paper disabled:cursor-not-allowed disabled:opacity-40"
             >
-              {busy ? <MoonSpinner /> : "run"}
+              {busy ? <InkSpinner /> : "run"}
             </button>
           </motion.form>
 
           <div
             key={mode}
-            className="mt-2.5 flex gap-2 overflow-x-auto pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="mt-2.5 flex gap-2 overflow-x-auto pr-8 pb-0.5 [mask-image:linear-gradient(to_right,black_calc(100%-48px),transparent)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             <label className="shrink-0 sm:hidden">
               <span className="sr-only">Audience mode</span>

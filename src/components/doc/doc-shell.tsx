@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ContactLink } from "@/components/contact-link";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { personal, resume, socials } from "@/data/portfolio";
+import { publishedPosts } from "@/data/writing";
 
 /**
  * The document door: plain, fast, server-rendered pages over the same
@@ -12,6 +13,8 @@ import { personal, resume, socials } from "@/data/portfolio";
 const NAV = [
   { href: "/", label: "console" },
   { href: "/work", label: "work" },
+  // Writing appears once there's something published to read.
+  ...(publishedPosts().length ? [{ href: "/writing", label: "writing" }] : []),
   { href: "/systems", label: "systems" },
   { href: "/open-source", label: "open source" },
   { href: "/cv", label: "cv" },
@@ -44,7 +47,7 @@ export function DocShell({
     <div className="flex min-h-dvh flex-col">
       <header className="border-b border-rule px-4 py-3 sm:px-6 print:hidden">
         <div className={`mx-auto flex ${width} flex-wrap items-center gap-x-6 gap-y-2`}>
-          <Link href="/" className="font-mono text-[10px] tracking-[0.18em] text-ink-muted uppercase">
+          <Link href="/" className="font-mono text-[11px] tracking-[0.18em] text-ink-muted uppercase">
             <span className="text-accent">DIV-1</span> · {personal.name}
           </Link>
           <nav aria-label="Pages" className="flex flex-wrap gap-x-4 gap-y-1 font-mono text-[11px] sm:ml-auto">
@@ -67,7 +70,7 @@ export function DocShell({
         </div>
       </header>
 
-      <main className={`mx-auto w-full ${width} flex-1 px-4 py-10 sm:px-6 sm:py-14`}>
+      <main className={`doc-enter mx-auto w-full ${width} flex-1 px-4 py-10 motion-reduce:animate-none sm:px-6 sm:py-14`}>
         {eyebrow ? (
           <p className="mb-3 font-mono text-[11px] tracking-[0.18em] text-accent uppercase">{eyebrow}</p>
         ) : null}
@@ -77,7 +80,7 @@ export function DocShell({
 
         {ask?.length ? (
           <aside aria-label="Ask the console" className="mt-14 border-t border-rule pt-6 print:hidden">
-            <p className="font-mono text-[10px] tracking-[0.18em] text-ink-faint uppercase">Ask DIV-1</p>
+            <p className="font-mono text-[11px] tracking-[0.18em] text-ink-faint uppercase">Ask DIV-1</p>
             <ul className="mt-3 flex flex-wrap gap-2">
               {ask.map((q) => (
                 <li key={q}>

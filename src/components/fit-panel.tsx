@@ -140,7 +140,7 @@ export function FitPanel({ initial = "" }: { initial?: string }) {
             try a sample JD
           </button>
         ) : null}
-        <span className="font-mono text-[10px] text-ink-faint">matched in your browser · never sent · no model</span>
+        <span className="font-mono text-[11px] text-ink-faint">matched in your browser · never sent · no model</span>
       </div>
 
       {rows.length ? (
@@ -151,7 +151,7 @@ export function FitPanel({ initial = "" }: { initial?: string }) {
           <ol className="mt-3 divide-y divide-rule-faint border-y border-rule-faint">
             {rows.map((r, i) => (
               <li key={`${i}-${r.requirement}`} className="grid gap-x-4 gap-y-1.5 py-3 sm:grid-cols-[72px_1fr]">
-                <span className={`self-start px-1.5 py-0.5 text-center font-mono text-[10px] tracking-wide uppercase ${BADGE[r.strength]}`}>
+                <span className={`self-start px-1.5 py-0.5 text-center font-mono text-[11px] tracking-wide uppercase ${BADGE[r.strength]}`}>
                   {r.strength}
                 </span>
                 <div>

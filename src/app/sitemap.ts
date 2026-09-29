@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { caseStudies, site } from "@/data/portfolio";
+import { publishedPosts } from "@/data/writing";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -17,6 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     page("/systems", 0.8),
     page("/fit", 0.7),
     ...caseStudies.map((c) => page(`/work/${c.id}`, 0.7)),
+    ...publishedPosts().map((p) => page(`/writing/${p.slug}`, 0.6)),
     page("/llms.txt", 0.3),
   ];
 }

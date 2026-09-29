@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { personal } from "@/data/portfolio";
 
@@ -5,13 +7,11 @@ import { personal } from "@/data/portfolio";
 
 export const OG_SIZE = { width: 1200, height: 630 };
 
-/** Newsreader TTF fetched at build time (no UA header → Google serves truetype). */
+/** Newsreader TrueType from the repo (next/og needs TTF, not WOFF2). */
 export async function loadSerif(): Promise<ArrayBuffer | null> {
   try {
-    const css = await (await fetch("https://fonts.googleapis.com/css2?family=Newsreader:wght@500")).text();
-    const url = css.match(/src: url\((.+?)\) format\('(?:truetype|opentype)'\)/)?.[1];
-    if (!url) return null;
-    return await (await fetch(url)).arrayBuffer();
+    const buf = await readFile(join(process.cwd(), "src/app/fonts/newsreader-500.ttf"));
+    return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength) as ArrayBuffer;
   } catch {
     return null;
   }

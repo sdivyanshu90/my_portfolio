@@ -14,7 +14,8 @@
     "db:migrate": "vite-node --config vitest.config.mts scripts/db-migrate.ts",
     "verify-claims": "vite-node --config vitest.config.mts scripts/verify-claims.ts",
     "sync-github": "vite-node --config vitest.config.mts scripts/sync-github.ts",
-    "smoke": "vite-node --config vitest.config.mts scripts/smoke.ts --"
+    "smoke": "vite-node --config vitest.config.mts scripts/smoke.ts --",
+    "cv:pdf": "vite-node --config vitest.config.mts scripts/cv-pdf.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
@@ -36,6 +37,7 @@
     "eslint-config-next": "15.2.3",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.3",
+    "playwright-core": "^1.63.0",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4",

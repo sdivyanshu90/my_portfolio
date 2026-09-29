@@ -1,15 +1,19 @@
 import Image from "next/image";
 import { ContactLink } from "@/components/contact-link";
 import { CountUp } from "@/components/console/count-up";
-import { Capabilities } from "@/components/capabilities";
-import { CaseStudyFigure } from "@/components/case-study";
-import { Changelog } from "@/components/changelog";
-import { Correspondence } from "@/components/correspondence";
-import { Credentials } from "@/components/credentials";
-import { FieldNotes } from "@/components/field-notes";
-import { FitPanel } from "@/components/fit-panel";
-import { ScratchIndex } from "@/components/scratch-index";
-import { SystemCard } from "@/components/system-card";
+import dynamic from "next/dynamic";
+
+// Cards load on demand: most visits see one or two, so the console's first
+// load carries only the boot card (About). Still server-rendered where used.
+const Capabilities = dynamic(() => import("@/components/capabilities").then((m) => m.Capabilities));
+const CaseStudyFigure = dynamic(() => import("@/components/case-study").then((m) => m.CaseStudyFigure));
+const Changelog = dynamic(() => import("@/components/changelog").then((m) => m.Changelog));
+const Correspondence = dynamic(() => import("@/components/correspondence").then((m) => m.Correspondence));
+const Credentials = dynamic(() => import("@/components/credentials").then((m) => m.Credentials));
+const FieldNotes = dynamic(() => import("@/components/field-notes").then((m) => m.FieldNotes));
+const FitPanel = dynamic(() => import("@/components/fit-panel").then((m) => m.FitPanel));
+const ScratchIndex = dynamic(() => import("@/components/scratch-index").then((m) => m.ScratchIndex));
+const SystemCard = dynamic(() => import("@/components/system-card").then((m) => m.SystemCard));
 import {
   caseStudies,
   keyResults,
@@ -35,6 +39,7 @@ function AboutArtifact() {
           </p>
           <p className="mt-2 font-mono text-[13px] leading-relaxed text-ink">
             {personal.lead}
+            <span className="block text-ink-muted">{personal.focus}</span>
           </p>
           <p className="mt-1 font-mono text-[12px] text-ink-muted">
             {personal.currentRole} · {personal.location}
@@ -66,7 +71,7 @@ function AboutArtifact() {
               <CountUp display={r.display} />
             </p>
             <p className="mt-1 text-[13px] leading-snug text-ink">{r.label}</p>
-            <p className="mt-0.5 font-mono text-[10px] leading-relaxed text-ink-faint">
+            <p className="mt-0.5 font-mono text-[11px] leading-relaxed text-ink-faint">
               {r.note}
             </p>
           </li>
@@ -106,7 +111,7 @@ export function ShippedArtifact() {
               >
                 {s.name}
               </a>
-              <span className="bg-accent-soft px-1.5 py-0.5 font-mono text-[10px] tracking-wide text-accent uppercase">
+              <span className="bg-accent-soft px-1.5 py-0.5 font-mono text-[11px] tracking-wide text-accent uppercase">
                 {s.tag}
               </span>
               <span className="font-mono text-[11px] text-ink-faint">{s.role}</span>

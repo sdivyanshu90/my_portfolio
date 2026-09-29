@@ -15,7 +15,7 @@ export default function Home() {
       {/* Chrome */}
       <header className="border-b border-rule px-4 py-3 sm:px-6">
         <div className="mx-auto max-w-6xl">
-          <div className="flex items-center justify-between font-mono text-[10px] tracking-[0.18em] text-ink-muted uppercase">
+          <div className="flex items-center justify-between font-mono text-[11px] tracking-[0.18em] text-ink-muted uppercase">
             <p>
               <span className="text-accent">DIV-1</span> · rev {site.revision}
               <span className="hidden sm:inline"> · weights public · alignment honest</span>
@@ -30,7 +30,7 @@ export default function Home() {
               {personal.name}
             </h1>
             <p className="hidden font-mono text-[11px] text-ink-muted sm:block">
-              {personal.lead}
+              {personal.lead} · {personal.focus}
               <span className="hidden lg:inline"> · currently {personal.currentRole}</span>
             </p>
             <p className="font-mono text-[11px] text-accent">

@@ -9,7 +9,7 @@
  * All body-text pairings meet WCAG AA (≥4.5:1):
  *   ink        #1C1A17 on #FAF7F0 ≈ 14.9:1
  *   ink-muted  #57534A on #FAF7F0 ≈ 6.6:1
- *   ink-faint  #6E685D on #FAF7F0 ≈ 4.9:1
+ *   ink-faint  #625D53 on #FAF7F0 ≈ 6.1:1
  *   accent     #A82F1B on #FAF7F0 ≈ 5.6:1
  *   chalk      #E8E4DA on #14161A ≈ 13.4:1
  *   chalk-muted#A8A296 on #14161A ≈ 6.7:1
@@ -20,7 +20,7 @@
   --surface: #fffdf7;
   --ink: #1c1a17;
   --ink-muted: #57534a;
-  --ink-faint: #6e685d;
+  --ink-faint: #625d53;
   --accent: #a82f1b;
   --accent-soft: #f3e3dd;
   --rule: #ddd5c6;
@@ -109,6 +109,17 @@ section[id] {
   border-bottom: 1px solid var(--rule);
 }
 
+/* Document pages settle in: a short rise + fade (none under reduced motion). */
+@keyframes doc-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+.doc-enter {
+  animation: doc-enter 0.35s ease-out both;
+}
+
 /* Terminal caret in the running head. */
 @keyframes caret-blink {
   0%,
@@ -170,7 +181,7 @@ section[id] {
  */
 @media print {
   @page {
-    margin: 14mm 14mm 16mm;
+    margin: 11mm 12mm 12mm;
   }
   :root,
   .dark {
@@ -203,6 +214,43 @@ section[id] {
   }
   .cv-block {
     break-inside: avoid;
+  }
+  /* Résumé density: two pages of A4, same content as the screen. */
+  .cv {
+    font-size: 9.2pt;
+    line-height: 1.34;
+  }
+  .cv section {
+    margin-top: 3.2mm !important;
+  }
+  .cv section > div:first-child {
+    margin-bottom: 1.6mm !important;
+    padding-bottom: 0.6mm !important;
+  }
+  .cv .space-y-6 > :not(:first-child) {
+    margin-top: 2.4mm !important;
+  }
+  .cv .space-y-4 > :not(:first-child) {
+    margin-top: 1.6mm !important;
+  }
+  .cv .space-y-2 > :not(:first-child),
+  .cv .space-y-1\.5 > :not(:first-child),
+  .cv .space-y-1 > :not(:first-child) {
+    margin-top: 0.8mm !important;
+  }
+  .cv [class*="text-[14px]"],
+  .cv [class*="text-[15px]"] {
+    font-size: 9.2pt !important;
+  }
+  .cv [class*="text-[12px]"],
+  .cv [class*="text-[11px]"] {
+    font-size: 8pt !important;
+  }
+  main h1 + div {
+    margin-top: 1.5mm !important;
+  }
+  main > div.mt-10 {
+    margin-top: 3mm !important;
   }
   a {
     text-decoration: none !important;

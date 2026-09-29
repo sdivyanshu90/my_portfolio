@@ -6,6 +6,7 @@ import {
   education,
   openSource,
   personal,
+  principles,
   resume,
   site,
   socials,
@@ -21,7 +22,7 @@ export function GET(): Response {
   const lines = [
     `# ${personal.name}`,
     "",
-    `> ${personal.lead}. ${personal.currentRole}. ${personal.openTo}. Based in ${personal.location}.`,
+    `> ${personal.lead} — ${personal.focus}. ${personal.currentRole}. ${personal.openTo}. Based in ${personal.location}.`,
     "",
     personal.abstract.join("\n\n"),
     "",
@@ -45,6 +46,9 @@ export function GET(): Response {
     ...openSource
       .filter((o) => o.role !== "Author")
       .map((o) => `- [${o.name}](${o.href}): ${o.role === "Contributor" ? `${o.merged} merged` : "proposal, unmerged"} — ${o.summary}`),
+    "",
+    "## How he works",
+    ...principles.map((p) => `- ${p.title}: ${p.body} (evidence: ${p.evidence.href.startsWith("/") ? site.url + p.evidence.href : p.evidence.href})`),
     "",
     "## Skills",
     ...capabilities.map((c) => `- ${c.area}: ${c.items}`),

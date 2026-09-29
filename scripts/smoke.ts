@@ -78,6 +78,13 @@ for (const img of ["/opengraph-image", "/work/renaissance-ocr/opengraph-image"])
   check(`GET ${img}`, r.status === 200 && (r.headers.get("content-type") ?? "").startsWith("image/png"), `${r.status}`);
 }
 check("GET /nope → 404", (await get("/nope")).status === 404);
+check("GET /writing", (await get("/writing")).status === 200);
+check("draft post hidden from the public", (await fetch(`${BASE}/writing/how-div1-answers`)).status === 404);
+check("digest cron locked without auth", (await fetch(`${BASE}/api/cron/digest`)).status === 404);
+{
+  const r = await fetch(`${BASE}/Divanshu_Sharma_Resume.pdf`);
+  check("résumé PDF served", r.status === 200 && (r.headers.get("content-type") ?? "").includes("pdf"));
+}
 
 // ── /api/ask: every path ─────────────────────────────────────────────────
 {
@@ -198,9 +205,9 @@ const pvId = `smoke-${Date.now().toString(36)}`;
 // ── Aggregates & admin ───────────────────────────────────────────────────
 {
   const stats = JSON.parse((await get("/api/stats")).body);
-  check("stats · live counts", typeof stats?.questions === "number" && stats.questions > 0, JSON.stringify(stats));
+  check("stats · live counts (real visitors only)", typeof stats?.questions === "number", JSON.stringify(stats));
   const demand = JSON.parse((await get("/api/demand")).body);
-  check("demand · per-star counts", Object.keys(demand).length > 0, `${Object.keys(demand).length} stars`);
+  check("demand · per-star counts", typeof demand === "object" && demand !== null, `${Object.keys(demand).length} stars`);
   check("misses · 404 without token", (await fetch(`${BASE}/api/misses`)).status === 404);
   const inbox = JSON.parse((await get("/api/misses", { Authorization: `Bearer ${TOKEN}` })).body);
   check("misses · inbox", inbox.store === "postgres" && Array.isArray(inbox.recent), `${inbox.recent?.length ?? 0} recent`);

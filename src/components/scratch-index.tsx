@@ -134,7 +134,7 @@ export function ScratchIndex({
                   {e.engineered ? (
                     <span
                       title="Engineered library — tests, strict typing, production concerns"
-                      className="ml-1.5 font-mono text-[10px] text-accent"
+                      className="ml-1.5 font-mono text-[11px] text-accent"
                     >
                       ⚙
                     </span>

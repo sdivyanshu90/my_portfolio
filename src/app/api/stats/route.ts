@@ -13,7 +13,8 @@ export async function GET(): Promise<Response> {
       `SELECT count(*)::int AS questions,
               count(*) FILTER (WHERE path = 'guarded')::int AS sealed,
               count(*) FILTER (WHERE path IN ('preset', 'cached', 'deterministic'))::int AS free
-         FROM div1_interactions`,
+         FROM div1_interactions
+        WHERE visitor IS DISTINCT FROM 'owner' AND visitor IS DISTINCT FROM 'smoke-test'`,
     ),
   );
   const s = rows?.[0] as { questions: number; sealed: number; free: number } | undefined;

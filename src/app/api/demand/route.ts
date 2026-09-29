@@ -12,6 +12,7 @@ export async function GET(): Promise<Response> {
       `SELECT e AS id, count(*)::int AS n
          FROM div1_interactions, unnest(entities) AS e
         WHERE at > now() - interval '90 days' AND path <> 'guarded'
+          AND visitor IS DISTINCT FROM 'owner' AND visitor IS DISTINCT FROM 'smoke-test'
         GROUP BY 1`,
     ),
   );

@@ -186,6 +186,7 @@ export function Field({
   dismissKey,
   burstKey,
   wardKey,
+  showTimelapse,
 }: {
   draft: Map<string, number>;
   activeIds: string[];
@@ -194,6 +195,8 @@ export function Field({
   dismissKey: number;
   burstKey: number;
   wardKey: number;
+  /** Phones: the time-lapse control only shows while peeking at the sky. */
+  showTimelapse?: boolean;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -376,8 +379,25 @@ export function Field({
       accent: boolean; // an occasional ember-tinted streak
     }
     let meteors: Meteor[] = [];
-    let nextSporadic = mounted + 3000 + Math.random() * 3000;
-    let nextShower = mounted + 6000 + Math.random() * 4000;
+    // First visit gets the full show; returning visitors (remembered after
+    // 20s) get a quieter sky — a third of the meteors, and no storms.
+    const seen = (() => {
+      try {
+        return localStorage.getItem("div1-sky-seen") === "1";
+      } catch {
+        return false;
+      }
+    })();
+    const calm = seen ? 3 : 1;
+    const markSeen = setTimeout(() => {
+      try {
+        localStorage.setItem("div1-sky-seen", "1");
+      } catch {
+        /* private mode — keep the full show */
+      }
+    }, 20_000);
+    let nextSporadic = mounted + (3000 + Math.random() * 3000) * calm;
+    let nextShower = mounted + (6000 + Math.random() * 4000) * calm;
     // Cursor stardust: motes sprinkled as the pointer moves, drifting down.
     interface Mote {
       x: number;
@@ -781,7 +801,7 @@ export function Field({
             1 + Math.random() * 0.5,
             Math.random() < 0.15,
           );
-          nextSporadic = now + 3500 + Math.random() * 4500;
+          nextSporadic = now + (3500 + Math.random() * 4500) * calm;
         }
 
         // A meteor shower: a dense staggered burst from one radiant point,
@@ -790,7 +810,7 @@ export function Field({
         if (now > nextShower && meteors.length < 60 && idleFor(now) < SLEEP_MS) {
           const radiantX = w * (0.3 + Math.random() * 0.4);
           const radiantY = -h * 0.04;
-          const storm = Math.random() < 0.3;
+          const storm = !seen && Math.random() < 0.3;
           const count = (storm ? 30 : 16) + Math.floor(Math.random() * 8);
           for (let i = 0; i < count; i++) {
             const angle = Math.PI * 0.22 + Math.random() * Math.PI * 0.56; // ~40°→140°
@@ -805,7 +825,7 @@ export function Field({
               i % 4 === 0, // ~1 in 4 is an ember streak
             );
           }
-          nextShower = now + (storm ? 20000 : 12000) + Math.random() * 12000;
+          nextShower = now + ((storm ? 20000 : 12000) + Math.random() * 12000) * calm;
         }
 
         // Draw + cull.
@@ -1000,6 +1020,7 @@ export function Field({
 
     let running = true;
     let last = 0;
+    let cost = 0; // moving-average draw time, ms
     const loop = (now: number) => {
       if (!running) return;
       const active = effectActive(now);
@@ -1009,10 +1030,15 @@ export function Field({
         sleeping = true;
         return;
       }
-      const interval = active ? 16 : idle > DROWSY_MS ? 66 : 33;
+      // Adaptive budget: slow devices get fewer frames; if frames stay very
+      // expensive the sky settles to a still chart (redrawn only on events).
+      const floor = cost > 24 ? 250 : cost > 10 ? 33 : 16;
+      const interval = Math.max(floor, active ? 16 : idle > DROWSY_MS ? 66 : 33);
       if (now - last >= interval) {
         last = now;
+        const t0 = performance.now();
         draw(now);
+        cost = cost * 0.9 + (performance.now() - t0) * 0.1; // moving average (ms)
       }
       raf = requestAnimationFrame(loop);
     };
@@ -1047,11 +1073,19 @@ export function Field({
         document.removeEventListener("visibilitychange", onVisibility);
       };
     }
-    // One static frame immediately; the loop starts after hydration settles.
+    // One static frame immediately; the animation starts only once the page
+    // has loaded and the main thread is idle — it never competes with the
+    // content for the first seconds on a slow phone.
     draw(performance.now());
-    const startTimer = setTimeout(() => {
-      raf = requestAnimationFrame(loop);
-    }, 900);
+    let idleHandle: number | undefined;
+    const begin = () => {
+      const start = () => {
+        if (running) raf = requestAnimationFrame(loop);
+      };
+      const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number };
+      idleHandle = w.requestIdleCallback ? w.requestIdleCallback(start, { timeout: 3000 }) : window.setTimeout(start, 1200);
+    };
+    const startTimer = setTimeout(() => (document.readyState === "complete" ? begin() : window.addEventListener("load", begin, { once: true })), 900);
 
     const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
     const nearestStar = (px: number, py: number, radius: number): Star | null => {
@@ -1131,8 +1165,15 @@ export function Field({
 
     return () => {
       running = false;
+      clearTimeout(markSeen);
       for (const ev of WAKE_EVENTS) window.removeEventListener(ev, wake);
       clearTimeout(startTimer);
+      window.removeEventListener("load", begin);
+      if (idleHandle !== undefined) {
+        const w = window as Window & { cancelIdleCallback?: (h: number) => void };
+        if (w.cancelIdleCallback) w.cancelIdleCallback(idleHandle);
+        else clearTimeout(idleHandle);
+      }
       cancelAnimationFrame(raf);
       ro.disconnect();
       themeObserver.disconnect();
@@ -1178,7 +1219,9 @@ export function Field({
             beacon("sky", { via: "timelapse" });
           }}
           aria-label={tlPlaying ? "Stop the time-lapse" : "Replay the sky in the order the work was built"}
-          className="absolute right-3 bottom-3 z-20 hidden border border-rule bg-surface/90 px-2.5 py-1 font-mono text-[10px] tracking-wider text-ink-faint uppercase transition-colors hover:border-accent hover:text-accent sm:block"
+          className={`absolute right-3 bottom-3 z-20 border border-rule bg-surface/90 px-2.5 py-1 font-mono text-[11px] tracking-wider text-ink-faint uppercase transition-colors hover:border-accent hover:text-accent sm:block ${
+            showTimelapse ? "block" : "hidden"
+          }`}
         >
           {tlPlaying ? (
             <>
@@ -1203,11 +1246,11 @@ export function Field({
           style={{ left: hover.px, top: hover.py + 14 }}
         >
           <p className="font-mono text-[11px] leading-snug text-ink">{hover.star.node.label}</p>
-          <p className="font-mono text-[10px] leading-snug text-ink-faint">
+          <p className="font-mono text-[11px] leading-snug text-ink-faint">
             {hover.star.node.sub} · click to open
           </p>
           {starMeta(hover.star.node.id, demand) ? (
-            <p className="mt-0.5 font-mono text-[10px] leading-snug text-accent">{starMeta(hover.star.node.id, demand)}</p>
+            <p className="mt-0.5 font-mono text-[11px] leading-snug text-accent">{starMeta(hover.star.node.id, demand)}</p>
           ) : null}
         </div>
       ) : null}
@@ -1222,11 +1265,11 @@ export function Field({
           <p className="font-mono text-[11px] leading-snug text-ink">
             {pinned.star.node.label}
           </p>
-          <p className="mt-0.5 font-mono text-[10px] leading-snug text-ink-faint">
+          <p className="mt-0.5 font-mono text-[11px] leading-snug text-ink-faint">
             {pinned.star.node.sub}
           </p>
           {starMeta(pinned.star.node.id, demand) ? (
-            <p className="mt-0.5 font-mono text-[10px] leading-snug text-accent">{starMeta(pinned.star.node.id, demand)}</p>
+            <p className="mt-0.5 font-mono text-[11px] leading-snug text-accent">{starMeta(pinned.star.node.id, demand)}</p>
           ) : null}
           <a
             href={pinned.star.node.url}

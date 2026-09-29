@@ -11,7 +11,7 @@ import { type Attribution, xray } from "@/lib/xray";
  */
 
 const btn =
-  "font-mono text-[10px] tracking-wider uppercase transition-colors hover:text-accent disabled:opacity-50";
+  "font-mono text-[11px] tracking-wider uppercase transition-colors hover:text-accent disabled:opacity-50";
 
 export function XrayNarration({ text }: { text: string }) {
   const parts: Attribution[] = xray(text);
@@ -107,7 +107,7 @@ export function AnswerTools({
           </button>
         ) : null}
         {voted ? (
-          <span className="font-mono text-[10px] tracking-wider uppercase">
+          <span className="font-mono text-[11px] tracking-wider uppercase">
             {voted === "helpful" ? "✓ thanks" : "✓ logged — it goes on the fix list"}
           </span>
         ) : (
@@ -127,7 +127,7 @@ export function AnswerTools({
         ) : null}
       </div>
       {xrayOn ? (
-        <p className="mt-2 font-mono text-[10px] text-ink-faint">
+        <p className="mt-2 font-mono text-[11px] text-ink-faint">
           <span className="underline decoration-accent/50 decoration-dotted underline-offset-2">dotted</span> = supported
           by a dossier fact (click to open) ·{" "}
           <span className="underline decoration-accent decoration-wavy underline-offset-2">wavy</span> = no support found
