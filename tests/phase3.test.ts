@@ -112,3 +112,24 @@ describe("handoff email", () => {
     if (prev) process.env.RESEND_API_KEY = prev;
   });
 });
+
+describe("schema", () => {
+  it("ships inside the app as idempotent statements", async () => {
+    const { schemaStatements } = await import("@/lib/schema");
+    const st = schemaStatements();
+    expect(st.length).toBeGreaterThanOrEqual(20);
+    expect(st.every((s) => /IF NOT EXISTS/i.test(s))).toBe(true);
+    expect(st.some((s) => s.includes("div1_pageviews"))).toBe(true);
+  });
+});
+
+describe("database URL cleanup", () => {
+  it("forgives quotes and trailing comments", async () => {
+    const { cleanUrl } = await import("@/lib/db");
+    const url = "postgresql://u:p@ep-x.neon.tech/neondb?sslmode=require";
+    expect(cleanUrl(url)).toBe(url);
+    expect(cleanUrl(`${url} # Use this to store interactions`)).toBe(url);
+    expect(cleanUrl(`"${url}"`)).toBe(url);
+    expect(cleanUrl(`  '${url}'  `)).toBe(url);
+  });
+});

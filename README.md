@@ -142,7 +142,7 @@ npm run dev    # http://localhost:3000
 npm test       # golden router set, guard, retrieval, store, credit-safety route tests
 npm run eval   # print the router scorecard (-- --verbose lists failures)
 npm run build  # eval scorecard + static build + sitemap/robots/OG image generation
-npm run db:migrate     # apply db/schema.sql to Neon (idempotent)
+npm run db:migrate     # apply src/lib/schema.ts to Neon (idempotent)
 npm run verify-claims  # re-check open-source numbers against GitHub (GITHUB_TOKEN)
 npm run sync-github    # refresh src/data/activity.json (runs before every build)
 npm run smoke          # end-to-end check of every page/API + the Neon rows (needs ADMIN_TOKEN, a running server)

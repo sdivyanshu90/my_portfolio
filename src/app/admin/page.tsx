@@ -7,6 +7,8 @@ import { BarList, CountryCode, countryName, duration, Panel, Stat } from "@/comp
 import { ThemeToggle } from "@/components/theme-toggle";
 import { isAdmin, logOut } from "@/lib/admin";
 import { loadDashboard, setHandoffStatus } from "@/lib/analytics";
+import { db, dbInfo } from "@/lib/db";
+import { schemaStatements } from "@/lib/schema";
 
 export const metadata: Metadata = { title: "Admin", robots: { index: false, follow: false } };
 export const dynamic = "force-dynamic";
@@ -23,6 +25,21 @@ async function updateHandoff(form: FormData) {
   revalidatePath("/admin");
 }
 
+/** Create / upgrade the tables in whichever database is connected (idempotent). */
+async function setUpDatabase() {
+  "use server";
+  if (!(await isAdmin())) return;
+  const sql = db();
+  if (!sql) redirect("/admin?setup=no-db");
+  let result = "ok";
+  try {
+    for (const stmt of schemaStatements()) await sql.query(stmt);
+  } catch (e) {
+    result = encodeURIComponent((e as Error).message.slice(0, 200));
+  }
+  redirect(`/admin?setup=${result}`);
+}
+
 async function signOut() {
   "use server";
   await logOut();
@@ -34,20 +51,72 @@ const fmtDate = (iso: string) =>
   new Date(iso).toLocaleString("en-IN", { timeZone: "Asia/Kolkata", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 const weekLabel = (iso: string) => new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
 
-export default async function Admin({ searchParams }: { searchParams: Promise<{ range?: string }> }) {
-  if (!(await isAdmin())) redirect("/admin/login");
-  const r = Number((await searchParams).range);
-  const days = (RANGES as readonly number[]).includes(r) ? r : 30;
-  const d = await loadDashboard(days);
+/** Shown instead of a 500 when the database is missing or failing. */
+function DatabaseProblem({ error, setup }: { error: string | null; setup?: string }) {
+  const info = dbInfo();
+  return (
+    <main className="mx-auto max-w-3xl space-y-5 px-4 py-16">
+      <p className="font-mono text-[11px] tracking-[0.18em] text-accent uppercase">DIV-1 · admin</p>
+      <h1 className="text-2xl font-medium tracking-tight">The dashboard can&apos;t read its database</h1>
+      {setup && setup !== "ok" ? (
+        <p className="border border-accent px-4 py-3 font-mono text-[12px] text-accent">Setup failed: {decodeURIComponent(setup)}</p>
+      ) : null}
+      <dl className="divide-y divide-rule-faint border-y border-rule font-mono text-[12px]">
+        <div className="grid grid-cols-[160px_1fr] gap-3 py-2">
+          <dt className="text-ink-faint">variable in use</dt>
+          <dd>{info.variable ?? "none — set NeonDB_URI"}</dd>
+        </div>
+        <div className="grid grid-cols-[160px_1fr] gap-3 py-2">
+          <dt className="text-ink-faint">database host</dt>
+          <dd>{info.host ?? "—"}</dd>
+        </div>
+        <div className="grid grid-cols-[160px_1fr] gap-3 py-2">
+          <dt className="text-ink-faint">both variables set</dt>
+          <dd>{info.both ? "yes — NeonDB_URI is used; DATABASE_URL (Vercel's Neon integration) is ignored" : "no"}</dd>
+        </div>
+        {info.problem ? (
+          <div className="grid grid-cols-[160px_1fr] gap-3 py-2">
+            <dt className="text-ink-faint">value problem</dt>
+            <dd className="text-accent">{info.problem}</dd>
+          </div>
+        ) : null}
+        <div className="grid grid-cols-[160px_1fr] gap-3 py-2">
+          <dt className="text-ink-faint">error</dt>
+          <dd className="break-words text-accent">{error ?? "no database configured"}</dd>
+        </div>
+      </dl>
+      {info.variable ? (
+        <form action={setUpDatabase} className="space-y-2">
+          <p className="text-[14px] text-ink-muted">
+            If the error says a <code>div1_</code> table doesn&apos;t exist, this database was never set up. Create the tables
+            here — it&apos;s idempotent and only adds <code>div1_</code> tables and columns.
+          </p>
+          <button className="border border-accent bg-accent px-4 py-2 font-mono text-[12px] tracking-wider text-paper uppercase hover:bg-transparent hover:text-accent">
+            set up database
+          </button>
+        </form>
+      ) : null}
+      <form action={signOut}>
+        <button className="font-mono text-[11px] text-ink-muted hover:text-accent">sign out</button>
+      </form>
+    </main>
+  );
+}
 
-  if (!d) {
-    return (
-      <main className="mx-auto max-w-3xl px-4 py-16">
-        <h1 className="text-2xl font-medium">Admin</h1>
-        <p className="mt-3 text-ink-muted">No database configured — set NeonDB_URI (or DATABASE_URL) and run npm run db:migrate.</p>
-      </main>
-    );
+export default async function Admin({ searchParams }: { searchParams: Promise<{ range?: string; setup?: string }> }) {
+  if (!(await isAdmin())) redirect("/admin/login");
+  const params = await searchParams;
+  const r = Number(params.range);
+  const days = (RANGES as readonly number[]).includes(r) ? r : 30;
+  let d: Awaited<ReturnType<typeof loadDashboard>> = null;
+  let error: string | null = null;
+  try {
+    d = await loadDashboard(days);
+  } catch (e) {
+    error = (e as Error).message;
+    console.error("[admin]", error);
   }
+  if (!d) return <DatabaseProblem error={error} setup={params.setup} />;
   const k = d.kpi;
   const topCountries = d.countries.slice(0, 10);
   const otherCountries = d.countries.slice(10).reduce((n, c) => n + c.visitors, 0);

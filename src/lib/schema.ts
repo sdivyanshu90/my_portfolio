@@ -1,5 +1,12 @@
--- DIV-1 interaction store (Neon Postgres). Idempotent: `npm run db:migrate`.
--- Privacy: no IPs or user agents anywhere. `visitor` is a salted SHA-256
+/**
+ * The Neon schema — idempotent (CREATE … IF NOT EXISTS / ADD COLUMN IF NOT
+ * EXISTS), so it is safe to apply any number of times. Shipped inside the app
+ * so /admin can set up whichever database it is connected to; the CLI
+ * (`npm run db:migrate`) applies the same statements.
+ */
+export const SCHEMA_SQL = `
+-- DIV-1 interaction store (Neon Postgres). Idempotent: \`npm run db:migrate\`.
+-- Privacy: no IPs or user agents anywhere. \`visitor\` is a salted SHA-256
 -- prefix; questions are redacted (emails, numbers, URLs) before insert; job
 -- descriptions pasted into the fit matcher are never stored — only counts.
 
@@ -121,3 +128,14 @@ CREATE TABLE IF NOT EXISTS div1_pageviews (
 );
 CREATE INDEX IF NOT EXISTS div1_pageviews_at ON div1_pageviews (at DESC);
 CREATE INDEX IF NOT EXISTS div1_pageviews_visitor ON div1_pageviews (visitor, at);
+`;
+
+/** The schema as individual statements (comments stripped). */
+export function schemaStatements(): string[] {
+  return SCHEMA_SQL.split("\n")
+    .filter((l) => !l.trim().startsWith("--"))
+    .join("\n")
+    .split(/;\s*$/m)
+    .map((s) => s.trim())
+    .filter(Boolean);
+}

@@ -64,7 +64,7 @@ Effort is solo-developer time. ✅ = shipped.
 
 | | Feature | Detail |
 |---|---|---|
-| ✅ | **Neon interaction store** | `db/schema.sql` (`npm run db:migrate`): interactions, shared runs, feedback, handoffs, fit checks (counts only), UI events, and shared counters/cache. Rate limit, spend cap and answer cache hold across all instances. Visitor = salted hash; questions redacted; no IPs. |
+| ✅ | **Neon interaction store** | `src/lib/schema.ts` (`npm run db:migrate`): interactions, shared runs, feedback, handoffs, fit checks (counts only), UI events, and shared counters/cache. Rate limit, spend cap and answer cache hold across all instances. Visitor = salted hash; questions redacted; no IPs. |
 | ✅ | **Fit check** | `/fit` and in the console ("match a job description"): paste a JD → requirement → evidence → strong / partial / gap. Runs in the browser; the JD is never sent. Exports a one-page Markdown brief for the hiring team. |
 | ✅ | **Sentence x-ray** | Toggle under any answer: each sentence is underlined with the dossier fact that supports it (click to open); unsupported sentences get a red wavy underline. |
 | ✅ | **Number tripwire** | Any figure in a model narration that the dossier never states is flagged on the card, and that narration is never cached. |
