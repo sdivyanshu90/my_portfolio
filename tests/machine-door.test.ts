@@ -9,6 +9,13 @@ const rpc = async (body: unknown) =>
   mcp(new Request("http://local/api/mcp", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }));
 
 describe("MCP endpoint", () => {
+  it("bounds batches and request size on the public endpoint", async () => {
+    const many = Array.from({ length: 11 }, (_, i) => ({ jsonrpc: "2.0", id: i, method: "tools/list" }));
+    expect((await rpc(many)).status).toBe(400);
+    const huge = { jsonrpc: "2.0", id: 1, method: "tools/call", params: { name: "search_dossier", arguments: { query: "x".repeat(40_000) } } };
+    expect((await rpc(huge)).status).toBe(413);
+  });
+
   it("initializes, negotiating the protocol version", async () => {
     const res = await (await rpc({ jsonrpc: "2.0", id: 1, method: "initialize", params: { protocolVersion: "2025-06-18" } })).json();
     expect(res.result.protocolVersion).toBe("2025-06-18");

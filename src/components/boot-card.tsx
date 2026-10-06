@@ -17,7 +17,7 @@ export function BootCard() {
           href="/fit"
           className="border border-accent px-2 py-0.5 font-mono text-[11px] tracking-wide text-accent uppercase transition-colors hover:bg-accent hover:text-paper"
         >
-          hiring? match your JD →
+          <span className="hidden min-[420px]:inline">hiring? </span>match your JD →
         </Link>
       }
       question="whoami"

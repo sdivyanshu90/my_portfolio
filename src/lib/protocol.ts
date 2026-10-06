@@ -72,6 +72,10 @@ export interface StoredRun {
   usage?: { tokens: number; costUsd: number | null };
   /** The facts this answer relied on, fingerprinted (see lib/facts). */
   facts?: { id: string; hash: string; label: string; text: string }[];
+  /** Console notes shown with the answer (e.g. the tripwire's warning). */
+  notes?: string[];
+  /** Figures the tripwire could not find in the dossier — replays keep the warning. */
+  suspect?: string[];
 }
 
 export interface AskRequest {

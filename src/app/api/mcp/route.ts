@@ -13,7 +13,7 @@ import { fitSummary, matchRequirements, urlFor } from "@/lib/fit";
 import { search } from "@/lib/retrieval";
 import { getStore } from "@/lib/store";
 import { type RunLog, record } from "@/lib/telemetry";
-import { visitorId } from "@/lib/visitor";
+import { overLimit, visitorId } from "@/lib/visitor";
 
 /**
  * DIV-1 over the Model Context Protocol (streamable HTTP, stateless).
@@ -212,14 +212,28 @@ function handle(req: RpcRequest, logs: Logged[]): Json | null {
   }
 }
 
+/** Public, unauthenticated: bounded per caller, per request and per batch. */
+const MCP_PER_MIN = 30;
+const MAX_BODY_BYTES = 32 * 1024;
+const MAX_BATCH = 10;
+
+const rpcError = (code: number, message: string, status: number) =>
+  Response.json({ jsonrpc: "2.0", id: null, error: { code, message } }, { status, headers: { "Access-Control-Allow-Origin": "*" } });
+
 export async function POST(request: Request): Promise<Response> {
+  const store = getStore();
+  const visitor = await visitorId(request);
+  if (await overLimit(store, "mcp", visitor, MCP_PER_MIN)) return rpcError(-32000, "Rate limited — slow down", 429);
   let body: unknown;
   try {
-    body = await request.json();
+    const raw = await request.text();
+    if (raw.length > MAX_BODY_BYTES) return rpcError(-32600, "Request too large", 413);
+    body = JSON.parse(raw);
   } catch {
-    return Response.json({ jsonrpc: "2.0", id: null, error: { code: -32700, message: "Parse error" } }, { status: 400 });
+    return rpcError(-32700, "Parse error", 400);
   }
   const batch = Array.isArray(body);
+  if (batch && (body as unknown[]).length > MAX_BATCH) return rpcError(-32600, `Batch too large (max ${MAX_BATCH})`, 400);
   const logs: Logged[] = [];
   const replies = ((batch ? body : [body]) as unknown[])
     .filter((r): r is RpcRequest => !!r && typeof r === "object" && typeof (r as RpcRequest).method === "string")
@@ -227,8 +241,6 @@ export async function POST(request: Request): Promise<Response> {
     .filter((r): r is Json => r !== null);
   // Agents' questions land in the same table as the console's (source: mcp).
   if (logs.length) {
-    const store = getStore();
-    const visitor = await visitorId(request);
     const at = new Date().toISOString();
     await Promise.all(logs.map((l) => record(store, { ...l, at, visitor }).catch(() => {})));
   }

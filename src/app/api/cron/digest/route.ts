@@ -1,6 +1,7 @@
 import { loadDashboard } from "@/lib/analytics";
 import { digestEmail } from "@/lib/digest";
 import { sendToDivanshu } from "@/lib/notify";
+import { bearerIs } from "@/lib/session";
 
 /**
  * Weekly digest (vercel.json cron: Mondays 03:00 UTC = 08:30 IST). Vercel
@@ -10,9 +11,9 @@ import { sendToDivanshu } from "@/lib/notify";
 export const dynamic = "force-dynamic";
 
 export async function GET(req: Request): Promise<Response> {
-  const auth = req.headers.get("authorization");
-  const allowed = [process.env.CRON_SECRET, process.env.ADMIN_TOKEN].filter(Boolean).map((t) => `Bearer ${t}`);
-  if (!auth || !allowed.includes(auth)) return new Response("Not found", { status: 404 });
+  if (!bearerIs(req.headers.get("authorization"), process.env.CRON_SECRET, process.env.ADMIN_TOKEN)) {
+    return new Response("Not found", { status: 404 });
+  }
   const d = await loadDashboard(7);
   if (!d) return Response.json({ sent: false, error: "no database" }, { status: 503 });
   const mail = await sendToDivanshu({ ...digestEmail(d), tag: "portfolio_digest" });

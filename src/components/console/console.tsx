@@ -8,7 +8,7 @@ import { VoiceButton } from "@/components/console/voice-button";
 import { ArtifactView } from "@/components/console/artifacts";
 import { beacon } from "@/lib/beacon";
 import { ArtifactWipe, CardShell, type TraceStep } from "@/components/console/card";
-import { nodesForDraft, nodesForSpecs } from "@/components/console/field";
+import { nodesForDraft, nodesForSpecs } from "@/components/console/field-nodes";
 
 // The constellation is pure enhancement — never let it block hydration.
 const Field = dynamic(() => import("@/components/console/field").then((m) => m.Field), {
@@ -224,7 +224,7 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
         patch((r) => ({
           ...r,
           status: "error",
-          note: "network error — every fact is still one query away; try again or use the header links.",
+          note: "network error — every fact is still one query away: retry, or open the cv and work pages from the header.",
         }));
       } finally {
         if (activeRunId.current === id) setBusy(false);
@@ -294,15 +294,6 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
           wardKey={wardKey}
           showTimelapse={skyPeek}
         />
-
-        <button
-          type="button"
-          onClick={() => setSkyPeek((v) => !v)}
-          aria-pressed={skyPeek}
-          className="absolute top-2 right-3 z-30 border border-rule bg-surface/90 px-2 py-0.5 font-mono text-[11px] tracking-wider text-ink-faint uppercase sm:hidden"
-        >
-          {skyPeek ? "back to answer" : "◌ sky"}
-        </button>
 
         <div
           className={`pointer-events-none absolute inset-0 flex items-center justify-center px-4 py-5 transition-opacity duration-300 sm:px-10 sm:py-7 ${
@@ -375,9 +366,11 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
                             type="button"
                             onClick={share}
                             aria-label="Copy a shareable link to this answer"
-                            aria-live="polite"
-                            className="font-mono text-[11px] tracking-wider text-ink-faint uppercase transition-colors hover:text-accent"
+                            className="font-mono text-[11px] tracking-wider text-ink-faint uppercase transition-colors hover:text-accent pointer-coarse:py-2"
                           >
+                            <span role="status" className="sr-only">
+                              {copied ? "Link copied" : ""}
+                            </span>
                             <AnimatePresence mode="wait" initial={false}>
                               <motion.span
                                 key={copied ? "copied" : "share"}
@@ -402,6 +395,15 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
                                 {copied ? "✓ link copied" : "share ↗"}
                               </motion.span>
                             </AnimatePresence>
+                          </button>
+                        ) : null}
+                        {run.status === "error" ? (
+                          <button
+                            type="button"
+                            onClick={() => ask(run.question)}
+                            className="font-mono text-[11px] tracking-wider text-accent uppercase underline decoration-accent/40 underline-offset-4 transition-colors hover:decoration-accent pointer-coarse:py-2"
+                          >
+                            ↻ retry
                           </button>
                         ) : null}
                         <button
@@ -559,7 +561,7 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
             }
             transition={{ duration: 0.35 }}
             onAnimationComplete={() => setShaking(false)}
-            className={`group flex items-center gap-3 border bg-surface px-4 transition-colors sm:mt-2.5 focus-within:border-accent ${
+            className={`group flex items-center gap-3 border bg-surface px-4 transition-colors sm:mt-2.5 focus-within:border-accent focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent ${
               busy ? "animate-pulse border-accent/60 motion-reduce:animate-none" : "border-rule"
             }`}
             onSubmit={(e) => {
@@ -625,6 +627,18 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
                 ))}
               </select>
             </label>
+            {/* Phones: the card covers the sky — this lifts it away. Lives in the
+                control row so it never overlaps the card's own buttons. */}
+            <button
+              type="button"
+              onClick={() => setSkyPeek((v) => !v)}
+              aria-pressed={skyPeek}
+              className={`shrink-0 border px-3 py-1.5 font-mono text-[11px] tracking-wider whitespace-nowrap uppercase sm:hidden ${
+                skyPeek ? "border-accent bg-accent text-paper" : "border-rule text-ink-muted"
+              }`}
+            >
+              {skyPeek ? "← answer" : "◌ sky"}
+            </button>
             {PRESETS[mode].map((p, i) => (
               <motion.button
                 key={p}

@@ -1,17 +1,14 @@
-import { createHash } from "node:crypto";
+import { ADMIN_COOKIE, sameSecret, validSession, visitorSalt } from "@/lib/session";
 import type { Store } from "@/lib/store";
-
-/** The admin session cookie's value, as /admin sets it (a hash of ADMIN_TOKEN). */
-function ownerCookie(): string | null {
-  const t = process.env.ADMIN_TOKEN;
-  return t ? createHash("sha256").update(`div1-admin:${t}`).digest("hex") : null;
-}
 
 /** Is this request from Divanshu himself (signed in to /admin in this browser)? */
 export function isOwner(req: Pick<Request, "headers">): boolean {
-  const want = ownerCookie();
+  const token = process.env.ADMIN_TOKEN;
+  if (!token) return false;
   const cookie = req.headers.get("cookie") ?? "";
-  return !!want && cookie.split(/;\s*/).some((c) => c === `div1_admin=${want}`);
+  return cookie
+    .split(/;\s*/)
+    .some((c) => c.startsWith(`${ADMIN_COOKIE}=`) && validSession(c.slice(ADMIN_COOKIE.length + 1), token));
 }
 
 /** Visitors are identified by a salted hash prefix, never a stored IP. */
@@ -19,11 +16,11 @@ export async function visitorId(req: Pick<Request, "headers">): Promise<string> 
   // Smoke tests (authenticated with the admin token) are tagged so their
   // rows can be told apart from real visitors and cleaned up.
   const token = process.env.ADMIN_TOKEN;
-  if (token && req.headers.get("x-div1-smoke") === token) return "smoke-test";
+  if (token && sameSecret(req.headers.get("x-div1-smoke"), token)) return "smoke-test";
   // His own visits are tagged, so analytics can leave them out.
   if (isOwner(req)) return "owner";
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
-  const data = new TextEncoder().encode(`${process.env.IP_SALT ?? "div1"}:${ip}`);
+  const data = new TextEncoder().encode(`${visitorSalt()}:${ip}`);
   const digest = await crypto.subtle.digest("SHA-256", data);
   return [...new Uint8Array(digest).slice(0, 8)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }

@@ -3,6 +3,7 @@ import { caseStudies, counts, keyResults, personal, principles } from "@/data/po
 import { posts, publishedPosts } from "@/data/writing";
 import { digestEmail } from "@/lib/digest";
 import type { Dashboard } from "@/lib/analytics";
+import { bearerIs, mintSession, validSession, visitorSalt } from "@/lib/session";
 import { isOwner, visitorId } from "@/lib/visitor";
 import { createHash } from "node:crypto";
 
@@ -36,12 +37,50 @@ describe("writing", () => {
 describe("owner visits", () => {
   it("tags a request carrying the admin session cookie as the owner", async () => {
     process.env.ADMIN_TOKEN = "t0k";
-    const cookie = `div1_admin=${createHash("sha256").update("div1-admin:t0k").digest("hex")}`;
+    const cookie = `div1_admin=${mintSession("t0k")}`;
     const req = new Request("http://x/", { headers: { cookie: `a=1; ${cookie}` } });
     expect(isOwner(req)).toBe(true);
     expect(await visitorId(req)).toBe("owner");
     expect(isOwner(new Request("http://x/", { headers: { cookie: "div1_admin=forged" } }))).toBe(false);
+    // The old static cookie (a bare hash of the token) no longer works.
+    const legacy = `div1_admin=${createHash("sha256").update("div1-admin:t0k").digest("hex")}`;
+    expect(isOwner(new Request("http://x/", { headers: { cookie: legacy } }))).toBe(false);
     delete process.env.ADMIN_TOKEN;
+  });
+});
+
+describe("admin sessions and secrets", () => {
+  it("expires sessions and rejects a session signed with another token", () => {
+    const now = Date.UTC(2026, 9, 6);
+    const s = mintSession("t0k", now);
+    expect(validSession(s, "t0k", now)).toBe(true);
+    expect(validSession(s, "t0k", now + 8 * 24 * 3600 * 1000)).toBe(false);
+    expect(validSession(s, "other", now)).toBe(false);
+    const [exp, mac] = s.split(".");
+    expect(validSession(`${Number(exp) + 999999}.${mac}`, "t0k", now)).toBe(false);
+  });
+
+  it("compares bearer secrets exactly", () => {
+    expect(bearerIs("Bearer abc", "abc")).toBe(true);
+    expect(bearerIs("Bearer abc", undefined, "abc")).toBe(true);
+    expect(bearerIs("Bearer ab", "abc")).toBe(false);
+    expect(bearerIs("abc", "abc")).toBe(false);
+    expect(bearerIs(null, "abc")).toBe(false);
+    expect(bearerIs("Bearer ", undefined)).toBe(false);
+  });
+
+  it("never hashes visitors with a public default salt when a server secret exists", () => {
+    const saved = { salt: process.env.IP_SALT, token: process.env.ADMIN_TOKEN };
+    delete process.env.IP_SALT;
+    process.env.ADMIN_TOKEN = "t0k";
+    expect(visitorSalt()).not.toBe("div1");
+    expect(visitorSalt()).toMatch(/^[0-9a-f]{64}$/);
+    process.env.IP_SALT = "explicit";
+    expect(visitorSalt()).toBe("explicit");
+    if (saved.salt === undefined) delete process.env.IP_SALT;
+    else process.env.IP_SALT = saved.salt;
+    if (saved.token === undefined) delete process.env.ADMIN_TOKEN;
+    else process.env.ADMIN_TOKEN = saved.token;
   });
 });
 

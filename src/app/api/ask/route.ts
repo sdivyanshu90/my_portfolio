@@ -3,6 +3,7 @@ import { type Plan, plan, systemPrompt } from "@/lib/intents";
 import { PRESET_ANSWERS } from "@/lib/preset-answers";
 import type { ConsoleEvent, Mode, StoredRun } from "@/lib/protocol";
 import { snapshot, staleFacts } from "@/lib/facts";
+import { sendToDivanshu } from "@/lib/notify";
 import { canPersist, newRunId, saveRun } from "@/lib/runs";
 import { getStore, type Store } from "@/lib/store";
 import { type RunPath, record } from "@/lib/telemetry";
@@ -38,6 +39,12 @@ const CHAIN_BUDGET_MS = 18_000;
  */
 const DAILY_CAP = Number(process.env.NARRATION_DAILY_CAP) || 300;
 
+/**
+ * Paid narrations per visitor per UTC day: one visitor asking unique
+ * questions can't spend the whole day's budget for everyone else.
+ */
+const VISITOR_DAILY_CAP = Number(process.env.NARRATION_VISITOR_CAP) || 25;
+
 /** Queries per visitor per minute. */
 const RATE_PER_MIN = 12;
 
@@ -51,16 +58,74 @@ const MODES: Mode[] = ["recruiter", "engineer", "founder"];
 const displayModel = (m: string) =>
   m.split("/").pop()?.replace(/:[a-z]+$/i, "") ?? "model";
 
-const cacheKey = (q: string, mode: Mode) =>
-  `div1:ans:${mode}|${q.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim()}`;
+const norm = (s: string) => s.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+
+/**
+ * A follow-on ("and the tests?") is answered in light of the question before
+ * it, so that question is part of the key — otherwise the first visitor's
+ * context would be replayed to everyone who types the same short phrase.
+ */
+const cacheKey = (q: string, mode: Mode, followOn?: string) =>
+  `div1:ans:${mode}|${norm(q)}${followOn ? ` ‖ ${norm(followOn)}` : ""}`;
+
+function readCached(raw: string | null): { text: string; model: string; facts?: StoredRun["facts"] } | null {
+  if (!raw) return null;
+  try {
+    const v = JSON.parse(raw) as { text?: unknown; model?: unknown; facts?: StoredRun["facts"] };
+    return typeof v.text === "string" && v.text.trim() && typeof v.model === "string"
+      ? { text: v.text, model: v.model, facts: v.facts }
+      : null;
+  } catch {
+    return null; // A corrupt entry is a miss, never an empty answer.
+  }
+}
 
 async function throttled(store: Store, visitor: string): Promise<boolean> {
   return overLimit(store, "ask", visitor, RATE_PER_MIN);
 }
 
-async function takeNarrationSlot(store: Store): Promise<boolean> {
+/** Budget alerts: one email the first time the day's spend crosses each mark. */
+const ALERT_AT = [0.5, 0.9];
+
+/**
+ * Take one paid narration from today's budget. Counters are strict: if the
+ * store can't count, the answer is deterministic — a per-instance memory
+ * fallback would silently reset the cap on every cold start.
+ */
+async function takeNarrationSlot(store: Store, visitor: string): Promise<boolean> {
   const day = new Date().toISOString().slice(0, 10);
-  return (await store.incr(`div1:spend:${day}`, 2 * 24 * 60 * 60)) <= DAILY_CAP;
+  const ttl = 2 * 24 * 60 * 60;
+  try {
+    if (visitor !== "smoke-test" && (await store.incr(`div1:spend:v:${visitor}:${day}`, ttl, true)) > VISITOR_DAILY_CAP) {
+      return false;
+    }
+    const n = await store.incr(`div1:spend:${day}`, ttl, true);
+    const mark = ALERT_AT.find((f) => n === Math.ceil(DAILY_CAP * f));
+    if (mark) await budgetAlert(day, n, mark);
+    return n <= DAILY_CAP;
+  } catch (e) {
+    console.warn("[ask] spend counter unavailable — narrating deterministically", (e as Error).message);
+    return false;
+  }
+}
+
+async function budgetAlert(day: string, n: number, mark: number) {
+  const pct = Math.round(mark * 100);
+  // Every line is built from constants and counters — nothing visitor-supplied.
+  const lines = [
+    `Sent from your portfolio (${site.url}).`,
+    "",
+    `${n} of ${DAILY_CAP} paid narrations used on ${day} (UTC).`,
+    "Past the cap the console answers deterministically — the cards stay exact, only the prose stops.",
+    "If this is unexpected, check /admin for a single visitor or a burst of unique questions.",
+  ];
+  const res = await sendToDivanshu({
+    subject: `[DIV-1 portfolio] ${pct}% of today's narration budget used`,
+    text: lines.join("\n"),
+    html: `<p>${lines.join("<br>")}</p>`,
+    tag: "portfolio_budget",
+  });
+  if (!res.sent) console.warn("[ask] budget alert not sent", res.error);
 }
 
 interface Usage {
@@ -198,6 +263,7 @@ function hedgedNarration(
   system: string,
   question: string,
   started: number,
+  gone: AbortSignal,
 ): Promise<LiveStream | null> {
   return new Promise((resolve) => {
     const controllers: AbortController[] = [];
@@ -235,6 +301,9 @@ function hedgedNarration(
       timer = setTimeout(launch, HEDGE_MS);
     };
 
+    // The visitor left: abort every attempt — nobody is reading the answer.
+    if (gone.aborted) return finish(null);
+    gone.addEventListener("abort", () => finish(null), { once: true });
     launch();
   });
 }
@@ -283,11 +352,21 @@ export async function POST(req: Request): Promise<Response> {
     followUps: p.followUps,
     facts: snapshot(p.facts),
   };
+  // Fires when the visitor disconnects (tab closed, superseded question):
+  // the paid stream is cancelled instead of running on for nobody.
+  const gone = new AbortController();
+  req.signal?.addEventListener("abort", () => gone.abort(), { once: true });
   const emit = (controller: ReadableStreamDefaultController<Uint8Array>, e: ConsoleEvent) => {
     if (e.t === "trace") kept.trace.push({ step: e.step, detail: e.detail });
     else if (e.t === "artifact") kept.artifacts.push(e.spec);
     else if (e.t === "delta") kept.narration += e.text;
-    controller.enqueue(encoder.encode(JSON.stringify(e) + "\n"));
+    else if (e.t === "note") kept.notes = [...(kept.notes ?? []), e.text];
+    if (gone.signal.aborted) return;
+    try {
+      controller.enqueue(encoder.encode(JSON.stringify(e) + "\n"));
+    } catch {
+      gone.abort(); // The client is gone; keep recording, stop sending.
+    }
   };
 
   const stream = new ReadableStream<Uint8Array>({
@@ -380,11 +459,8 @@ export async function POST(req: Request): Promise<Response> {
         }
 
         // 2c — A narration someone already paid for.
-        const key = cacheKey(q, mode);
-        const cachedRaw = await store.get(key);
-        const cached = cachedRaw
-          ? (JSON.parse(cachedRaw) as { text: string; model: string; facts?: typeof kept.facts })
-          : null;
+        const key = cacheKey(q, mode, p.followOn);
+        const cached = readCached(await store.get(key));
         // Epistemic cache: a narration survives only while every fact it
         // relied on is unchanged — invalidation is per fact, not global.
         const changed = cached ? staleFacts(cached.facts) : [];
@@ -407,13 +483,14 @@ export async function POST(req: Request): Promise<Response> {
 
         // 2d — Live narration: hedged model race, else handwritten fallback.
         const live =
-          apiKey && (await takeNarrationSlot(store))
+          apiKey && !gone.signal.aborted && (await takeNarrationSlot(store, visitor))
             ? await hedgedNarration(
                 [...(process.env.OPENROUTER_MODEL ? [process.env.OPENROUTER_MODEL] : []), ...FALLBACK_MODELS],
                 apiKey,
                 systemPrompt(p, mode),
                 q,
                 started,
+                gone.signal,
               )
             : null;
 
@@ -427,13 +504,15 @@ export async function POST(req: Request): Promise<Response> {
           if (live.first.usage) usage = live.first.usage;
           const decoder = new TextDecoder();
           let buffer = live.buffer;
+          const stop = () => live.reader.cancel().catch(() => {});
+          gone.signal.addEventListener("abort", stop, { once: true });
           for (;;) {
-            if (live.first.closed) {
+            if (live.first.closed || gone.signal.aborted) {
               live.reader.cancel().catch(() => {});
               break;
             }
-            const { done: end, value } = await live.reader.read();
-            if (end) break;
+            const { done: end, value } = await live.reader.read().catch(() => ({ done: true, value: undefined }));
+            if (end || !value) break;
             buffer += decoder.decode(value, { stream: true });
             const lines = buffer.split("\n");
             buffer = lines.pop() ?? "";
@@ -460,6 +539,8 @@ export async function POST(req: Request): Promise<Response> {
               text: `unverified figure${suspect.length > 1 ? "s" : ""} in this narration: ${suspect.join(", ")} — not in his dossier; treat as unconfirmed. The cards below are exact.`,
             });
           }
+          gone.signal.removeEventListener("abort", stop);
+          if (suspect.length) kept.suspect = suspect;
           // Only complete, clean narrations are worth replaying.
           if (finished && narration.trim() && !suspect.length) {
             await store.set(key, JSON.stringify({ text: narration, model, facts: kept.facts }), CACHE_TTL_SEC);
@@ -475,7 +556,8 @@ export async function POST(req: Request): Promise<Response> {
           }
         }
         await done();
-      } catch {
+      } catch (e) {
+        console.warn("[ask] run failed — closing with what was sent", (e as Error)?.message);
         // Ensure the client always gets closure.
         try {
           await done();
@@ -506,9 +588,16 @@ export async function POST(req: Request): Promise<Response> {
           artifacts: kept.artifacts,
           trace: kept.trace,
           sources: p.sources,
-        }).catch(() => {});
-        controller.close();
+        }).catch((e) => console.warn("[ask] interaction not recorded", (e as Error)?.message));
+        try {
+          controller.close();
+        } catch {
+          /* already closed or cancelled */
+        }
       }
+    },
+    cancel() {
+      gone.abort();
     },
   });
 

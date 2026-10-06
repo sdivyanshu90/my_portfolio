@@ -195,3 +195,98 @@ describe("/api/ask — shared runs", () => {
     expect(stored.artifacts.length).toBeGreaterThan(0);
   });
 });
+
+describe("/api/ask — hardening", () => {
+  const post = async (question: string, extra: Record<string, unknown> = {}, ip = "10.1.1.1") => {
+    const { POST } = await import("@/app/api/ask/route");
+    const res = await POST(
+      new Request("http://local/api/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-forwarded-for": ip },
+        body: JSON.stringify({ question, mode: "engineer", ...extra }),
+      }),
+    );
+    return (await res.text())
+      .split("\n")
+      .filter(Boolean)
+      .map((l) => JSON.parse(l) as ConsoleEvent);
+  };
+
+  it("keys cached follow-ons by the question they lean on", async () => {
+    const { fetcher, calls } = fakeOpenRouter({ "paid/primary": "answer" });
+    vi.stubGlobal("fetch", fetcher);
+    await post("and the tests?", { prev: "Tell me about the paged KV-cache engine" });
+    await post("and the tests?", { prev: "Tell me about the AI gateway" });
+    expect(calls).toHaveLength(2); // different context → not the same cached answer
+    const again = await post("and the tests?", { prev: "Tell me about the paged KV-cache engine" });
+    expect(calls).toHaveLength(2);
+    expect(synthesis(again)?.detail).toMatch(/cached/);
+  });
+
+  it("treats a corrupt cache entry as a miss, not an empty answer", async () => {
+    const { fetcher, calls } = fakeOpenRouter({ "paid/primary": "answer" });
+    vi.stubGlobal("fetch", fetcher);
+    const { getStore } = await import("@/lib/store");
+    const q = "What's his experience with MongoDB at scale?";
+    await getStore().set(`div1:ans:engineer|${q.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim()}`, "{not json", 60);
+    const ev = await post(q);
+    expect(calls).toEqual(["paid/primary"]);
+    expect(narration(ev)).toBe("Grounded narration.");
+  });
+
+  it("caps paid narrations per visitor per day", async () => {
+    vi.stubEnv("NARRATION_VISITOR_CAP", "1");
+    const { fetcher, calls } = fakeOpenRouter({ "paid/primary": "answer" });
+    vi.stubGlobal("fetch", fetcher);
+    await post("What's his experience with MongoDB at scale?", {}, "10.7.7.7");
+    const second = await post("How does he approach LLM evaluation in production?", {}, "10.7.7.7");
+    expect(calls).toHaveLength(1);
+    expect(synthesis(second)?.detail).toBe("deterministic");
+  });
+
+  it("fails closed when the spend counter can't be read", async () => {
+    const { fetcher: openrouter, calls } = fakeOpenRouter({ "paid/primary": "answer" });
+    vi.stubGlobal("fetch", async (url: string, init?: RequestInit) =>
+      String(url).startsWith("https://kv.example") ? new Response("down", { status: 500 }) : openrouter(url, init),
+    );
+    vi.stubEnv("UPSTASH_REDIS_REST_URL", "https://kv.example");
+    vi.stubEnv("UPSTASH_REDIS_REST_TOKEN", "t");
+    const ev = await post("What's his experience with MongoDB at scale?");
+    expect(calls).toEqual([]);
+    expect(synthesis(ev)?.detail).toBe("deterministic");
+    expect(ev.at(-1)?.t).toBe("done");
+  });
+
+  it("cancels the paid stream when the visitor disconnects", async () => {
+    let cancelled = false;
+    vi.stubGlobal("fetch", async () => {
+      const enc = new TextEncoder();
+      const stream = new ReadableStream<Uint8Array>({
+        start(c) {
+          c.enqueue(enc.encode(`data: ${JSON.stringify({ choices: [{ delta: { content: "First " } }] })}\n\n`));
+          // …and then the model keeps the connection open.
+        },
+        cancel() {
+          cancelled = true;
+        },
+      });
+      return new Response(stream, { status: 200 });
+    });
+    const { POST } = await import("@/app/api/ask/route");
+    const visitor = new AbortController();
+    const res = await POST(
+      new Request("http://local/api/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-forwarded-for": "10.2.2.2" },
+        body: JSON.stringify({ question: "What's his experience with MongoDB at scale?", mode: "engineer" }),
+        signal: visitor.signal,
+      }),
+    );
+    const reader = res.body!.getReader();
+    const dec = new TextDecoder();
+    let seen = "";
+    while (!seen.includes('"t":"delta"')) seen += dec.decode((await reader.read()).value);
+    visitor.abort();
+    await vi.waitFor(() => expect(cancelled).toBe(true));
+  });
+});

@@ -59,6 +59,8 @@ export interface Plan {
   guarded: boolean;
   /** Nothing routed — the generic card. Logged as a miss. */
   freeform: boolean;
+  /** The previous question, when this one leans on it ("and the tests?"). */
+  followOn?: string;
 }
 
 /**
@@ -505,6 +507,7 @@ export function plan(question: string, mode: Mode = "recruiter", prev?: string):
     followUps: followUpsFor(q, artifacts),
     deterministic: !!absence || isCanonical(q) || intents[0] === "fit",
     freeform,
+    followOn: context,
   };
 }
 

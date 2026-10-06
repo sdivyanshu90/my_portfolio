@@ -16,8 +16,12 @@ export interface Store {
   readonly kind: "redis" | "postgres" | "memory";
   get(key: string): Promise<string | null>;
   set(key: string, value: string, ttlSec: number): Promise<void>;
-  /** Increment a counter that expires `ttlSec` after its first increment. */
-  incr(key: string, ttlSec: number): Promise<number>;
+  /**
+   * Increment a counter that expires `ttlSec` after its first increment.
+   * `strict` rethrows backend errors instead of falling back to per-instance
+   * memory — for counters that guard money, where a reset is worse than a no.
+   */
+  incr(key: string, ttlSec: number, strict?: boolean): Promise<number>;
   /** Prepend to a capped list (newest first). */
   push(key: string, value: string, max: number): Promise<void>;
   list(key: string, n: number): Promise<string[]>;
@@ -120,7 +124,7 @@ export class RedisStore implements Store {
     }
   }
 
-  async incr(key: string, ttlSec: number) {
+  async incr(key: string, ttlSec: number, strict = false) {
     try {
       // Create with a TTL only if absent, then count; INCR keeps the TTL.
       const [, n] = await this.pipeline([
@@ -128,7 +132,8 @@ export class RedisStore implements Store {
         ["INCR", key],
       ]);
       return Number(n);
-    } catch {
+    } catch (e) {
+      if (strict) throw e;
       return this.fallback.incr(key, ttlSec);
     }
   }
@@ -191,7 +196,7 @@ export class PostgresStore implements Store {
     }
   }
 
-  async incr(key: string, ttlSec: number) {
+  async incr(key: string, ttlSec: number, strict = false) {
     try {
       this.sweep();
       const rows = await this.sql(
@@ -203,7 +208,8 @@ export class PostgresStore implements Store {
         [key, ttlSec],
       );
       return Number(rows[0]?.value ?? 1);
-    } catch {
+    } catch (e) {
+      if (strict) throw e;
       return this.fallback.incr(key, ttlSec);
     }
   }

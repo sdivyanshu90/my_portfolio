@@ -151,9 +151,33 @@ Also: commit histories were created in single sessions (e.g. EpiCache: 297 commi
 - **Reliability repos**: OK to push CI fixes to those five repos?
 - Optional: verify a sending domain in Resend so replies can go out from /admin.
 
+## Phase 7a — Hardening from the four-agent review ✅ (2026-10-06)
+
+- **Dependencies**: Next 15.2.8 → 15.5.27 (critical advisory), Next's bundled postcss overridden; `npm audit --omit=dev` = 0. CI gates on high-severity advisories; Dependabot weekly (majors excluded).
+- **Headers**: CSP (first-party only, `frame-ancestors 'none'`), X-Frame-Options, nosniff, Referrer-Policy, Permissions-Policy (mic = self), COOP; `x-powered-by` removed.
+- **Credits**: a visitor disconnect cancels the paid stream; spend counters fail closed (no per-instance reset); 25 paid narrations per visitor per day; budget email at 50% and 90% of the daily cap.
+- **Correctness**: follow-on answers ("and the tests?") are cached per previous question; a corrupt cache entry is a miss; tripwire warnings persist into shared `/r/` runs.
+- **Abuse**: "Ask Divanshu" emails capped per day (30), per visitor (10) and de-duplicated; `/api/mcp` rate-limited (30/min), batch ≤ 10, body ≤ 32 KB.
+- **Auth & privacy**: admin cookie is now an expiring HMAC session; global failed-login cap; constant-time secret checks (smoke tag, cron, misses); visitor hashes salted with a server secret when `IP_SALT` is unset.
+- **UX**: fit check in the header, retry on failed answers, visible focus ring on the console input, 44px mobile sky toggle, larger touch targets, sr-only copy status; the sky's data split from its canvas so the effect engine loads on demand.
+
+### Phase 7b — needs Divanshu
+- Résumé: one page or two (the site currently says both)? Publish the two writing drafts?
+- WorldQuant wording: frequency (daily vs intraday), "three years" vs 2y8m, Sharpe in- or out-of-sample.
+- Decision Twin: evaluation size (N) for the 23.3% → 76.7% result.
+- Title metadata: page title and JSON-LD still say "Applied AI / ML Systems Engineer".
+- Set `IP_SALT` on Vercel (optional — a secret-derived salt is used meanwhile).
+
+### Wave 7 (ideas from the review)
+- Shareable fit results (`/fit/[id]`) with an OG image; tailored one-page brief.
+- Sentence-level provenance: narration cites fact ids, entailment checked server-side, hover-to-source.
+- Hedge-race panel in /admin: per-model first-token latency, win rate, cost per day.
+- Replay stored questions against each router change; gate deploys on routing drift.
+- 15-second guided sky tour; data-retention job; error monitoring; endorsements.
+
 ## Housekeeping (~½ day, anytime)
 
-- Next 15.2 → 16, React 19.3, framer-motion 12 → 13 (or move small transitions to CSS). ESLint native flat config (`next lint` is deprecated); tsconfig target ES2022.
+- Next 15.5 → 16, React 19.3, framer-motion 12 → 13 (or move small transitions to CSS). ESLint native flat config (`next lint` is deprecated); tsconfig target ES2022.
 - Lazy-load artifact components per kind: `/` ships 175 kB of first-load JS; most artifacts aren't needed until asked.
 - Remove the template leftovers: unused image domains in `next.config.ts` (unsplash, aceternity, imgur), `components.json` (shadcn, no components).
 - Retire `commit-each.sh` (one commit per file); use conventional commits per change.

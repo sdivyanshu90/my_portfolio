@@ -1,4 +1,5 @@
 import { safely } from "@/lib/db";
+import { bearerIs } from "@/lib/session";
 import { getStore } from "@/lib/store";
 import { MISSES_KEY, RUNS_KEY, type RunLog, summarize } from "@/lib/telemetry";
 
@@ -9,8 +10,7 @@ import { MISSES_KEY, RUNS_KEY, type RunLog, summarize } from "@/lib/telemetry";
  * the endpoint does not exist. `?days=30` widens the window (default 14).
  */
 export async function GET(req: Request): Promise<Response> {
-  const token = process.env.ADMIN_TOKEN;
-  if (!token || req.headers.get("authorization") !== `Bearer ${token}`) {
+  if (!bearerIs(req.headers.get("authorization"), process.env.ADMIN_TOKEN)) {
     return new Response("Not found", { status: 404 });
   }
   const days = Math.min(365, Math.max(1, Number(new URL(req.url).searchParams.get("days")) || 14));

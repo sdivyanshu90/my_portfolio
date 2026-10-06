@@ -82,6 +82,11 @@ export default async function SharedRun({ params }: { params: Promise<{ id: stri
         question={run.q}
         trace={run.trace}
         narration={run.narration}
+        note={
+          run.suspect?.length
+            ? `unverified figure${run.suspect.length > 1 ? "s" : ""} in this narration: ${run.suspect.join(", ")} — not in his dossier; treat as unconfirmed. The cards below are exact.`
+            : (run.notes?.at(-1) ?? null)
+        }
         footer={{ model: run.model ?? "deterministic", ms: `${(run.ms / 1000).toFixed(1)}s`, sources: run.sources }}
       >
         <div className="space-y-10">

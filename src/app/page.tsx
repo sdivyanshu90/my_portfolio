@@ -6,8 +6,9 @@ import { StarIndex } from "@/components/star-index";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { personal, site } from "@/data/portfolio";
 
+// Touch screens get a taller hit area; the type stays small and mono.
 const navLink =
-  "text-ink-muted underline decoration-rule underline-offset-4 transition-colors hover:text-accent hover:decoration-accent";
+  "text-ink-muted underline decoration-rule underline-offset-4 transition-colors hover:text-accent hover:decoration-accent pointer-coarse:py-1.5 pointer-coarse:text-[12px]";
 
 export default function Home() {
   return (
@@ -50,6 +51,10 @@ export default function Home() {
                   {l.label}
                 </Link>
               ))}
+              {/* The JD-match tool is the shortest path to a yes — always in reach. */}
+              <Link href="/fit" className={navLink.replace("text-ink-muted", "text-accent").replace("decoration-rule", "decoration-accent/50")}>
+                fit check
+              </Link>
               <ContactLink href={`mailto:${personal.email}`} via="header" className={navLink}>
                 email
               </ContactLink>
