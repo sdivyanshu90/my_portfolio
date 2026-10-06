@@ -51,21 +51,21 @@ export function CaseDiagram({ diagram }: { diagram: NonNullable<CaseStudy["diagr
           <li key={r.label}>
             <p className="text-[13px] text-ink">
               {r.label} <span className="font-mono text-[11px] text-ink-faint">· {r.better} is better</span>
+              {r.note ? <span className="block font-mono text-[11px] text-ink-faint">{r.note}</span> : null}
             </p>
             {(
               [
-                ["before", r.before, "bg-rule"],
-                ["after", r.after, "bg-chart"],
+                ["before", r.before, "bg-rule", r.beforeLabel],
+                ["after", r.after, "bg-chart", r.afterLabel],
               ] as const
-            ).map(([when, v, color]) => (
-              <div key={when} className="mt-1 grid grid-cols-[52px_1fr_56px] items-center gap-2">
+            ).map(([when, v, color, shown]) => (
+              <div key={when} className="mt-1 grid grid-cols-[52px_1fr_64px] items-center gap-2">
                 <span className="font-mono text-[11px] text-ink-faint">{when}</span>
                 <span className="block h-2.5 bg-rule-faint">
                   <span className={`block h-2.5 rounded-r-[4px] ${color}`} style={{ width: `${(v / max) * 100}%` }} />
                 </span>
                 <span className="text-right font-mono text-[12px] text-ink tabular-nums">
-                  {v}
-                  {r.unit}
+                  {shown ?? `${v}${r.unit}`}
                 </span>
               </div>
             ))}

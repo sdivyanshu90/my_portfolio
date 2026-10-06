@@ -52,7 +52,7 @@ export const personal = {
   email: "divyanshu74.80@gmail.com", // per resume PDF & GitHub — the old config's "divanshu…" was a typo
   avatar: "/profile.jpg",
   abstract: [
-    "Founding engineer who ships reliable AI products — currently leading the technical turnaround of Uniiq's AWS-deployed AI advising platform: 40+ critical vulnerabilities resolved, LLM sanitization and recoverable AI failures, LCP cut from 3.3s to 0.7s. Before that: privacy-preserving deep learning research at Yale and three years of quantitative research at WorldQuant BRAIN.",
+    "Founding engineer who ships reliable AI products. At Uniiq he owns the AI admissions platform: a stateful intake hardened so model outages can't corrupt student state, 40+ critical vulnerabilities resolved, and a Decision Twin that cut critical-constraint violations from 70% to 0% in offline evaluation. Before that: privacy-preserving deep learning research at Yale and three years of quantitative research at WorldQuant BRAIN.",
     "The depth behind it is public: a habit of rebuilding the modern AI stack from first principles — transformers, diffusion, RLHF, paged KV-caches, quantization, vector indexes — each published as a readable repository.",
     "The through-line is reliable AI: structured outputs, prompt and response sanitization, failure recovery, rate limiting, consensus-fused ASR, and systems measured against explicit performance budgets.",
   ],
@@ -124,47 +124,57 @@ export interface CaseStudy {
   diagram?:
     | { kind: "pipeline"; steps: { label: string; sub?: string }[] }
     | { kind: "fanout"; source: string; branches: { label: string; sub?: string }[] }
-    | { kind: "delta"; rows: { label: string; before: number; after: number; unit: string; better: "higher" | "lower" }[] };
+    | {
+        kind: "delta";
+        rows: {
+          label: string;
+          before: number;
+          after: number;
+          unit: string;
+          better: "higher" | "lower";
+          /** Display text when the raw number reads badly ("1.45 MB"). */
+          beforeLabel?: string;
+          afterLabel?: string;
+          /** Where the measurement comes from, e.g. "controlled offline evaluation". */
+          note?: string;
+        }[];
+      };
 }
 
 export const caseStudies: CaseStudy[] = [
   {
     id: "uniiq-platform",
     fig: "01",
-    title: "Uniiq — AI Student-Advising Platform",
-    domain: "Founding engineering · Full-stack AI product",
+    title: "Uniiq — AI Admissions Platform",
+    domain: "Founding engineering · Production conversational AI",
     year: "2026",
     problem:
-      "Student onboarding and admissions planning span incomplete profiles, follow-up questions, institution data, and long-running AI calls. The product needed a coherent intake experience without letting partial profiles, transient model failures, or inconsistent admin data leak into downstream workflows.",
+      "Students planning university applications need a coherent AI intake and a plan they can trust: one that respects hard limits like budget, deadlines, eligibility, workload and binding application rounds. The product had to stay correct when the model is slow, wrong or down — no partial profiles, no corrupted student state, no infeasible plans.",
     approach:
-      "Led a technical turnaround across the AWS-deployed React, Express, MongoDB, and Gemini stack: built a three-phase conversational intake with persisted transcripts; added prompt and response sanitization, structured output validation, user-ID rate limiting, transient-503 retries, and recoverable fallbacks; enforced role-aware profile completion; normalized institution and opportunity admin workflows; and code-split 21 routes with explicit Lighthouse budgets.",
+      "Architected the stateful, AWS-deployed admissions workflow across React, Express, MongoDB and Gemini: a 3-phase conversational intake with schema-validated extraction, idempotent completion and resumable sessions. Wrapped the model in failure boundaries — prompt and response sanitization, Zod-validated structured output, retries, recoverable 503s, deterministic fallbacks and layered rate limits — so outages can't block onboarding or corrupt state. Designed and validated an Admissions Decision Twin that plans across 5 hard constraints with evidence provenance and uncertainty-aware abstention.",
     results: [
       {
+        metric: "70% → 0% critical violations",
+        detail:
+          "Admissions Decision Twin: constraint-feasible plans 23.3% → 76.7%, 100% evidence traceability — controlled offline evaluation",
+      },
+      {
         metric: "40+ critical vulnerabilities",
-        detail:
-          "resolved in inherited legacy code, including prompt-injection and data-leak risks",
+        detail: "resolved in inherited code, including prompt-injection and data-leak risks",
       },
       {
-        metric: "73 → 93 performance score",
-        detail: "LCP cut from 3.3s to 0.7s; INP reduced to 130ms",
-      },
-      {
-        metric: "1,199 lines of tests",
-        detail: "automated coverage added across 12 test modules",
-      },
-      {
-        metric: "21 routes code-split",
-        detail:
-          "PR target: main entry 1.45 MB → 278 KB (81 KB gzipped); not a production measurement",
+        metric: "80.8% smaller entry bundle",
+        detail: "1.45 MB → 278 KB; performance score 73 → 93, LCP 3.3s → 0.7s",
       },
     ],
-    stack: ["React", "TypeScript", "Express", "MongoDB", "Gemini"],
-    source: { label: "Uniiq engineering work summary (2026-07) — private codebase, not publicly verifiable" },
+    stack: ["React", "TypeScript", "Express", "MongoDB", "Gemini", "Zod"],
+    source: { label: "Uniiq engineering work summary (2026-10) — private codebase, not publicly verifiable" },
     diagram: {
       kind: "delta",
       rows: [
-        { label: "Web performance score", before: 73, after: 93, unit: "", better: "higher" },
-        { label: "Largest Contentful Paint", before: 3.3, after: 0.7, unit: "s", better: "lower" },
+        { label: "Critical-constraint violations", before: 70, after: 0, unit: "%", better: "lower", note: "Decision Twin · controlled offline evaluation" },
+        { label: "Constraint-feasible plans", before: 23.3, after: 76.7, unit: "%", better: "higher", note: "Decision Twin · controlled offline evaluation" },
+        { label: "Primary entry bundle", before: 1450, after: 278, unit: " KB", better: "lower", beforeLabel: "1.45 MB", afterLabel: "278 KB" },
       ],
     },
     links: [{ label: "Uniiq", href: "https://uniiq.ai" }],
@@ -956,7 +966,7 @@ export const shipped = [
   {
     name: "Uniiq",
     role: "Founding Engineer — full-stack AI product",
-    what: "Led the turnaround of an AWS-deployed AI onboarding platform: resolved 40+ critical vulnerabilities, added LLM sanitization and resilient conversational intake, expanded student and admin workflows, and raised web performance from 73 to 93.",
+    what: "Owns the AI admissions platform end-to-end: a stateful 3-phase intake hardened against model failures, 40+ critical vulnerabilities resolved, an 80.8% smaller entry bundle, and a Decision Twin that cut critical-constraint violations from 70% to 0% in offline evaluation.",
     href: "https://uniiq.ai",
     tag: "live product",
   },
@@ -1182,13 +1192,12 @@ export const changelog: Release[] = [
     org: "Uniiq",
     orgHref: "https://uniiq.ai",
     summary:
-      "Building Uniiq's AI-powered college-advising platform across React, Express, MongoDB, and Gemini, pairing conversational guidance with professional counselors for global university admissions.",
+      "Owns the architecture and reliability of Uniiq's AWS-deployed AI admissions platform across React, Express, MongoDB and Gemini — from the stateful intake to an evaluated decision-planning layer.",
     notes: [
-      "Led the technical turnaround of inherited legacy code, resolving 40+ critical vulnerabilities and adding prompt and response sanitization against injection and data-leak risks.",
-      "Reworked student onboarding into a three-phase AI conversation with follow-up questions, persisted transcripts, structured validation, rate limits, and recoverable AI-failure handling.",
-      "Implemented role-aware profile-completion enforcement and international phone capture across protected APIs, sign-up, setup, and profile flows.",
-      "Expanded institution and opportunity administration with deep-partial updates, nested Mongo normalization, validation, and external-ID uniqueness safeguards; added 1,199 lines of automated tests across 12 modules.",
-      "Raised the web performance score from 73 to 93, cut LCP from 3.3s to 0.7s, and reduced INP to 130ms after code-splitting 21 routes and optimizing delivery.",
+      "Designed and validated an Admissions Decision Twin for constraint-aware planning across 5 hard constraints; in controlled offline evaluation it cut critical violations from 70% to 0%, raised constraint-feasible plans from 23.3% to 76.7%, and reached 100% evidence traceability.",
+      "Architected the stateful AI intake and hardened LLM execution — Zod-validated structured output, retries, recoverable 503s, deterministic fallbacks and layered rate limits — so model outages can't block onboarding or corrupt student state.",
+      "Led the turnaround of inherited code, resolving 40+ critical vulnerabilities including prompt-injection and data-leak risks.",
+      "Cut the primary entry bundle 80.8% (1.45 MB → 278 KB), raising the performance score from 73 to 93 and LCP from 3.3s to 0.7s.",
     ],
   },
   {
@@ -1358,7 +1367,7 @@ export const keyResults = [
     value: 40,
     display: "40+",
     label: "critical vulnerabilities resolved",
-    note: "Uniiq turnaround · LCP 3.3s → 0.7s",
+    note: "Uniiq · prompt-injection & data-leak risks",
   },
   {
     value: counts.mergedUpstream,
@@ -1373,10 +1382,10 @@ export const keyResults = [
     note: "from-scratch DL library, Yale",
   },
   {
-    value: 48,
-    display: ">48%",
-    label: "absolute WER reduction",
-    note: "Hindi ASR on FLEURS",
+    value: 70,
+    display: "70% → 0%",
+    label: "critical-constraint violations",
+    note: "Uniiq Decision Twin · offline evaluation",
   },
 ] as const;
 

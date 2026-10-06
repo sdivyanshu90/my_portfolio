@@ -44,6 +44,8 @@ export const GOLDEN: GoldenCase[] = [
   { q: "Show the Yale MPC research", first: ["projects"], entities: ["mpc-deep-learning"] },
   { q: "What is his stack?", first: ["skills"] },
   { q: "What is he doing at Uniiq?", first: ["projects", "experience"], has: ["projects"], entities: ["uniiq-platform"] },
+  { q: "Tell me about the Admissions Decision Twin", first: ["projects", "experience"], entities: ["uniiq-platform"] },
+  { q: "How did he reduce constraint violations?", has: ["projects"], entities: ["uniiq-platform"] },
   { q: "Show shipped systems with measured results", first: ["shipped"] },
   { q: "How does he think about evaluation?", first: ["index", "projects", "oss"] },
   { q: "What open-source work has he done?", first: ["oss"] },

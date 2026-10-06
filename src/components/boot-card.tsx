@@ -27,7 +27,7 @@ export function BootCard() {
         { step: "synthesis", detail: "cached" },
       ]}
       narration={
-        `DIV-1 online. It answers for Divanshu Sharma — a founding engineer who ships reliable AI products. His focus is LLM evaluation, inference and reliability. Right now he leads the technical turnaround of Uniiq's AI advising platform; before that, privacy-preserving ML research at Yale and three years of quant research at WorldQuant BRAIN. The depth is public: ${counts.mergedUpstream} merged PRs to AI infrastructure like Mastra and EleutherAI's lm-evaluation-harness, and ${counts.systems} from-scratch rebuilds of the modern AI stack. Each of the ${counts.stars} stars behind this card is one of his real systems — hover one, or ask anything and watch the answer assemble.`
+        `DIV-1 online. It answers for Divanshu Sharma — a founding engineer who ships reliable AI products. His focus is LLM evaluation, inference and reliability. Right now he owns Uniiq's AI admissions platform — including a decision-planning layer that cut critical-constraint violations from 70% to 0% in offline evaluation; before that, privacy-preserving ML research at Yale and three years of quant research at WorldQuant BRAIN. The depth is public: ${counts.mergedUpstream} merged PRs to AI infrastructure like Mastra and EleutherAI's lm-evaluation-harness, and ${counts.systems} from-scratch rebuilds of the modern AI stack. Each of the ${counts.stars} stars behind this card is one of his real systems — hover one, or ask anything and watch the answer assemble.`
       }
       footer={{
         model: "cached",
@@ -35,7 +35,7 @@ export function BootCard() {
         sources: [
           "résumé.pdf",
           "github/sdivyanshu90",
-          "Uniiq engineering work summary (2026-07)",
+          "Uniiq engineering work summary (2026-10)",
         ],
       }}
     >

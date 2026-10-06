@@ -542,7 +542,7 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
             >
               hiring? match your JD →
             </button>
-            <p className="ml-auto hidden font-mono text-[11px] text-ink-faint xl:block">
+            <p className="ml-auto hidden font-mono text-[11px] text-ink-faint 2xl:block">
               © 2026 Divanshu Sharma ·{" "}
               <a
                 href="https://github.com/sdivyanshu90/my_portfolio"

@@ -22,7 +22,7 @@ describe("sentence x-ray", () => {
 
 describe("number tripwire", () => {
   it("passes figures the dossier states", () => {
-    expect(unverifiedFigures("88.08% ChestMNIST accuracy, 40+ vulnerabilities, 1,199 lines of tests, Sharpe 1.8")).toEqual([]);
+    expect(unverifiedFigures("88.08% ChestMNIST accuracy, 40+ vulnerabilities, violations 70% to 0%, an 80.8% smaller bundle, Sharpe 1.8")).toEqual([]);
   });
   it("flags invented figures but not years or small counts", () => {
     expect(unverifiedFigures("He hit 92% accuracy in 2024 across 3 projects")).toEqual(["92%"]);

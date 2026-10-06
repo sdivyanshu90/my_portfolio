@@ -148,6 +148,12 @@ const RULES: Array<[ArtifactKind, RegExp, number]> = [
     STRONG,
   ],
   ["projects", /\bcase stud|\bproud\b|best work|strongest|flagship|biggest (?:project|achievement)/i, STRONG],
+  // "Deployed to production" asks for production work, not study builds.
+  [
+    "projects",
+    /\b(?:deploy(?:ed|ing|s)?|ship(?:ped|ping)?|run(?:ning)?)\b[^.?!]{0,30}\b(?:in|to|into) production\b|\bin production\b|\bproduction (?:systems?|ai|ml|models?|traffic|users)\b|\breal users\b/i,
+    0.95,
+  ],
   ["projects", /\bprojects?\b|\bbuilt\b|\bbuild\b|\bresults?\b|\bmetrics\b|\bsystems?\b(?!\s*card)/i, WEAK],
   [
     "experience",
@@ -565,26 +571,26 @@ const SOURCES: Record<ArtifactKind, string[]> = {
   about: [
     "résumé.pdf",
     "github/sdivyanshu90",
-    "Uniiq engineering work summary (2026-07)",
+    "Uniiq engineering work summary (2026-10)",
   ],
   projects: [
     "résumé.pdf",
     "repo READMEs",
-    "Uniiq engineering work summary (2026-07)",
+    "Uniiq engineering work summary (2026-10)",
   ],
   shipped: [
     "repo READMEs",
     "uniiq.ai",
-    "Uniiq engineering work summary (2026-07)",
+    "Uniiq engineering work summary (2026-10)",
   ],
   index: [`github/${github.user} · ${github.publicRepos} public repos`],
   oss: ["github/sdivyanshu90", "0xTCG/sequre PRs"],
   experience: [
     "résumé.pdf",
     "Divanshu, confirmed 2026-09",
-    "Uniiq engineering work summary (2026-07)",
+    "Uniiq engineering work summary (2026-10)",
   ],
-  skills: ["résumé.pdf", "Uniiq engineering work summary (2026-07)"],
+  skills: ["résumé.pdf", "Uniiq engineering work summary (2026-10)"],
   credentials: ["résumé.pdf"],
   contact: ["résumé.pdf"],
   resume: ["résumé.pdf"],
@@ -596,7 +602,7 @@ const SOURCES: Record<ArtifactKind, string[]> = {
 function fallbackFor(primary: ArtifactKind): string {
   switch (primary) {
     case "projects":
-      return `${Spell(counts.caseStudies)} systems with measured outcomes, rendered below — Uniiq's full-stack AI advising platform, privacy-preserving MPC training (88.08% ChestMNIST), Hindi ASR consensus evaluation (>48% WER reduction), 0.00%-CER historical OCR, a vLLM-style paged KV-cache engine, an LLM-guarded knowledge-graph explorer, and deep learning for CERN CMS detector physics.`;
+      return `${Spell(counts.caseStudies)} systems with measured outcomes, rendered below — Uniiq's AI admissions platform (critical-constraint violations 70% → 0% in offline evaluation), privacy-preserving MPC training (88.08% ChestMNIST), Hindi ASR consensus evaluation (>48% WER reduction), 0.00%-CER historical OCR, a vLLM-style paged KV-cache engine, an LLM-guarded knowledge-graph explorer, and deep learning for CERN CMS detector physics.`;
     case "shipped":
       return "Built end-to-end and shipped, ledger below: Uniiq (Founding Engineer across its full-stack AI product), this very console (designed and shipped solo, with a deterministic fallback and an injection firewall), a guarded knowledge-graph query engine over 21,393 SAP records, an agentic admissions advisor with 39 tests, a 98.17%-accuracy historical-OCR pipeline, and a GSoC data explorer. Ownership, not coursework.";
     case "index":
@@ -620,7 +626,7 @@ function fallbackFor(primary: ArtifactKind): string {
     case "system":
       return "DIV-1 is an inference console over a verified dossier. A deterministic router turns your question into typed artifacts; a language model narrates over exactly those slices; every run shows its trace and sources. The constellation behind this card is the portfolio itself — each star is one of his systems. Full details in the system card below.";
     default:
-      return "DIV-1 represents Divanshu Sharma: a founding engineer who ships reliable AI products — currently leading the technical turnaround of Uniiq's AI advising platform, previously privacy-preserving ML research at Yale and quantitative research at WorldQuant BRAIN, with a public habit of rebuilding the AI stack from first principles. Ask about systems, the from-scratch index, experience, or availability.";
+      return "DIV-1 represents Divanshu Sharma: a founding engineer who ships reliable AI products — currently owning Uniiq's AI admissions platform, previously privacy-preserving ML research at Yale and quantitative research at WorldQuant BRAIN, with a public habit of rebuilding the AI stack from first principles. Ask about systems, the from-scratch index, experience, or availability.";
   }
 }
 

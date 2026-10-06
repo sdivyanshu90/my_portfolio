@@ -104,7 +104,9 @@ export default function Cv() {
                 </p>
                 <p className="text-ink-muted">
                   {c.results
-                    .slice(0, 2)
+                    // One result per figure keeps the résumé to two pages;
+                    // the full figures are a click away on /work.
+                    .slice(0, 1)
                     .map((r) => `${r.metric} — ${r.detail}`)
                     .join("; ")}
                   .
