@@ -83,9 +83,18 @@ export function Console({ bootCard }: { bootCard: React.ReactNode }) {
   const draft = useMemo(() => (busy ? NO_DRAFT : nodesForDraft(input)), [input, busy]);
 
   // Rotating placeholder — a quiet tour of what you can ask.
+  // Phones get one short hint that fits; the examples are the chips below.
+  const [narrow, setNarrow] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    const sync = () => setNarrow(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
   const placeholders = useMemo(
-    () => ["Ask about systems, experience, availability…", ...PRESETS[mode]],
-    [mode],
+    () => (narrow ? ["Ask about his work…"] : ["Ask about systems, experience, availability…", ...PRESETS[mode]]),
+    [mode, narrow],
   );
   useEffect(() => {
     if (reduce) return;

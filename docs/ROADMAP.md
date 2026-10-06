@@ -153,7 +153,7 @@ Also: commit histories were created in single sessions (e.g. EpiCache: 297 commi
 
 ## Phase 7a — Hardening from the four-agent review ✅ (2026-10-06)
 
-- **Dependencies**: Next 15.2.8 → 15.5.27 (critical advisory), Next's bundled postcss overridden; `npm audit --omit=dev` = 0. CI gates on high-severity advisories; Dependabot weekly (majors excluded).
+- **Dependencies**: Next 15.2.8 → 15.5.27 (critical advisory), Next's bundled postcss overridden; `npm audit --omit=dev` = 0. CI gates on high-severity advisories (Dependabot removed 2026-10-06: the repo keeps a single `main` branch).
 - **Headers**: CSP (first-party only, `frame-ancestors 'none'`), X-Frame-Options, nosniff, Referrer-Policy, Permissions-Policy (mic = self), COOP; `x-powered-by` removed.
 - **Credits**: a visitor disconnect cancels the paid stream; spend counters fail closed (no per-instance reset); 25 paid narrations per visitor per day; budget email at 50% and 90% of the daily cap.
 - **Correctness**: follow-on answers ("and the tests?") are cached per previous question; a corrupt cache entry is a miss; tripwire warnings persist into shared `/r/` runs.

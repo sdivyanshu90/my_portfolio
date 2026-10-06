@@ -27,7 +27,9 @@ export function TraceStrip({
   return (
     <ol
       aria-label="Run trace"
-      className="flex items-baseline gap-x-4 gap-y-1 overflow-x-auto font-mono text-[11px] text-ink-faint [scrollbar-width:none] sm:flex-wrap sm:overflow-visible sm:text-[11px] [&::-webkit-scrollbar]:hidden"
+      // One line at every width: a wrapped trace can eat half the card on a
+      // short screen. It scrolls sideways and fades at the edge instead.
+      className="flex items-baseline gap-x-4 overflow-x-auto pr-6 font-mono text-[11px] text-ink-faint [mask-image:linear-gradient(to_right,black_calc(100%-32px),transparent)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
       {steps.map((s, i) => (
         <motion.li
@@ -60,7 +62,10 @@ export function TraceStrip({
         </motion.li>
       ))}
       {running ? (
-        <li aria-hidden className="animate-pulse text-accent motion-reduce:animate-none">
+        <li
+          aria-hidden
+          className="animate-pulse text-accent motion-reduce:animate-none"
+        >
           ▸ running…
         </li>
       ) : null}
@@ -89,7 +94,11 @@ function Cascade({
       className={className}
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: quick ? 0.2 : 0.35, delay: (quick ? 0.03 : 0.08) * order, ease: [0.25, 0.1, 0.25, 1] }}
+      transition={{
+        duration: quick ? 0.2 : 0.35,
+        delay: (quick ? 0.03 : 0.08) * order,
+        ease: [0.25, 0.1, 0.25, 1],
+      }}
     >
       {children}
     </motion.div>
@@ -147,19 +156,40 @@ export function CardShell({
   quick?: boolean;
 }) {
   const reduce = useReducedMotion();
+  const articleRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  // Long questions show three lines until expanded, so the answer stays in view.
+  const questionRef = useRef<HTMLHeadingElement>(null);
+  const [questionOpen, setQuestionOpen] = useState(false);
+  const [questionClamped, setQuestionClamped] = useState(false);
+  useEffect(() => {
+    const h = questionRef.current;
+    if (!h) return;
+    const measure = () => setQuestionClamped(h.scrollHeight > h.clientHeight + 1);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(h);
+    return () => ro.disconnect();
+  }, [question, questionOpen]);
   const [scrollState, setScrollState] = useState({
     progress: 0,
     scrollable: false,
   });
 
   useEffect(() => {
-    const scroller = scrollRef.current;
+    const inner = scrollRef.current;
+    const outer = articleRef.current;
     const content = contentRef.current;
-    if (!scroller || !content) return;
+    if (!inner || !outer || !content) return;
 
     const update = () => {
+      // Tall screens scroll the body; short ones scroll the whole card.
+      const scroller =
+        outer.scrollHeight - outer.clientHeight >
+        inner.scrollHeight - inner.clientHeight
+          ? outer
+          : inner;
       const distance = scroller.scrollHeight - scroller.clientHeight;
       const next = {
         progress: distance > 0 ? scroller.scrollTop / distance : 0,
@@ -174,24 +204,168 @@ export function CardShell({
     };
 
     update();
-    scroller.addEventListener("scroll", update, { passive: true });
+    inner.addEventListener("scroll", update, { passive: true });
+    outer.addEventListener("scroll", update, { passive: true });
     const observer = new ResizeObserver(update);
-    observer.observe(scroller);
+    observer.observe(inner);
+    observer.observe(outer);
     observer.observe(content);
     window.addEventListener("resize", update);
 
     return () => {
-      scroller.removeEventListener("scroll", update);
+      inner.removeEventListener("scroll", update);
+      outer.removeEventListener("scroll", update);
       observer.disconnect();
       window.removeEventListener("resize", update);
     };
   }, [children, narration, note]);
 
   return (
-    <article
-      aria-label={`Answer: ${question}`}
-      className="pointer-events-auto relative flex max-h-full w-full flex-col border border-rule bg-surface/95 shadow-[0_2px_24px_rgba(28,26,23,0.08)] backdrop-blur-[2px]"
-    >
+    // The wrapper holds the scroll rail, so it stays put whichever element
+    // scrolls: the body (tall screens) or the whole card (short ones).
+    <div className="pointer-events-auto relative flex max-h-full w-full flex-col">
+      <article
+        aria-label={`Answer: ${question}`}
+        ref={articleRef}
+        className="card-scroll relative flex min-h-0 w-full flex-col border border-rule bg-surface/95 shadow-[0_2px_24px_rgba(28,26,23,0.08)] backdrop-blur-[2px] [@media(max-height:760px)]:overflow-y-auto"
+      >
+        <Cascade animated={animated} quick={quick} order={0}>
+          <header className="flex items-baseline gap-x-4 border-b border-rule-faint px-5 py-3 sm:px-7">
+            {animated ? (
+              <motion.span
+                initial={{ rotate: -8, scale: 1.5, opacity: 0 }}
+                animate={{ rotate: 0, scale: 1, opacity: 1 }}
+                transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                className="shrink-0 font-mono text-[11px] tracking-[0.18em] text-accent uppercase motion-reduce:transform-none"
+              >
+                {label}
+              </motion.span>
+            ) : (
+              <span className="shrink-0 font-mono text-[11px] tracking-[0.18em] text-accent uppercase">
+                {label}
+              </span>
+            )}
+            <div className="min-w-0 flex-1">
+              <h2
+                ref={questionRef}
+                title={question}
+                className={`text-base font-medium tracking-tight [overflow-wrap:anywhere] italic sm:text-lg ${questionOpen ? "" : "line-clamp-3"}`}
+              >
+                “{question}”
+              </h2>
+              {questionClamped || questionOpen ? (
+                <button
+                  type="button"
+                  aria-expanded={questionOpen}
+                  onClick={() => setQuestionOpen((v) => !v)}
+                  className="mt-1 font-mono text-[11px] tracking-wider text-ink-faint uppercase underline decoration-rule underline-offset-4 hover:text-accent pointer-coarse:py-1.5"
+                >
+                  {questionOpen ? "less" : "full question"}
+                </button>
+              ) : null}
+            </div>
+            {actions ? (
+              <span className="ml-auto shrink-0">{actions}</span>
+            ) : null}
+          </header>
+        </Cascade>
+
+        <Cascade animated={animated} quick={quick} order={1}>
+          <div className="border-b border-rule-faint px-5 py-2.5 sm:px-7">
+            <TraceStrip steps={trace} running={running} />
+          </div>
+        </Cascade>
+
+        <div
+          ref={scrollRef}
+          className="card-scroll min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-7 [@media(max-height:760px)]:flex-none [@media(max-height:760px)]:overflow-visible"
+        >
+          <div ref={contentRef}>
+            {narration ? (
+              <Cascade animated={animated} quick={quick} order={2}>
+                <div
+                  aria-live="polite"
+                  aria-busy={running || undefined}
+                  className="max-w-prose text-[15px] leading-relaxed whitespace-pre-wrap text-ink"
+                >
+                  {narration}
+                </div>
+              </Cascade>
+            ) : null}
+            {note ? (
+              <Cascade animated={animated} quick={quick} order={2}>
+                <p className="mt-3 max-w-prose font-mono text-[11px] leading-relaxed text-accent">
+                  ⚿ {note}
+                </p>
+              </Cascade>
+            ) : null}
+            {children ? <div className="mt-5 space-y-6">{children}</div> : null}
+          </div>
+        </div>
+
+        {followUps?.length && onFollowUp ? (
+          <Cascade animated={animated} quick={quick} order={2}>
+            <nav
+              aria-label="Suggested next questions"
+              className="flex gap-2 overflow-x-auto border-t border-rule-faint px-5 py-2.5 [scrollbar-width:none] sm:px-7 [&::-webkit-scrollbar]:hidden"
+            >
+              <span
+                aria-hidden
+                className="shrink-0 self-center font-mono text-[11px] tracking-[0.18em] text-ink-faint uppercase"
+              >
+                next
+              </span>
+              {followUps.map((f) => (
+                <button
+                  key={f}
+                  type="button"
+                  onClick={() => onFollowUp(f)}
+                  className="shrink-0 border border-rule-faint px-2.5 py-1 font-mono text-[11px] whitespace-nowrap text-ink-muted transition-colors hover:border-accent hover:text-accent"
+                >
+                  → {f}
+                </button>
+              ))}
+            </nav>
+          </Cascade>
+        ) : null}
+
+        {footer ? (
+          <Cascade animated={animated} quick={quick} order={1}>
+            <footer className="flex items-center gap-x-4 border-t border-rule-faint px-5 py-2.5 font-mono text-[11px] text-ink-faint sm:px-7">
+              {/* One line: sources scroll sideways so the answer keeps the height. */}
+              <span className="flex min-w-0 flex-1 items-center gap-1.5 overflow-x-auto pr-4 whitespace-nowrap [mask-image:linear-gradient(to_right,black_calc(100%-24px),transparent)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                sources:{" "}
+                {footer.sources.map((s, i) => (
+                  <motion.span
+                    key={s}
+                    className="inline-block border border-rule-faint px-1 py-0.5 text-ink-muted"
+                    initial={
+                      animated && !reduce
+                        ? {
+                            opacity: 0,
+                            scale: 1.18,
+                            rotate: i % 2 === 0 ? -2 : 2,
+                          }
+                        : false
+                    }
+                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                    transition={{
+                      duration: reduce ? 0 : 0.28,
+                      delay: reduce ? 0 : 0.1 + i * 0.07,
+                      ease: [0.25, 0.1, 0.25, 1],
+                    }}
+                  >
+                    {s}
+                  </motion.span>
+                ))}
+              </span>
+              <span className="shrink-0 whitespace-nowrap">
+                {footer.model} · {footer.ms}
+              </span>
+            </footer>
+          </Cascade>
+        ) : null}
+      </article>
       {scrollState.scrollable ? (
         <span
           aria-hidden
@@ -205,120 +379,6 @@ export function CardShell({
           />
         </span>
       ) : null}
-      <Cascade animated={animated} quick={quick} order={0}>
-        <header className="flex items-baseline gap-x-4 border-b border-rule-faint px-5 py-3 sm:px-7">
-          {animated ? (
-            <motion.span
-              initial={{ rotate: -8, scale: 1.5, opacity: 0 }}
-              animate={{ rotate: 0, scale: 1, opacity: 1 }}
-              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              className="shrink-0 font-mono text-[11px] tracking-[0.18em] text-accent uppercase motion-reduce:transform-none"
-            >
-              {label}
-            </motion.span>
-          ) : (
-            <span className="shrink-0 font-mono text-[11px] tracking-[0.18em] text-accent uppercase">
-              {label}
-            </span>
-          )}
-          <h2 className="min-w-0 truncate text-base font-medium tracking-tight italic sm:text-lg">
-            “{question}”
-          </h2>
-          {actions ? <span className="ml-auto shrink-0">{actions}</span> : null}
-        </header>
-      </Cascade>
-
-      <Cascade animated={animated} quick={quick} order={1}>
-        <div className="border-b border-rule-faint px-5 py-2.5 sm:px-7">
-          <TraceStrip steps={trace} running={running} />
-        </div>
-      </Cascade>
-
-      <div
-        ref={scrollRef}
-        className="card-scroll min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-7"
-      >
-        <div ref={contentRef}>
-          {narration ? (
-            <Cascade animated={animated} quick={quick} order={2}>
-              <div
-                aria-live="polite"
-                aria-busy={running || undefined}
-                className="max-w-prose text-[15px] leading-relaxed whitespace-pre-wrap text-ink"
-              >
-                {narration}
-              </div>
-            </Cascade>
-          ) : null}
-          {note ? (
-            <Cascade animated={animated} quick={quick} order={2}>
-              <p className="mt-3 max-w-prose font-mono text-[11px] leading-relaxed text-accent">
-                ⚿ {note}
-              </p>
-            </Cascade>
-          ) : null}
-          {children ? <div className="mt-5 space-y-6">{children}</div> : null}
-        </div>
-      </div>
-
-      {followUps?.length && onFollowUp ? (
-        <Cascade animated={animated} quick={quick} order={2}>
-          <nav
-            aria-label="Suggested next questions"
-            className="flex gap-2 overflow-x-auto border-t border-rule-faint px-5 py-2.5 [scrollbar-width:none] sm:px-7 [&::-webkit-scrollbar]:hidden"
-          >
-            <span aria-hidden className="shrink-0 self-center font-mono text-[11px] tracking-[0.18em] text-ink-faint uppercase">
-              next
-            </span>
-            {followUps.map((f) => (
-              <button
-                key={f}
-                type="button"
-                onClick={() => onFollowUp(f)}
-                className="shrink-0 border border-rule-faint px-2.5 py-1 font-mono text-[11px] whitespace-nowrap text-ink-muted transition-colors hover:border-accent hover:text-accent"
-              >
-                → {f}
-              </button>
-            ))}
-          </nav>
-        </Cascade>
-      ) : null}
-
-      {footer ? (
-        <Cascade animated={animated} quick={quick} order={1}>
-          <footer className="flex items-baseline gap-x-6 gap-y-1 border-t border-rule-faint px-5 py-2.5 font-mono text-[11px] text-ink-faint sm:flex-wrap sm:px-7 sm:text-[11px]">
-            <span className="flex min-w-0 items-center gap-1.5 overflow-x-auto whitespace-nowrap [scrollbar-width:none] sm:flex-wrap sm:overflow-visible [&::-webkit-scrollbar]:hidden">
-              sources:{" "}
-              {footer.sources.map((s, i) => (
-                <motion.span
-                  key={s}
-                  className="inline-block border border-rule-faint px-1 py-0.5 text-ink-muted"
-                  initial={
-                    animated && !reduce
-                      ? {
-                          opacity: 0,
-                          scale: 1.18,
-                          rotate: i % 2 === 0 ? -2 : 2,
-                        }
-                      : false
-                  }
-                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                  transition={{
-                    duration: reduce ? 0 : 0.28,
-                    delay: reduce ? 0 : 0.1 + i * 0.07,
-                    ease: [0.25, 0.1, 0.25, 1],
-                  }}
-                >
-                  {s}
-                </motion.span>
-              ))}
-            </span>
-            <span className="ml-auto whitespace-nowrap">
-              {footer.model} · {footer.ms}
-            </span>
-          </footer>
-        </Cascade>
-      ) : null}
-    </article>
+    </div>
   );
 }

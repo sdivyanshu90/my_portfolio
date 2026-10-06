@@ -15,7 +15,8 @@
     "verify-claims": "vite-node --config vitest.config.mts scripts/verify-claims.ts",
     "sync-github": "vite-node --config vitest.config.mts scripts/sync-github.ts",
     "smoke": "vite-node --config vitest.config.mts scripts/smoke.ts --",
-    "cv:pdf": "vite-node --config vitest.config.mts scripts/cv-pdf.ts"
+    "cv:pdf": "vite-node --config vitest.config.mts scripts/cv-pdf.ts",
+    "layout": "vite-node --config vitest.config.mts scripts/layout-check.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
