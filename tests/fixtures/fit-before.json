@@ -1,0 +1,206 @@
+[
+  {
+    "id": "openai-applied-ai-digital-natives",
+    "results": [
+      {
+        "text": "High proficiency in Python and comfort across the AI application stack; JavaScript, TypeScript or another relevant language is an additional advantage.",
+        "strength": "partial"
+      },
+      {
+        "text": "Know how to assess AI systems methodically with representative datasets, graders, production feedback and human judgment.",
+        "strength": "gap"
+      },
+      {
+        "text": "Demonstrate delivery of AI or ML systems in enterprise settings, including the transition from prototype into production.",
+        "strength": "partial"
+      }
+    ]
+  },
+  {
+    "id": "level-applied-ai",
+    "results": [
+      {
+        "text": "At least seven years of professional engineering, including at least one year building and operating agentic systems in production on a modern or custom agent stack.",
+        "strength": "partial"
+      },
+      {
+        "text": "Be comfortable enforcing structured outputs and validating them in production with provider-native or comparable schema-based methods.",
+        "strength": "partial"
+      },
+      {
+        "text": "Have production retrieval experience covering chunking, embeddings, hybrid search, reranking and metadata filters, including their failure modes; also understand evidence grounding and faithfulness or refusal checks.",
+        "strength": "partial"
+      }
+    ]
+  },
+  {
+    "id": "accenture-federal-ml",
+    "results": [
+      {
+        "text": "Be proficient in Python and have experience with at least one ML framework, for example PyTorch, TensorFlow, scikit-learn, XGBoost or Hugging Face.",
+        "strength": "partial"
+      },
+      {
+        "text": "Have MLOps experience encompassing versioned models, CI/CD, model registries, feature stores, monitoring and automated retraining.",
+        "strength": "partial"
+      },
+      {
+        "text": "Hold US citizenship without dual citizenship.",
+        "strength": "partial"
+      }
+    ]
+  },
+  {
+    "id": "graphcore-graduate-ml-2027",
+    "results": [
+      {
+        "text": "Have a bachelor or master degree in ML, computer science, mathematics, data science or a related subject.",
+        "strength": "partial"
+      },
+      {
+        "text": "Have software development ability and proficiency with a deep learning framework such as PyTorch or JAX; project, coursework or research evidence is acceptable.",
+        "strength": "partial"
+      },
+      {
+        "text": "Already have UK work authorization for the entire graduate programme without needing employer visa sponsorship.",
+        "strength": "gap"
+      }
+    ]
+  },
+  {
+    "id": "twilio-conversation-intelligence-ml",
+    "results": [
+      {
+        "text": "Have at least two years in ML engineering or applied ML, with Python proficiency, at least one of PyTorch, TensorFlow or JAX, and familiarity with NLP tools such as Hugging Face Transformers, NLTK or SpaCy.",
+        "strength": "partial"
+      },
+      {
+        "text": "Have developed, tested and deployed small-to-medium ML services collaboratively, including model versioning, experiment tracking and infrastructure on AWS, GCP or Azure.",
+        "strength": "gap"
+      },
+      {
+        "text": "Have experience integrating large or small language models into software.",
+        "strength": "partial"
+      }
+    ]
+  },
+  {
+    "id": "xpeng-staff-llm-quantization",
+    "results": [
+      {
+        "text": "Understand transformer architectures and LLM inference deeply.",
+        "strength": "gap"
+      },
+      {
+        "text": "Have practical experience either quantizing or deploying deep learning models in production.",
+        "strength": "partial"
+      },
+      {
+        "text": "Preferred: have publications at venues such as NeurIPS, ICML, ICLR or ACL, or comparable conferences.",
+        "strength": "gap"
+      }
+    ]
+  },
+  {
+    "id": "ameba-full-stack",
+    "results": [
+      {
+        "text": "Have at least three years of software-engineering experience.",
+        "strength": "partial"
+      },
+      {
+        "text": "Have at least two years using React/TypeScript and an object-oriented language such as Java, Scala, Kotlin, C# or C++.",
+        "strength": "partial"
+      },
+      {
+        "text": "Desirable: be interested in AI and familiar with building LLM-based agents.",
+        "strength": "partial"
+      }
+    ]
+  },
+  {
+    "id": "air-apps-backend",
+    "results": [
+      {
+        "text": "Have at least five years working in backend engineering roles.",
+        "strength": "partial"
+      },
+      {
+        "text": "Be proficient with both Node.js and TypeScript.",
+        "strength": "strong"
+      },
+      {
+        "text": "Have substantial experience using Supabase or a comparable backend service based on PostgreSQL.",
+        "strength": "partial"
+      }
+    ]
+  },
+  {
+    "id": "spotlio-infrastructure",
+    "results": [
+      {
+        "text": "Be proficient with Git and its collaboration workflows.",
+        "strength": "partial"
+      },
+      {
+        "text": "Have infrastructure-as-code experience with Terraform, CloudFormation or similar tools.",
+        "strength": "partial"
+      },
+      {
+        "text": "Have experience managing and scaling AWS infrastructure, covering services such as RDS, CloudWatch, EC2, load balancing/WAF, Redshift, CloudFront, S3, Route53, ECS/Docker, Lambda and Redis, with IaC tooling.",
+        "strength": "gap"
+      }
+    ]
+  },
+  {
+    "id": "palantir-backend-infrastructure",
+    "results": [
+      {
+        "text": "Have strong coding ability demonstrated in languages such as Java, C++, Python, Rust or similar.",
+        "strength": "partial"
+      },
+      {
+        "text": "Be familiar with storage and data-processing systems, cloud infrastructure and related technical tooling.",
+        "strength": "partial"
+      },
+      {
+        "text": "Value quality and defensive coding, including deliberate handling of edge cases.",
+        "strength": "partial"
+      }
+    ]
+  },
+  {
+    "id": "biti-backend",
+    "results": [
+      {
+        "text": "Have experience integrating blockchain data or Web3 systems.",
+        "strength": "partial"
+      },
+      {
+        "text": "Have experience building backends with demanding performance requirements.",
+        "strength": "partial"
+      },
+      {
+        "text": "Have experience with PostgreSQL and data modeling.",
+        "strength": "strong"
+      }
+    ]
+  },
+  {
+    "id": "tenstorrent-ml-ai-models",
+    "results": [
+      {
+        "text": "Have strong experience creating and working with ML models in either PyTorch or TensorFlow.",
+        "strength": "partial"
+      },
+      {
+        "text": "Bonus, not required: have profiling or tuning experience, or familiarity with topics such as quantization, FlashAttention, kernel fusion, memory hierarchies, C++, CUDA or systems programming.",
+        "strength": "partial"
+      },
+      {
+        "text": "Be eligible to access US export-controlled technology; employment may depend on citizenship or permanent residency status, or obtaining the relevant government license.",
+        "strength": "gap"
+      }
+    ]
+  }
+]

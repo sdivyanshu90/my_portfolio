@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { DocSection, DocShell } from "@/components/doc/doc-shell";
-import { counts, fieldGuides, openSource } from "@/data/portfolio";
+import { contributionStatus, counts, fieldGuides, github, openSource, upstreamSnapshot, mastraIssueContributions } from "@/data/portfolio";
 
 export const metadata: Metadata = {
   title: "Open source",
@@ -21,12 +21,12 @@ export default function OpenSource() {
       lede={
         <p>
           Every issue and pull request here is his — found, written and sent upstream to projects like Mastra,
-          EleutherAI and OpenCode. Each count links to the PRs on GitHub; numbers verified against the GitHub API.
+          EleutherAI and OpenCode. Counts are a GitHub API snapshot from {github.asOf}, covering public PRs authored outside his own repositories. Open means still open on GitHub; closed without merge is tracked separately.
         </p>
       }
       ask={["What open-source work has he done?", "Is he a core contributor at Mastra?", "What did he contribute to EleutherAI's lm-evaluation-harness?"]}
     >
-      <DocSection id="upstream" title="Upstream">
+      <DocSection id="upstream" title="Selected upstream contributions">
         <ul className="space-y-8">
           {upstream.map((o) => (
             <li key={o.href}>
@@ -35,11 +35,7 @@ export default function OpenSource() {
                   {o.name} ↗
                 </a>
                 <span className="bg-accent-soft px-1.5 py-0.5 font-mono text-[11px] tracking-wide text-accent uppercase">
-                  {o.role === "In review"
-                    ? `${o.open} in review`
-                    : o.role === "Proposal"
-                      ? `${o.authored} PRs · in review`
-                      : `${o.merged} merged${o.authored ? ` · ${o.authored} PRs` : ""}`}
+                  {contributionStatus(o)}
                 </span>
               </div>
               <p className="mt-1.5 max-w-prose text-[15px] leading-relaxed text-ink-muted">{o.summary}</p>
@@ -103,6 +99,46 @@ export default function OpenSource() {
             </li>
           ))}
         </ul>
+      </DocSection>
+
+      <DocSection id="issue-contributions" title="Mastra issue contributions" note={`Public evidence · ${mastraIssueContributions.asOf}`}>
+        <p className="text-[15px] leading-relaxed text-ink-muted">
+          {mastraIssueContributions.summary.authored} authored issue reports; {mastraIssueContributions.summary.resolvedByOthers} resolved through merged fixes by other upstream authors and {mastraIssueContributions.summary.resolvedByOwnPR} through his own merged PRs.
+          {" "}{mastraIssueContributions.summary.open} remain open; {mastraIssueContributions.summary.closedWithoutLinkedMerge} are closed without a linked merged resolution.
+          Issue outcomes overlap with PR counts and are presented separately.
+        </p>
+        <details className="mt-4 border border-rule-faint p-4">
+          <summary className="cursor-pointer text-accent">View public reports and linked resolutions</summary>
+          <ul className="mt-3 space-y-3 text-[13px]">
+            {mastraIssueContributions.issues.map((issue) => (
+              <li key={issue.number}>
+                <a href={issue.url} className={link}>#{issue.number} · {issue.title}</a>
+                {issue.resolution ? <> — <a href={issue.resolution.url} className={link}>merged fix #{issue.resolution.number}</a> ({issue.resolution.author})</> : ` — ${issue.state}; no linked merged resolution`}
+              </li>
+            ))}
+          </ul>
+        </details>
+      </DocSection>
+
+      <DocSection id="snapshot" title="Complete public upstream snapshot" note={`Verified ${github.asOf}`}>
+        <p className="mb-4 text-[14px] text-ink-muted">
+          {upstreamSnapshot.totals.authored} authored PRs: {upstreamSnapshot.totals.merged} merged,
+          {" "}{upstreamSnapshot.totals.open} open and {upstreamSnapshot.totals.closed} closed without merge.
+          The reported-fix evidence above is separate from these merge counts.
+        </p>
+        <div className="overflow-x-auto">
+          <table className="report-table w-full text-left text-[13px]">
+            <thead><tr><th>Repository</th><th>Authored</th><th>Merged</th><th>Open</th><th>Closed without merge</th></tr></thead>
+            <tbody>
+              {Object.entries(upstreamSnapshot.repositories).map(([repo, stats]) => (
+                <tr key={repo}>
+                  <td className="py-2 pr-4"><a className={link} href={`https://github.com/${repo}/pulls?q=is%3Apr+author%3A${github.user}`}>{repo}</a></td>
+                  <td>{stats.authored}</td><td>{stats.merged}</td><td>{stats.open}</td><td>{stats.closed}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </DocSection>
 
       <DocSection id="own" title="His own, in public">

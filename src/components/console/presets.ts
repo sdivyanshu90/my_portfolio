@@ -16,6 +16,7 @@ export const PRESETS: Record<Mode, string[]> = {
     "Where is the résumé?",
   ],
   engineer: [
+    "Tell me about the Admissions Decision Twin",
     "What has he built from scratch?",
     "Show the inference & serving work",
     "How did the 0.00% CER OCR pipeline work?",
@@ -24,6 +25,7 @@ export const PRESETS: Record<Mode, string[]> = {
   ],
   founder: [
     "What is he doing at Uniiq?",
+    "Tell me about the Admissions Decision Twin",
     "Show shipped systems with measured results",
     "How does he think about evaluation?",
     "What open-source work has he done?",

@@ -10,6 +10,8 @@ import {
   honors,
   keyResults,
   openSource,
+  openSourceSummary,
+  contributionStatus,
   personal,
   resume,
   scratchIndex,
@@ -164,7 +166,7 @@ const RULES: Array<[ArtifactKind, RegExp, number]> = [
   ],
   [
     "experience",
-    /\bexperience\b|\bworked\b|\bjobs?\b|\broles?\b|\bcto\b|founding engineer|\bdoing at\b|what did he do/i,
+    /\bexperience\b|\bworked\b|\bjobs?\b|\broles?\b|\bcto\b|\bleadership\b|\b(?:led|lead|managed?)\s+(?:a\s+|the\s+)?team\b|founding engineer|\bdoing at\b|what did he do/i,
     WEAK,
   ],
   ["skills", /\bskills?\b|\bstack\b|\btools?\b|\blanguages?\b|\bframeworks?\b|proficien|\btech(?:nolog(?:y|ies))?\b/i, STRONG],
@@ -539,7 +541,7 @@ function fallbackForPlan(q: string, artifacts: ArtifactSpec[], hits: Hit[]): str
         ? "Here is the record — judge the title from it; no maintainer role is claimed. "
         : "";
       const notable = o.notable?.length ? ` Notable: ${listOf(o.notable.map((n) => `“${n.title}”`))}.` : "";
-      return `${title}${o.name}: ${o.summary}${notable} Links below.`;
+      return `${title}${o.name}: ${contributionStatus(o)}. ${o.summary}${notable} Links below.`;
     }
   }
   if (primary?.kind === "credentials" && top?.id === "edu:be") {
@@ -611,9 +613,9 @@ function fallbackFor(primary: ArtifactKind): string {
     case "index":
       return `The from-scratch index: ${spell(counts.systems)} working reimplementations of the modern AI stack — modeling, alignment, inference, retrieval, and evaluation. Most are study builds to understand the stack; the ${spell(counts.engineered)} marked ⚙ are engineered with tests and strict typing. The shipped products are a separate query. Filter by layer below.`;
     case "oss":
-      return `Open source, below: ${counts.authoredUpstream} PRs upstream and ${spell(counts.mergedUpstream)} merged — Mastra (29 PRs, 11 merged, plus ${counts.reportedFixed} bugs he found and patched that are now fixed upstream), EleutherAI's lm-evaluation-harness (4 merged, 21 in review), OpenCode (22 in review), the p5.js Web Editor (4 merged), Experiential (2 merged), and his Yale MPC layers proposed to 0xTCG/sequre. Plus ${spell(counts.fieldGuides)} public curricula.`;
+      return openSourceSummary;
     case "experience":
-      return "The release history: B.E. Computer Science (Mumbai, 8/10) → three years of quant research at WorldQuant BRAIN (15+ alphas, Sharpe 1.8, Gold/Top-1% Alphathon) → ML research at Yale (compiler-centric MPC) → now Founding Engineer at Uniiq.";
+      return "The release history: B.E. Computer Science (Mumbai, 8/10) → three years of quant research at WorldQuant BRAIN (15+ alphas, Sharpe 1.8, Gold/Top-1% Alphathon) → ML research at Yale (compiler-centric MPC) → now Founding Engineer at Uniiq.ai.";
     case "skills":
       return "Capabilities by stack layer, below: Python-first across PyTorch/TensorFlow modeling, LLM systems (Gemini, structured outputs, RAG, LangGraph, MCP, vector stores), serving and MLOps (FastAPI, Docker, ONNX, AWS/GCP), and full-stack product work in React, Next.js, Express, and MongoDB.";
     case "credentials":
@@ -621,9 +623,9 @@ function fallbackFor(primary: ArtifactKind): string {
     case "contact":
       return "Direct lines below — email is fastest, GitHub is deepest. Replies typically within a day.";
     case "resume":
-      return "The résumé is a one-page PDF, last revised May 2026 — link below.";
+      return "The résumé download is below. The /cv page contains the latest experience and results.";
     case "availability":
-      return "Open to AI engineering and founding roles — actively looking, confirmed September 2026. Currently a Founding Engineer at Uniiq; based in Mumbai, India; remote-friendly. Email him to start a conversation.";
+      return "Open to AI engineering and founding roles — actively looking, confirmed September 2026. Currently a Founding Engineer at Uniiq.ai; based in Mumbai, India; remote-friendly. Email him to start a conversation.";
     case "fit":
       return "Paste the job description below. Each requirement is matched against his verified dossier — with evidence links, and honest gaps where there's nothing on record. It runs in your browser; the text is never sent anywhere.";
     case "system":

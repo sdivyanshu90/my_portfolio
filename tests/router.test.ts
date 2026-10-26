@@ -4,6 +4,7 @@ import { GUARD_ATTACKS, GUARD_HONEST } from "@/lib/evals/guard-cases";
 import { checkCase } from "@/lib/evals/run";
 import { isGuarded, plan } from "@/lib/intents";
 import { PRESET_ANSWERS } from "@/lib/preset-answers";
+import { upstreamStats } from "@/data/portfolio";
 import { PRESETS } from "@/components/console/presets";
 
 describe("golden set", () => {
@@ -54,8 +55,9 @@ describe("honesty", () => {
   it("answers title questions with what the evidence supports", () => {
     const f = plan("Is he a core contributor at Mastra?").fallback;
     expect(f).toMatch(/^Here is the record/);
-    expect(f).toMatch(/11 merged directly/);
-    expect(f).toMatch(/18 bugs he found/);
+    expect(f).toContain(`${upstreamStats("mastra-ai/mastra").merged} merged`);
+    expect(f).toContain("57 issue reports");
+    expect(f).toContain("40 through other upstream authors");
   });
   it("labels unmerged upstream work as proposals", () => {
     expect(plan("What did he propose to sequre?").fallback).toMatch(/Not merged yet/);

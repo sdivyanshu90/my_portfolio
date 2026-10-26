@@ -8,6 +8,7 @@ import {
   honors,
   type Layer,
   openSource,
+  contributionStatus,
   scratchIndex,
   shipped,
 } from "@/data/portfolio";
@@ -298,7 +299,7 @@ function buildDocs(): Doc[] {
       star: o.role === "Author" ? undefined : `oss:${o.name}`,
       label: o.name,
       strong: `${o.name} open source contribution ${o.role}`,
-      body: `${o.summary} ${(o.notable ?? []).map((n) => n.title).join(" ")} ${(o.reportedFixed ?? []).map((b) => b.title).join(" ")} bug report reported`,
+      body: `${contributionStatus(o)}. ${o.summary} ${(o.notable ?? []).map((n) => n.title).join(" ")} ${(o.reportedFixed ?? []).map((b) => b.title).join(" ")} bug report reported`,
     });
   }
   return docs;

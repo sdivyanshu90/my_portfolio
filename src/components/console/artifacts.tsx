@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ContactLink } from "@/components/contact-link";
 import { CountUp } from "@/components/console/count-up";
 import dynamic from "next/dynamic";
@@ -77,6 +78,12 @@ function AboutArtifact() {
           </li>
         ))}
       </ul>
+      <Link
+        href="/work/uniiq-platform#admissions-decision-twin"
+        className="mt-4 inline-block text-[13px] text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent"
+      >
+        Uniiq.ai · Admissions Decision Twin — evaluation & results →
+      </Link>
     </div>
   );
 }
@@ -132,15 +139,15 @@ function ResumeArtifact() {
       <div>
         <p className="font-medium">{personal.name} — Résumé</p>
         <p className="mt-1 font-mono text-[11px] text-ink-faint">
-          One page · PDF · rev May 2026
+          Current experience and evidence, with a print / save as PDF option.
         </p>
       </div>
       <ContactLink
-        href={resume.href}
+        href="/cv"
         via="availability-card"
         className="border border-accent px-4 py-2 font-mono text-[12px] tracking-wider text-accent uppercase transition-colors hover:bg-accent hover:text-paper"
       >
-        Download ↓
+        Current CV →
       </ContactLink>
     </div>
   );

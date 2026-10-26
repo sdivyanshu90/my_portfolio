@@ -4,6 +4,7 @@ import { DocSection, DocShell } from "@/components/doc/doc-shell";
 import { PrintButton } from "@/components/doc/print-button";
 import {
   capabilities,
+  contributionStatus,
   caseStudies,
   certifications,
   changelog,
@@ -122,11 +123,7 @@ export default function Cv() {
               <li key={o.href} className="cv-block">
                 <span className="font-medium text-ink">{o.name}</span>{" "}
                 <span className="font-mono text-[11px] text-ink-faint">
-                  {o.role === "Contributor"
-                    ? `${o.merged} merged PRs`
-                    : o.role === "In review"
-                      ? `${o.open} in review`
-                      : "proposal, in review"}
+                  {contributionStatus(o)}
                 </span>
                 <span className="text-ink-muted"> — {o.summary}</span>
               </li>
@@ -165,7 +162,7 @@ export default function Cv() {
         </DocSection>
 
         <p className="mt-10 font-mono text-[11px] text-ink-faint print:hidden">
-          The one-page PDF résumé is also{" "}
+          The PDF snapshot ({resume.asOf}) is also{" "}
           <ContactLink href={resume.href} via="cv" className="underline underline-offset-2">
             available here
           </ContactLink>

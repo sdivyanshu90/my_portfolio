@@ -30,7 +30,7 @@ const rows: { label: string; value: React.ReactNode }[] = [
           href="https://uniiq.ai"
           className="underline decoration-rule underline-offset-4 transition-colors hover:text-accent hover:decoration-accent"
         >
-          Uniiq
+          Uniiq.ai
         </a>{" "}
         — AI-powered college advising · {personal.location}
       </>

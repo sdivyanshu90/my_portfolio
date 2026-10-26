@@ -1,4 +1,4 @@
-import { fieldGuides, openSource } from "@/data/portfolio";
+import { contributionStatus, fieldGuides, openSource } from "@/data/portfolio";
 
 /** Teaching repos and open-source contributions. */
 export function FieldNotes() {
@@ -24,7 +24,7 @@ export function FieldNotes() {
       </div>
       <div>
         <h3 className="font-mono text-[11px] tracking-[0.2em] text-ink-faint uppercase">
-          Open source — merged upstream, then his own
+          Open source — selected contributions and own projects
         </h3>
         <ul className="mt-4 space-y-4">
           {openSource.map((o) => (
@@ -36,11 +36,7 @@ export function FieldNotes() {
                 {o.name}
               </a>{" "}
               <span className="ml-1 font-mono text-[11px] tracking-wide text-ink-faint uppercase">
-                {o.role === "Contributor"
-                  ? `${o.merged} merged`
-                  : o.role === "Proposal"
-                    ? "proposed · unmerged"
-                    : "author"}
+                {contributionStatus(o)}
               </span>
               <p className="text-ink-muted">{o.summary}</p>
               {o.notable?.length ? (

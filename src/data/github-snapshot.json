@@ -1,0 +1,101 @@
+{
+  "asOf": "2026-10-25",
+  "source": "GitHub REST API: public PRs authored by sdivyanshu90 outside sdivyanshu90-owned repositories; complete paginated search.",
+  "query": "author:sdivyanshu90 is:pr is:public -user:sdivyanshu90",
+  "profile": {
+    "publicRepos": 202,
+    "stars": 337
+  },
+  "totals": {
+    "authored": 215,
+    "merged": 28,
+    "open": 104,
+    "closed": 83
+  },
+  "repositories": {
+    "monid-ai/monid": {
+      "authored": 15,
+      "merged": 0,
+      "open": 15,
+      "closed": 0
+    },
+    "EleutherAI/lm-evaluation-harness": {
+      "authored": 49,
+      "merged": 4,
+      "open": 45,
+      "closed": 0
+    },
+    "rowboatlabs/rowboat": {
+      "authored": 2,
+      "merged": 0,
+      "open": 2,
+      "closed": 0
+    },
+    "SigNoz/signoz": {
+      "authored": 2,
+      "merged": 0,
+      "open": 2,
+      "closed": 0
+    },
+    "anomalyco/opencode": {
+      "authored": 45,
+      "merged": 1,
+      "open": 9,
+      "closed": 35
+    },
+    "mastra-ai/mastra": {
+      "authored": 48,
+      "merged": 13,
+      "open": 0,
+      "closed": 35
+    },
+    "experientiallabs/experiential": {
+      "authored": 32,
+      "merged": 2,
+      "open": 30,
+      "closed": 0
+    },
+    "zulip/zulip": {
+      "authored": 1,
+      "merged": 1,
+      "open": 0,
+      "closed": 0
+    },
+    "aden-hive/hive": {
+      "authored": 3,
+      "merged": 0,
+      "open": 0,
+      "closed": 3
+    },
+    "0xTCG/sequre": {
+      "authored": 4,
+      "merged": 0,
+      "open": 1,
+      "closed": 3
+    },
+    "NeuralEnsemble/PyNN": {
+      "authored": 1,
+      "merged": 1,
+      "open": 0,
+      "closed": 0
+    },
+    "processing/p5.js-web-editor": {
+      "authored": 10,
+      "merged": 4,
+      "open": 0,
+      "closed": 6
+    },
+    "aboutcode-org/vulnerablecode": {
+      "authored": 2,
+      "merged": 1,
+      "open": 0,
+      "closed": 1
+    },
+    "sugarlabs/musicblocks": {
+      "authored": 1,
+      "merged": 1,
+      "open": 0,
+      "closed": 0
+    }
+  }
+}

@@ -12,6 +12,7 @@ import { publishedPosts } from "@/data/writing";
 
 const NAV = [
   { href: "/", label: "console" },
+  { href: "/hire", label: "hiring brief" },
   { href: "/work", label: "work" },
   // Writing appears once there's something published to read.
   ...(publishedPosts().length ? [{ href: "/writing", label: "writing" }] : []),
@@ -111,7 +112,7 @@ export function DocShell({
             </a>
           ))}
           <ContactLink href={resume.href} via="page-footer" className={link}>
-            résumé pdf ↓
+            PDF snapshot · {resume.asOf} ↓
           </ContactLink>
           <span className="sm:ml-auto">© 2026 {personal.name}</span>
         </div>

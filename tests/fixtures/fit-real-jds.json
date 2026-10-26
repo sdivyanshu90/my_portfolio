@@ -1,0 +1,459 @@
+[
+  {
+    "id": "openai-applied-ai-digital-natives",
+    "company": "OpenAI",
+    "title": "Applied AI Engineer, Digital Natives",
+    "url": "https://jobs.ashbyhq.com/openai/d039c0ef-ab36-4d40-bc5e-5c70295b2eb7",
+    "accessedAt": "2026-10-26",
+    "split": "calibration",
+    "requirements": [
+      {
+        "text": "High proficiency in Python and comfort across the AI application stack; JavaScript, TypeScript or another relevant language is an additional advantage.",
+        "expected": "strong",
+        "rationale": "Python ML research and application projects, plus TypeScript/React/Express ownership at Uniiq, directly cover the required combination.",
+        "evidence": [
+          "src/data/portfolio.ts#caseStudies[mpc-deep-learning]",
+          "src/data/portfolio.ts#caseStudies[graph-data-explorer]",
+          "src/data/portfolio.ts#changelog[v3.0]"
+        ]
+      },
+      {
+        "text": "Know how to assess AI systems methodically with representative datasets, graders, production feedback and human judgment.",
+        "expected": "partial",
+        "rationale": "Frozen offline scenarios, adversarial cases and metric review support systematic evaluation. The cited evaluation does not establish a production-feedback evaluation loop.",
+        "evidence": [
+          "src/data/portfolio.ts#uniiqDecisionTwin",
+          "src/data/portfolio.ts#caseStudies[div1-console]"
+        ]
+      },
+      {
+        "text": "Demonstrate delivery of AI or ML systems in enterprise settings, including the transition from prototype into production.",
+        "expected": "verify",
+        "rationale": "Uniiq establishes AI product engineering, but enterprise deployment scope and a documented prototype-to-production customer engagement are not established. Decision Twin is offline only.",
+        "evidence": [
+          "src/data/portfolio.ts#changelog[v3.0]",
+          "src/data/portfolio.ts#uniiqDecisionTwin"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "level-applied-ai",
+    "company": "Level",
+    "title": "Applied AI Engineer",
+    "url": "https://jobs.ashbyhq.com/level/473dba32-2fe2-43ca-8bd4-9aa41c249760/",
+    "accessedAt": "2026-10-26",
+    "split": "calibration",
+    "requirements": [
+      {
+        "text": "At least seven years of professional engineering, including at least one year building and operating agentic systems in production on a modern or custom agent stack.",
+        "expected": "verify",
+        "rationale": "The dated roles do not demonstrate seven engineering years or one year of production agent operations. Research consulting and open-source activity cannot automatically be counted as equivalent tenure.",
+        "evidence": [
+          "src/data/portfolio.ts#changelog",
+          "src/data/github-snapshot.json#repositories[mastra-ai/mastra]"
+        ]
+      },
+      {
+        "text": "Be comfortable enforcing structured outputs and validating them in production with provider-native or comparable schema-based methods.",
+        "expected": "strong",
+        "rationale": "Uniiq uses schema-validated extraction, Zod output contracts, sanitized responses, deterministic fallbacks and recoverable model failures.",
+        "evidence": [
+          "src/data/portfolio.ts#caseStudies[uniiq-platform]",
+          "src/data/portfolio.ts#changelog[v3.0]"
+        ]
+      },
+      {
+        "text": "Have production retrieval experience covering chunking, embeddings, hybrid search, reranking and metadata filters, including their failure modes; also understand evidence grounding and faithfulness or refusal checks.",
+        "expected": "partial",
+        "rationale": "RAG and vector-search reference projects, live BM25 dossier retrieval and citation safeguards support parts of this requirement. Production operation of the full retrieval combination is not evidenced.",
+        "evidence": [
+          "src/data/portfolio.ts#scratchIndex[RAG pipeline]",
+          "src/data/portfolio.ts#scratchIndex[Vector database]",
+          "src/data/portfolio.ts#caseStudies[div1-console]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "accenture-federal-ml",
+    "company": "Accenture Federal Services",
+    "title": "Machine Learning Engineer",
+    "url": "https://job-boards.greenhouse.io/accenturefederalservices/jobs/4722607006",
+    "accessedAt": "2026-10-26",
+    "split": "calibration",
+    "requirements": [
+      {
+        "text": "Be proficient in Python and have experience with at least one ML framework, for example PyTorch, TensorFlow, scikit-learn, XGBoost or Hugging Face.",
+        "expected": "strong",
+        "rationale": "The requirement allows one framework. PyTorch OCR and Transformers/Whisper work substantiate the conjunction with Python; mastery of every listed framework is unnecessary.",
+        "evidence": [
+          "src/data/portfolio.ts#caseStudies[renaissance-ocr]",
+          "src/data/portfolio.ts#caseStudies[indic-asr]",
+          "src/data/portfolio.ts#capabilities"
+        ]
+      },
+      {
+        "text": "Have MLOps experience encompassing versioned models, CI/CD, model registries, feature stores, monitoring and automated retraining.",
+        "expected": "partial",
+        "rationale": "The dossier records CI evaluation and lists MLflow and Airflow, but does not demonstrate the whole operational chain, particularly feature stores, registries and automated retraining.",
+        "evidence": [
+          "src/data/portfolio.ts#caseStudies[div1-console]",
+          "src/data/portfolio.ts#capabilities[Serving & MLOps]"
+        ]
+      },
+      {
+        "text": "Hold US citizenship without dual citizenship.",
+        "expected": "verify",
+        "rationale": "Nationality and citizenship status are not supplied. Mumbai location cannot establish or disprove citizenship.",
+        "evidence": [
+          "src/data/portfolio.ts#personal"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "graphcore-graduate-ml-2027",
+    "company": "Graphcore",
+    "title": "Graduate Machine Learning Engineer 2027",
+    "url": "https://job-boards.greenhouse.io/graphcore/jobs/8894041002",
+    "accessedAt": "2026-10-26",
+    "split": "calibration",
+    "requirements": [
+      {
+        "text": "Have a bachelor or master degree in ML, computer science, mathematics, data science or a related subject.",
+        "expected": "strong",
+        "rationale": "The recorded B.E. in Computer Science satisfies the undergraduate computer-science alternative.",
+        "evidence": [
+          "src/data/portfolio.ts#education"
+        ]
+      },
+      {
+        "text": "Have software development ability and proficiency with a deep learning framework such as PyTorch or JAX; project, coursework or research evidence is acceptable.",
+        "expected": "strong",
+        "rationale": "PyTorch OCR and research implementations are appropriate evidence because this posting explicitly accepts projects and research, without a production requirement.",
+        "evidence": [
+          "src/data/portfolio.ts#caseStudies[renaissance-ocr]",
+          "src/data/portfolio.ts#caseStudies[ml4sci-cms]"
+        ]
+      },
+      {
+        "text": "Already have UK work authorization for the entire graduate programme without needing employer visa sponsorship.",
+        "expected": "verify",
+        "rationale": "UK work authorization and sponsorship needs are absent from the dossier. Do not infer them from residence.",
+        "evidence": [
+          "src/data/portfolio.ts#personal"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "twilio-conversation-intelligence-ml",
+    "company": "Twilio",
+    "title": "Machine Learning Engineer",
+    "url": "https://job-boards.greenhouse.io/twilio/jobs/7996774",
+    "accessedAt": "2026-10-26",
+    "split": "calibration",
+    "requirements": [
+      {
+        "text": "Have at least two years in ML engineering or applied ML, with Python proficiency, at least one of PyTorch, TensorFlow or JAX, and familiarity with NLP tools such as Hugging Face Transformers, NLTK or SpaCy.",
+        "expected": "verify",
+        "rationale": "Python, PyTorch and Transformers are supported. The complete conjunction still needs verification of two years specifically in ML engineering/applied ML; quantitative research dates alone do not establish it.",
+        "evidence": [
+          "src/data/portfolio.ts#caseStudies[indic-asr]",
+          "src/data/portfolio.ts#changelog"
+        ]
+      },
+      {
+        "text": "Have developed, tested and deployed small-to-medium ML services collaboratively, including model versioning, experiment tracking and infrastructure on AWS, GCP or Azure.",
+        "expected": "partial",
+        "rationale": "ML training, tested serving projects and AI product work support components, but model versioning and experiment tracking in a collaboratively deployed cloud ML service are not demonstrated as one complete workflow.",
+        "evidence": [
+          "src/data/portfolio.ts#scratchIndex[Vision Transformer]",
+          "src/data/portfolio.ts#scratchIndex[WhisperLite]",
+          "src/data/portfolio.ts#caseStudies[uniiq-platform]",
+          "src/data/portfolio.ts#capabilities[Serving & MLOps]"
+        ]
+      },
+      {
+        "text": "Have experience integrating large or small language models into software.",
+        "expected": "strong",
+        "rationale": "Gemini-powered Uniiq intake, the graph-query product and this portfolio directly demonstrate model integration.",
+        "evidence": [
+          "src/data/portfolio.ts#caseStudies[uniiq-platform]",
+          "src/data/portfolio.ts#caseStudies[graph-data-explorer]",
+          "src/data/portfolio.ts#caseStudies[div1-console]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "xpeng-staff-llm-quantization",
+    "company": "XPENG",
+    "title": "Staff Machine Learning Engineer - LLM Quantization & Deployment",
+    "url": "https://job-boards.greenhouse.io/xpengmotors/jobs/8710020002",
+    "accessedAt": "2026-10-26",
+    "split": "calibration",
+    "requirements": [
+      {
+        "text": "Understand transformer architectures and LLM inference deeply.",
+        "expected": "strong",
+        "rationale": "The from-scratch Transformer and paged KV-cache with continuous batching support both conceptual areas; this requirement itself does not demand fleet-scale deployment.",
+        "evidence": [
+          "src/data/portfolio.ts#scratchIndex[Transformer]",
+          "src/data/portfolio.ts#caseStudies[kv-cache-engine]"
+        ]
+      },
+      {
+        "text": "Have practical experience either quantizing or deploying deep learning models in production.",
+        "expected": "verify",
+        "rationale": "FromScratchQuant and tested inference projects support hands-on implementation, but production quantization or production deployment of a deep learning model is not established. Calling an external LLM API is not sufficient evidence.",
+        "evidence": [
+          "src/data/portfolio.ts#scratchIndex[Quantization library]",
+          "src/data/portfolio.ts#scratchIndex[Inference server]",
+          "src/data/portfolio.ts#caseStudies[uniiq-platform]"
+        ]
+      },
+      {
+        "text": "Preferred: have publications at venues such as NeurIPS, ICML, ICLR or ACL, or comparable conferences.",
+        "expected": "gap",
+        "rationale": "No research publication is recorded. Yale research and proposed Sequre PRs are not publications; this remains a preferred qualification rather than a mandatory gate.",
+        "evidence": [
+          "src/data/portfolio.ts#changelog[v2.0]",
+          "src/data/portfolio.ts#openSource[Sequre (0xTCG)]",
+          "src/data/github-snapshot.json#repositories[0xTCG/sequre]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ameba-full-stack",
+    "company": "Ameba",
+    "title": "Full-Stack Software Engineer",
+    "url": "https://jobs.ashbyhq.com/ameba/360706a5-1a0a-4a60-9755-5d3ac6c306d6",
+    "accessedAt": "2026-10-26",
+    "split": "calibration",
+    "requirements": [
+      {
+        "text": "Have at least three years of software-engineering experience.",
+        "expected": "verify",
+        "rationale": "The record includes 2023-24 contributions and dated research and founding roles, but does not document three years working as a software engineer. Counts of PRs are not tenure.",
+        "evidence": [
+          "src/data/portfolio.ts#changelog",
+          "src/data/github-snapshot.json#repositories[processing/p5.js-web-editor]"
+        ]
+      },
+      {
+        "text": "Have at least two years using React/TypeScript and an object-oriented language such as Java, Scala, Kotlin, C# or C++.",
+        "expected": "verify",
+        "rationale": "React/TypeScript work and listed Java/C++ provide relevant skills, but two years of the specified combined experience is not established.",
+        "evidence": [
+          "src/data/portfolio.ts#changelog[v3.0]",
+          "src/data/portfolio.ts#capabilities[Languages]",
+          "src/data/portfolio.ts#capabilities[Web & product]"
+        ]
+      },
+      {
+        "text": "Desirable: be interested in AI and familiar with building LLM-based agents.",
+        "expected": "strong",
+        "rationale": "The admissions MCP agent and validated function router directly support agent familiarity at the requested level. This is desirable, not an additional mandatory qualification.",
+        "evidence": [
+          "src/data/portfolio.ts#openSource[mcp-college-counselor]",
+          "src/data/portfolio.ts#scratchIndex[funcflow]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "air-apps-backend",
+    "company": "Air Apps",
+    "title": "Backend Engineer, Berlin",
+    "url": "https://jobs.ashbyhq.com/airapps/a83155dd-2e5f-48eb-a72f-2e8d3ca0e5e9/",
+    "accessedAt": "2026-10-26",
+    "split": "calibration",
+    "requirements": [
+      {
+        "text": "Have at least five years working in backend engineering roles.",
+        "expected": "verify",
+        "rationale": "The dossier does not establish five backend-engineering years. Founding Engineer is the correct current title, but it is not evidence of that duration.",
+        "evidence": [
+          "src/data/portfolio.ts#changelog"
+        ]
+      },
+      {
+        "text": "Be proficient with both Node.js and TypeScript.",
+        "expected": "strong",
+        "rationale": "Uniiq Express backend ownership and typed LLM tooling substantiate both technologies together.",
+        "evidence": [
+          "src/data/portfolio.ts#caseStudies[uniiq-platform]",
+          "src/data/portfolio.ts#scratchIndex[funcflow]",
+          "src/data/portfolio.ts#capabilities[Web & product]"
+        ]
+      },
+      {
+        "text": "Have substantial experience using Supabase or a comparable backend service based on PostgreSQL.",
+        "expected": "partial",
+        "rationale": "Neon Postgres analytics is relevant to the PostgreSQL-based alternative, so absence of Supabase is not by itself a gap. The dossier does not establish substantial experience with that backend service.",
+        "evidence": [
+          "src/data/portfolio.ts#caseStudies[div1-console]",
+          "src/data/portfolio.ts#capabilities[Data]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "spotlio-infrastructure",
+    "company": "Spotlio",
+    "title": "Infrastructure Engineer",
+    "url": "https://jobs.lever.co/catalate/6a9aac86-0082-4402-873f-1f20a0b37d8b",
+    "accessedAt": "2026-10-26",
+    "split": "holdout",
+    "requirements": [
+      {
+        "text": "Be proficient with Git and its collaboration workflows.",
+        "expected": "strong",
+        "rationale": "Merged external contributions and linked issue-to-fix histories demonstrate actual upstream collaboration, not merely a Git keyword.",
+        "evidence": [
+          "src/data/github-snapshot.json#repositories",
+          "src/data/mastra-issues.json#summary",
+          "src/data/portfolio.ts#openSource"
+        ]
+      },
+      {
+        "text": "Have infrastructure-as-code experience with Terraform, CloudFormation or similar tools.",
+        "expected": "gap",
+        "rationale": "No infrastructure-as-code implementation or named IaC tool is recorded. AWS and Docker listings do not establish declarative infrastructure management.",
+        "evidence": [
+          "src/data/portfolio.ts#capabilities[Serving & MLOps]",
+          "src/data/portfolio.ts#scratchIndex"
+        ]
+      },
+      {
+        "text": "Have experience managing and scaling AWS infrastructure, covering services such as RDS, CloudWatch, EC2, load balancing/WAF, Redshift, CloudFront, S3, Route53, ECS/Docker, Lambda and Redis, with IaC tooling.",
+        "expected": "verify",
+        "rationale": "AWS/SageMaker/EC2 and Docker are listed, but ownership and scaling across this operational service breadth are not documented; no production scale should be inferred.",
+        "evidence": [
+          "src/data/portfolio.ts#capabilities[Serving & MLOps]",
+          "src/data/portfolio.ts#changelog"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "palantir-backend-infrastructure",
+    "company": "Palantir Technologies",
+    "title": "Backend Software Engineer - Infrastructure, Foundations",
+    "url": "https://jobs.lever.co/palantir/fb2d3222-dbd8-4e03-8d39-47b820e9509c",
+    "accessedAt": "2026-10-26",
+    "split": "holdout",
+    "requirements": [
+      {
+        "text": "Have strong coding ability demonstrated in languages such as Java, C++, Python, Rust or similar.",
+        "expected": "strong",
+        "rationale": "Python ML implementations and tested Rust serving provide direct coding evidence. The examples are alternatives, not a demand to know all listed languages.",
+        "evidence": [
+          "src/data/portfolio.ts#caseStudies[mpc-deep-learning]",
+          "src/data/portfolio.ts#scratchIndex[Inference server]"
+        ]
+      },
+      {
+        "text": "Be familiar with storage and data-processing systems, cloud infrastructure and related technical tooling.",
+        "expected": "partial",
+        "rationale": "MongoDB integrity work and graph data processing substantiate storage/data familiarity. Cloud platforms are listed, but concrete infrastructure work is sparse.",
+        "evidence": [
+          "src/data/portfolio.ts#caseStudies[uniiq-platform]",
+          "src/data/portfolio.ts#caseStudies[graph-data-explorer]",
+          "src/data/portfolio.ts#capabilities[Serving & MLOps]"
+        ]
+      },
+      {
+        "text": "Value quality and defensive coding, including deliberate handling of edge cases.",
+        "expected": "strong",
+        "rationale": "Idempotent completion, recoverable errors, safe partial updates and upstream token/transport fixes directly demonstrate this engineering practice.",
+        "evidence": [
+          "src/data/portfolio.ts#caseStudies[uniiq-platform]",
+          "src/data/portfolio.ts#openSource[Zulip]",
+          "src/data/portfolio.ts#openSource[OpenCode (anomalyco/opencode)]",
+          "src/data/mastra-issues.json#issues"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "biti-backend",
+    "company": "Biti Pro",
+    "title": "Backend Engineer",
+    "url": "https://jobs.ashbyhq.com/biti/3b42b9ac-57d4-4701-bb92-92a08c28e8ef",
+    "accessedAt": "2026-10-26",
+    "split": "holdout",
+    "requirements": [
+      {
+        "text": "Have experience integrating blockchain data or Web3 systems.",
+        "expected": "gap",
+        "rationale": "The supplied projects and experience do not record blockchain/Web3 integration. Quant research is not evidence of on-chain systems.",
+        "evidence": [
+          "src/data/portfolio.ts#changelog[v1.0]",
+          "src/data/portfolio.ts#caseStudies",
+          "src/data/portfolio.ts#capabilities"
+        ]
+      },
+      {
+        "text": "Have experience building backends with demanding performance requirements.",
+        "expected": "partial",
+        "rationale": "Reliability work, rate policies, batching and backpressure show related backend engineering, but a measured high-performance backend workload is not established. Frontend bundle reduction is not backend throughput evidence.",
+        "evidence": [
+          "src/data/portfolio.ts#caseStudies[uniiq-platform]",
+          "src/data/portfolio.ts#caseStudies[kv-cache-engine]",
+          "src/data/portfolio.ts#scratchIndex[Inference server]"
+        ]
+      },
+      {
+        "text": "Have experience with PostgreSQL and data modeling.",
+        "expected": "partial",
+        "rationale": "Neon Postgres analytics supplies PostgreSQL use, and MongoDB/knowledge-graph work supplies data-model design. The dossier gives limited detail about PostgreSQL-specific modeling depth.",
+        "evidence": [
+          "src/data/portfolio.ts#caseStudies[div1-console]",
+          "src/data/portfolio.ts#caseStudies[uniiq-platform]",
+          "src/data/portfolio.ts#caseStudies[graph-data-explorer]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tenstorrent-ml-ai-models",
+    "company": "Tenstorrent",
+    "title": "Machine Learning Engineer, AI Models",
+    "url": "https://job-boards.greenhouse.io/tenstorrent/jobs/4832276007",
+    "accessedAt": "2026-10-26",
+    "split": "holdout",
+    "requirements": [
+      {
+        "text": "Have strong experience creating and working with ML models in either PyTorch or TensorFlow.",
+        "expected": "strong",
+        "rationale": "PyTorch OCR and CMS model work satisfy the framework alternative with concrete model-building evidence; both frameworks are not required.",
+        "evidence": [
+          "src/data/portfolio.ts#caseStudies[renaissance-ocr]",
+          "src/data/portfolio.ts#caseStudies[ml4sci-cms]"
+        ]
+      },
+      {
+        "text": "Bonus, not required: have profiling or tuning experience, or familiarity with topics such as quantization, FlashAttention, kernel fusion, memory hierarchies, C++, CUDA or systems programming.",
+        "expected": "strong",
+        "rationale": "Quantization, FlashAttention and KV-cache implementations establish familiarity with several allowed alternatives. The clause does not require CUDA expertise or production accelerator deployment.",
+        "evidence": [
+          "src/data/portfolio.ts#scratchIndex[Quantization library]",
+          "src/data/portfolio.ts#scratchIndex[FlashAttention]",
+          "src/data/portfolio.ts#caseStudies[kv-cache-engine]"
+        ]
+      },
+      {
+        "text": "Be eligible to access US export-controlled technology; employment may depend on citizenship or permanent residency status, or obtaining the relevant government license.",
+        "expected": "verify",
+        "rationale": "Export-access eligibility and relevant citizenship/residency/license facts are absent. Residence alone cannot settle this employer condition.",
+        "evidence": [
+          "src/data/portfolio.ts#personal"
+        ]
+      }
+    ]
+  }
+]

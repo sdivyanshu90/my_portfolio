@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { caseStudies, counts, keyResults, personal, principles } from "@/data/portfolio";
+import { caseStudies, changelog, citation, counts, keyResults, personal, principles, shipped, openSource, upstreamSnapshot, openSourceSummary, mastraIssueContributions } from "@/data/portfolio";
+import upstreamEvidence from "../docs/evidence/github-upstream-prs-2026-10-25.json";
+import { PRESET_ANSWERS } from "@/lib/preset-answers";
+import { plan } from "@/lib/intents";
 import { posts, publishedPosts } from "@/data/writing";
 import { digestEmail } from "@/lib/digest";
 import type { Dashboard } from "@/lib/analytics";
@@ -8,6 +11,16 @@ import { isOwner, visitorId } from "@/lib/visitor";
 import { createHash } from "node:crypto";
 
 describe("profile content", () => {
+  it("consistently identifies the Uniiq.ai role as Founding Engineer", () => {
+    expect(personal.currentRole).toBe("Founding Engineer @ Uniiq.ai");
+    expect(changelog.find((r) => r.org === "Uniiq.ai")?.role).toBe("Founding Engineer");
+    expect(shipped.find((s) => s.href === "https://uniiq.ai")?.role).toContain("Founding Engineer");
+    expect(citation).toContain("Founding Engineer, Uniiq.ai");
+    for (const query of ["What is he doing at Uniiq?", "Show the experience timeline", "Is he available, and for what roles?"]) {
+      expect(PRESET_ANSWERS[query], query).toContain("Founding Engineer at Uniiq.ai");
+      expect(plan(query).fallback, query).not.toContain("Software Engineer");
+    }
+  });
   it("leads with the focused positioning", () => {
     expect(personal.lead).toBe("Applied AI / ML Systems Engineer");
     expect(personal.focus).toMatch(/evaluation, inference & reliability/);
@@ -15,6 +28,35 @@ describe("profile content", () => {
   it("derives the upstream key result from verified data", () => {
     const upstream = keyResults.find((k) => k.label === "merged upstream PRs");
     expect(upstream?.value).toBe(counts.mergedUpstream);
+  });
+  it("reconciles GitHub totals and repository statuses with the complete PR evidence", () => {
+    const prs = upstreamEvidence.pullRequests;
+    expect(new Set(prs.map((p) => p.url)).size).toBe(prs.length);
+    const stats = (rows: typeof prs) => ({
+      authored: rows.length,
+      merged: rows.filter((p) => p.state === "merged").length,
+      open: rows.filter((p) => p.state === "open").length,
+      closed: rows.filter((p) => p.state === "closed").length,
+    });
+    expect(upstreamSnapshot.totals).toEqual(stats(prs));
+    for (const [repo, expected] of Object.entries(upstreamSnapshot.repositories)) {
+      expect(stats(prs.filter((p) => p.repo === repo)), repo).toEqual(expected);
+    }
+    expect(counts.authoredUpstream).toBe(prs.length);
+    expect(openSource.reduce((n, o) => n + o.merged, 0)).toBe(counts.mergedUpstream);
+    expect(PRESET_ANSWERS["What open-source work has he done?"]).toBe(openSourceSummary);
+    for (const o of openSource.filter((o) => o.role !== "Author")) {
+      expect(o.authored, o.name).toBe(o.merged + (o.open ?? 0) + (o.closed ?? 0));
+    }
+  });
+  it("counts issue outcomes separately from authored PR merges", () => {
+    const { summary, issues } = mastraIssueContributions;
+    expect(summary.authored).toBe(issues.length);
+    expect(summary.resolvedByOwnPR).toBe(issues.filter((i) => i.resolution?.author === "sdivyanshu90").length);
+    expect(summary.resolvedByOthers).toBe(issues.filter((i) => i.resolution && i.resolution.author !== "sdivyanshu90").length);
+    expect(summary.open + summary.closedWithoutLinkedMerge + summary.resolvedByOwnPR + summary.resolvedByOthers).toBe(summary.authored);
+    expect(counts.reportedFixed).toBe(summary.resolvedByOthers);
+    expect(counts.mergedUpstream).toBe(upstreamSnapshot.totals.merged);
   });
   it("gives every case study a diagram and a receipt", () => {
     for (const c of caseStudies) {

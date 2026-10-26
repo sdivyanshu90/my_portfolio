@@ -2,7 +2,7 @@ import {
   caseStudies,
   education,
   layers,
-  openSource,
+  counts,
   personal,
   resume,
   scratchIndex,
@@ -116,7 +116,7 @@ function callTool(name: string, args: Json) {
     }
     case "match_requirements": {
       const rows = matchRequirements(String(args.text ?? "").slice(0, 8000));
-      return text({ summary: fitSummary(rows), rows, method: "BM25 over the verified dossier; no model involved." });
+      return text({ summary: fitSummary(rows), rows, method: "Local concept and alternative matching with dossier retrieval; duration, eligibility and scope require verification. Heuristic evidence checks, not a hiring prediction; no model involved." });
     }
     case "get_contact":
       return text({
@@ -130,7 +130,7 @@ function callTool(name: string, args: Json) {
         education: `${education.degree}, ${education.school}`,
         openSource: `${site.url}/open-source`,
         links: socials.map((s) => ({ label: s.label, url: s.href })),
-        mergedUpstreamPRs: openSource.filter((o) => o.role === "Contributor").reduce((n, o) => n + o.merged, 0),
+        mergedUpstreamPRs: counts.mergedUpstream,
       });
     default:
       return null;

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CaseStudyFigure } from "@/components/case-study";
 import { DocSection, DocShell } from "@/components/doc/doc-shell";
-import { caseStudies, changelog, personal, scratchIndex, site } from "@/data/portfolio";
+import { caseStudies, changelog, personal, scratchIndex, site, uniiqDecisionTwin } from "@/data/portfolio";
 import { search } from "@/lib/retrieval";
 
 export const dynamicParams = false;
@@ -86,6 +86,20 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
       ask={[`Tell me about ${c.title}`, `What was hard about ${c.title.split(" — ")[0]}?`, "Is he available, and for what roles?"]}
     >
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {c.id === "uniiq-platform" ? (
+        <DocSection id="admissions-decision-twin" title={uniiqDecisionTwin.title} note={uniiqDecisionTwin.scope}>
+          <div className="space-y-3 text-[15px] leading-relaxed text-ink-muted">
+            <p>{uniiqDecisionTwin.summary}</p>
+            <p className="text-ink">{uniiqDecisionTwin.evaluation}</p>
+            <p>{uniiqDecisionTwin.methodology}</p>
+            <div className="border-l-2 border-rule pl-4 text-sm">
+              <p className="font-medium text-ink">How to interpret the results</p>
+              <p className="mt-2">The 60 artifacts come from 30 applicant scenarios; they are not 60 independent applicants. Percentages describe this controlled evaluation and do not establish production admission outcomes.</p>
+              <p className="mt-2">Source: the private Uniiq engineering work summary. The public summary does not include the complete replay package. For technical review, discuss the baseline configuration, scoring rules, scenario selection and examples of abstention.</p>
+            </div>
+          </div>
+        </DocSection>
+      ) : null}
       <CaseStudyFigure study={c} />
 
       {release ? (

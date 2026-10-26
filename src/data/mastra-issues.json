@@ -1,0 +1,625 @@
+{
+  "asOf": "2026-10-25",
+  "verifiedAt": "2026-10-26",
+  "source": "Public authored-issue search snapshot and GitHub GraphQL closure timelines. Resolutions require a merged PR recorded as issue closer.",
+  "summary": {
+    "authored": 57,
+    "open": 2,
+    "resolvedByOwnPR": 13,
+    "resolvedByOthers": 40,
+    "closedWithoutLinkedMerge": 2
+  },
+  "issues": [
+    {
+      "number": 28372,
+      "title": "[BUG] FastEmbed silently returns empty embeddings for incompatible ONNX output ranks",
+      "state": "open",
+      "url": "https://github.com/mastra-ai/mastra/issues/28372",
+      "resolution": null
+    },
+    {
+      "number": 28371,
+      "title": "[BUG] FastEmbed accepts invalid maxLength options and silently returns empty vectors",
+      "state": "open",
+      "url": "https://github.com/mastra-ai/mastra/issues/28371",
+      "resolution": null
+    },
+    {
+      "number": 28237,
+      "title": "[BUG] SparseTextEmbedding fails for cache paths with missing parent directories",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/28237",
+      "resolution": {
+        "number": 28277,
+        "author": "leoisadev1",
+        "url": "https://github.com/mastra-ai/mastra/pull/28277"
+      }
+    },
+    {
+      "number": 28236,
+      "title": "[BUG] FastEmbed discards all tokens when model_max_length metadata is missing",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/28236",
+      "resolution": {
+        "number": 28279,
+        "author": "leoisadev1",
+        "url": "https://github.com/mastra-ai/mastra/pull/28279"
+      }
+    },
+    {
+      "number": 27950,
+      "title": "[BUG] Failed sparse model downloads leave an incomplete cache that blocks retries",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/27950",
+      "resolution": {
+        "number": 28091,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/28091"
+      }
+    },
+    {
+      "number": 27949,
+      "title": "[BUG] FastEmbed uses CLS pooling for MiniLM and multilingual E5 sentence embeddings",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/27949",
+      "resolution": {
+        "number": 28091,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/28091"
+      }
+    },
+    {
+      "number": 27609,
+      "title": "[BUG] FastEmbed providers accept mismatched embedding counts",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/27609",
+      "resolution": {
+        "number": 27767,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/27767"
+      }
+    },
+    {
+      "number": 27608,
+      "title": "[BUG] FastEmbed accepts invalid batch sizes and can stall truncation counting",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/27608",
+      "resolution": {
+        "number": 27766,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/27766"
+      }
+    },
+    {
+      "number": 27360,
+      "title": "[BUG] Idle HTTP and Upstash logging transports prevent Node.js processes from exiting",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/27360",
+      "resolution": {
+        "number": 27704,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/27704"
+      }
+    },
+    {
+      "number": 27359,
+      "title": "[BUG] UpstashTransport silently drops batches rejected by Redis pipeline commands",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/27359",
+      "resolution": {
+        "number": 27480,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/27480"
+      }
+    },
+    {
+      "number": 27136,
+      "title": "[BUG] File and Upstash log queries accept invalid pagination ranges",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/27136",
+      "resolution": {
+        "number": 27175,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/27175"
+      }
+    },
+    {
+      "number": 27135,
+      "title": "[BUG] HttpTransport retries JSON serialization failures before any request",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/27135",
+      "resolution": {
+        "number": 27174,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/27174"
+      }
+    },
+    {
+      "number": 26819,
+      "title": "[BUG] UpstashTransport returns malformed entries as empty logs",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/26819",
+      "resolution": {
+        "number": 26891,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/26891"
+      }
+    },
+    {
+      "number": 26818,
+      "title": "[BUG] HTTP and Upstash transports mutate caller-owned log records",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/26818",
+      "resolution": {
+        "number": 26892,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/26892"
+      }
+    },
+    {
+      "number": 26670,
+      "title": "[BUG] HTTP and Upstash transports overwrite epoch-zero timestamps",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/26670",
+      "resolution": {
+        "number": 26679,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/26679"
+      }
+    },
+    {
+      "number": 26669,
+      "title": "[BUG] HttpTransport returns page 0 instead of page 1",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/26669",
+      "resolution": {
+        "number": 26678,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/26678"
+      }
+    },
+    {
+      "number": 26490,
+      "title": "[BUG] PinoLogger overrideDefaultTransports falls back to stdout",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/26490",
+      "resolution": null
+    },
+    {
+      "number": 26489,
+      "title": "[BUG] UpstashTransport buffer grows without bound during outages",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/26489",
+      "resolution": {
+        "number": 26605,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/26605"
+      }
+    },
+    {
+      "number": 26172,
+      "title": "[BUG] UpstashTransport paginated queries fetch the complete log list",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/26172",
+      "resolution": {
+        "number": 26173,
+        "author": "sdivyanshu90",
+        "url": "https://github.com/mastra-ai/mastra/pull/26173"
+      }
+    },
+    {
+      "number": 26171,
+      "title": "[BUG] UpstashTransport destroy flushes only one batch",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/26171",
+      "resolution": {
+        "number": 26174,
+        "author": "sdivyanshu90",
+        "url": "https://github.com/mastra-ai/mastra/pull/26174"
+      }
+    },
+    {
+      "number": 25913,
+      "title": "[BUG] HttpTransport buffer grows without bound during endpoint outages",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/25913",
+      "resolution": {
+        "number": 25958,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/25958"
+      }
+    },
+    {
+      "number": 25912,
+      "title": "[BUG] HttpTransport destroy flushes only one batch",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/25912",
+      "resolution": null
+    },
+    {
+      "number": 25870,
+      "title": "[BUG] HttpTransport retries permanent client errors",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/25870",
+      "resolution": {
+        "number": 26079,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/26079"
+      }
+    },
+    {
+      "number": 25869,
+      "title": "[BUG] FileTransport queries synchronously load the complete log file",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/25869",
+      "resolution": {
+        "number": 26191,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/26191"
+      }
+    },
+    {
+      "number": 25678,
+      "title": "[BUG] FileTransport silently ignores asynchronous write failures",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/25678",
+      "resolution": {
+        "number": 26331,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/26331"
+      }
+    },
+    {
+      "number": 25675,
+      "title": "[BUG] FileTransport accepts directories as log files",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/25675",
+      "resolution": {
+        "number": 26330,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/26330"
+      }
+    },
+    {
+      "number": 25401,
+      "title": "[BUG] FileTransport hides valid logs when one line is malformed",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/25401",
+      "resolution": {
+        "number": 25624,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/25624"
+      }
+    },
+    {
+      "number": 25397,
+      "title": "[BUG] UpstashTransport sends LTRIM arguments as log values",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/25397",
+      "resolution": {
+        "number": 25496,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/25496"
+      }
+    },
+    {
+      "number": 25245,
+      "title": "[BUG] HttpTransport ignores zero and false retry options",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/25245",
+      "resolution": {
+        "number": 25265,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/25265"
+      }
+    },
+    {
+      "number": 25243,
+      "title": "fix(codemod): allow large print output",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/25243",
+      "resolution": {
+        "number": 25244,
+        "author": "sdivyanshu90",
+        "url": "https://github.com/mastra-ai/mastra/pull/25244"
+      }
+    },
+    {
+      "number": 25106,
+      "title": "fix(codemod): migrate legacy scores imports to evals",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/25106",
+      "resolution": {
+        "number": 25108,
+        "author": "sdivyanshu90",
+        "url": "https://github.com/mastra-ai/mastra/pull/25108"
+      }
+    },
+    {
+      "number": 25103,
+      "title": "fix(codemod): migrate MastraMessageV2 to a valid v1 subpath",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/25103",
+      "resolution": {
+        "number": 25104,
+        "author": "sdivyanshu90",
+        "url": "https://github.com/mastra-ai/mastra/pull/25104"
+      }
+    },
+    {
+      "number": 24784,
+      "title": "fix(codemod): migrate agent.tools to listTools",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/24784",
+      "resolution": {
+        "number": 24785,
+        "author": "sdivyanshu90",
+        "url": "https://github.com/mastra-ai/mastra/pull/24785"
+      }
+    },
+    {
+      "number": 24778,
+      "title": "fix(codemod): report transform failures and exit non-zero",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/24778",
+      "resolution": {
+        "number": 24783,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/24783"
+      }
+    },
+    {
+      "number": 24529,
+      "title": "fix(codemod): forward jscodeshift output",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/24529",
+      "resolution": {
+        "number": 24530,
+        "author": "sdivyanshu90",
+        "url": "https://github.com/mastra-ai/mastra/pull/24530"
+      }
+    },
+    {
+      "number": 24527,
+      "title": "fix(codemod): do not skip projects under hidden parent directories",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/24527",
+      "resolution": {
+        "number": 24528,
+        "author": "sdivyanshu90",
+        "url": "https://github.com/mastra-ai/mastra/pull/24528"
+      }
+    },
+    {
+      "number": 24471,
+      "title": "fix(codemod): migrate RuntimeContext imports from @mastra/core/di",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/24471",
+      "resolution": {
+        "number": 24472,
+        "author": "sdivyanshu90",
+        "url": "https://github.com/mastra-ai/mastra/pull/24472"
+      }
+    },
+    {
+      "number": 24468,
+      "title": "fix(codemod): reject unknown codemod names",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/24468",
+      "resolution": {
+        "number": 24470,
+        "author": "sdivyanshu90",
+        "url": "https://github.com/mastra-ai/mastra/pull/24470"
+      }
+    },
+    {
+      "number": 24250,
+      "title": "fix(codemod): verbose mode passes an invalid jscodeshift argument",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/24250",
+      "resolution": {
+        "number": 24251,
+        "author": "sdivyanshu90",
+        "url": "https://github.com/mastra-ai/mastra/pull/24251"
+      }
+    },
+    {
+      "number": 24248,
+      "title": "[BUG] Composio catalog failures are returned as successful empty pages",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/24248",
+      "resolution": {
+        "number": 24292,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/24292"
+      }
+    },
+    {
+      "number": 23966,
+      "title": "[BUG] Editor clearCache leaves version-specific stored agents registered",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/23966",
+      "resolution": {
+        "number": 24000,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/24000"
+      }
+    },
+    {
+      "number": 23963,
+      "title": "[BUG] Inline workspace identity depends on object property order",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/23963",
+      "resolution": {
+        "number": 24009,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/24009"
+      }
+    },
+    {
+      "number": 23822,
+      "title": "[BUG] Scorer cache eviction can remove code-defined scorers",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/23822",
+      "resolution": {
+        "number": 23837,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/23837"
+      }
+    },
+    {
+      "number": 23820,
+      "title": "[BUG] Per-tool workspace settings do not round-trip through Editor",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/23820",
+      "resolution": {
+        "number": 23838,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/23838"
+      }
+    },
+    {
+      "number": 23715,
+      "title": "[BUG] Stored processor graph step IDs are discarded in workflows",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/23715",
+      "resolution": {
+        "number": 24099,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/24099"
+      }
+    },
+    {
+      "number": 23712,
+      "title": "[BUG] Conditional processor defaults run alongside matching branches",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/23712",
+      "resolution": {
+        "number": 24095,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/24095"
+      }
+    },
+    {
+      "number": 23400,
+      "title": "[BUG] Editor processor graphs bypass provider config schemas",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/23400",
+      "resolution": {
+        "number": 23569,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/23569"
+      }
+    },
+    {
+      "number": 23396,
+      "title": "[BUG] Editor version zero request can return cached latest entity",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/23396",
+      "resolution": {
+        "number": 23562,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/23562"
+      }
+    },
+    {
+      "number": 23305,
+      "title": "[BUG] CLI polling retries explicit cancellation",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/23305",
+      "resolution": {
+        "number": 23352,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/23352"
+      }
+    },
+    {
+      "number": 23302,
+      "title": "[BUG] CLI peer dependency warning crashes on unresolved installed versions",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/23302",
+      "resolution": {
+        "number": 23607,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/23607"
+      }
+    },
+    {
+      "number": 23193,
+      "title": "[BUG] CLI peer dependency fix suggests npm inside pnpm workspaces",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/23193",
+      "resolution": {
+        "number": 23208,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/23208"
+      }
+    },
+    {
+      "number": 23191,
+      "title": "[BUG] CLI package inventory ignores optional Mastra dependencies",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/23191",
+      "resolution": {
+        "number": 23211,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/23211"
+      }
+    },
+    {
+      "number": 23176,
+      "title": "[BUG] CLI environment writes resolve successfully after failures",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/23176",
+      "resolution": {
+        "number": 23215,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/23215"
+      }
+    },
+    {
+      "number": 23174,
+      "title": "[BUG] CLI entry discovery accepts directories as files",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/23174",
+      "resolution": {
+        "number": 23212,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/23212"
+      }
+    },
+    {
+      "number": 22621,
+      "title": "fix(cli): retry polling errors with top-level network codes",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/22621",
+      "resolution": {
+        "number": 22622,
+        "author": "sdivyanshu90",
+        "url": "https://github.com/mastra-ai/mastra/pull/22622"
+      }
+    },
+    {
+      "number": 22619,
+      "title": "[BUG] CLI: file replacements corrupt values containing dollar tokens",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/22619",
+      "resolution": {
+        "number": 23091,
+        "author": "mastra-platform",
+        "url": "https://github.com/mastra-ai/mastra/pull/23091"
+      }
+    },
+    {
+      "number": 22533,
+      "title": "docs: correct Signals XML name guidance",
+      "state": "closed",
+      "url": "https://github.com/mastra-ai/mastra/issues/22533",
+      "resolution": {
+        "number": 22534,
+        "author": "sdivyanshu90",
+        "url": "https://github.com/mastra-ai/mastra/pull/22534"
+      }
+    }
+  ]
+}

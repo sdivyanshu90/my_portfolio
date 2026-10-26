@@ -17,8 +17,9 @@ export default function Fit() {
       title="Hold his record against your role"
       lede={
         <p>
-          Paste a job description. Each requirement is matched against his verified dossier — with links to the
-          evidence — and anything not on record is reported as a gap, not stretched. It runs entirely in your browser;
+          Paste a job description. See which requirements have supporting evidence, which are only partly covered, and which
+          need verification. Required and preferred criteria stay separate; years, eligibility and production scope
+          are checked explicitly. Review the linked evidence and explanations before drawing conclusions. It runs entirely in your browser;
           the text is never sent. Export the result as a one-page brief for your hiring team.
         </p>
       }

@@ -31,7 +31,7 @@ const personJsonLd = {
   "@type": "Person",
   name: personal.name,
   jobTitle: personal.roles.join(", "),
-  worksFor: { "@type": "Organization", name: "Uniiq", url: "https://uniiq.ai" },
+  worksFor: { "@type": "Organization", name: "Uniiq.ai", url: "https://uniiq.ai" },
   alumniOf: { "@type": "CollegeOrUniversity", name: "University of Mumbai" },
   email: `mailto:${personal.email}`,
   url: site.url,

@@ -40,7 +40,7 @@ export const FIELD_NODES: FieldNode[] = [
       sub: [
         o.merged ? `${o.merged} merged` : null,
         o.authored ? `${o.authored} PRs` : null,
-        o.reportedFixed?.length ? `${o.reportedFixed.length} fixed upstream` : null,
+        o.reportedFixed?.length ? `${o.reportedFixed.length} documented patch examples` : null,
       ]
         .filter(Boolean)
         .join(" · "),

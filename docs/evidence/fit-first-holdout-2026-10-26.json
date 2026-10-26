@@ -1,0 +1,1512 @@
+{
+  "reviewedAt": "2026-10-26",
+  "summary": [
+    {
+      "split": "calibration",
+      "requirements": 24,
+      "beforeAgreement": 5,
+      "afterAgreement": 24,
+      "beforeFalseStrong": 0,
+      "afterFalseStrong": 0
+    },
+    {
+      "split": "holdout",
+      "requirements": 12,
+      "beforeAgreement": 2,
+      "afterAgreement": 5,
+      "beforeFalseStrong": 1,
+      "afterFalseStrong": 1
+    },
+    {
+      "split": "all",
+      "requirements": 36,
+      "beforeAgreement": 7,
+      "afterAgreement": 29,
+      "beforeFalseStrong": 1,
+      "afterFalseStrong": 1
+    }
+  ],
+  "parsing": [
+    {
+      "job": "openai-applied-ai-digital-natives",
+      "selectedRequirements": 3,
+      "extractedRows": 4
+    },
+    {
+      "job": "level-applied-ai",
+      "selectedRequirements": 3,
+      "extractedRows": 4
+    },
+    {
+      "job": "accenture-federal-ml",
+      "selectedRequirements": 3,
+      "extractedRows": 3
+    },
+    {
+      "job": "graphcore-graduate-ml-2027",
+      "selectedRequirements": 3,
+      "extractedRows": 4
+    },
+    {
+      "job": "twilio-conversation-intelligence-ml",
+      "selectedRequirements": 3,
+      "extractedRows": 3
+    },
+    {
+      "job": "xpeng-staff-llm-quantization",
+      "selectedRequirements": 3,
+      "extractedRows": 3
+    },
+    {
+      "job": "ameba-full-stack",
+      "selectedRequirements": 3,
+      "extractedRows": 3
+    },
+    {
+      "job": "air-apps-backend",
+      "selectedRequirements": 3,
+      "extractedRows": 3
+    },
+    {
+      "job": "spotlio-infrastructure",
+      "selectedRequirements": 3,
+      "extractedRows": 3
+    },
+    {
+      "job": "palantir-backend-infrastructure",
+      "selectedRequirements": 3,
+      "extractedRows": 3
+    },
+    {
+      "job": "biti-backend",
+      "selectedRequirements": 3,
+      "extractedRows": 3
+    },
+    {
+      "job": "tenstorrent-ml-ai-models",
+      "selectedRequirements": 3,
+      "extractedRows": 4
+    }
+  ],
+  "results": [
+    {
+      "job": "openai-applied-ai-digital-natives",
+      "company": "OpenAI",
+      "split": "calibration",
+      "url": "https://jobs.ashbyhq.com/openai/d039c0ef-ab36-4d40-bc5e-5c70295b2eb7",
+      "requirement": "High proficiency in Python and comfort across the AI application stack; JavaScript, TypeScript or another relevant language is an additional advantage.",
+      "expected": "strong",
+      "rationale": "Python ML research and application projects, plus TypeScript/React/Express ownership at Uniiq, directly cover the required combination.",
+      "before": "partial",
+      "after": {
+        "requirement": "High proficiency in Python and comfort across the AI application stack; JavaScript, TypeScript or another relevant language is an additional advantage.",
+        "priority": "unspecified",
+        "strength": "strong",
+        "coverage": 1,
+        "matched": [
+          "Python",
+          "JavaScript",
+          "TypeScript"
+        ],
+        "missing": [],
+        "needsVerification": [],
+        "explanation": "Evidence found for Python, JavaScript, TypeScript.",
+        "evidence": [
+          {
+            "type": "case",
+            "name": "Privacy-Preserving Deep Learning via MPC",
+            "url": "https://div90.vercel.app/work/mpc-deep-learning",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "Paged KV-Cache Engine (vLLM-style)",
+            "url": "https://div90.vercel.app/work/kv-cache-engine",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "DIV-1 — this portfolio, built as a production AI system",
+            "url": "https://div90.vercel.app/work/div1-console",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "Uniiq.ai — Admissions Platform & Decision Twin",
+            "url": "https://div90.vercel.app/work/uniiq-platform",
+            "scope": "Documented work"
+          }
+        ]
+      }
+    },
+    {
+      "job": "openai-applied-ai-digital-natives",
+      "company": "OpenAI",
+      "split": "calibration",
+      "url": "https://jobs.ashbyhq.com/openai/d039c0ef-ab36-4d40-bc5e-5c70295b2eb7",
+      "requirement": "Know how to assess AI systems methodically with representative datasets, graders, production feedback and human judgment.",
+      "expected": "partial",
+      "rationale": "Frozen offline scenarios, adversarial cases and metric review support systematic evaluation. The cited evaluation does not establish a production-feedback evaluation loop.",
+      "before": "gap",
+      "after": {
+        "requirement": "Know how to assess AI systems methodically with representative datasets, graders, production feedback and human judgment.",
+        "priority": "unspecified",
+        "strength": "partial",
+        "coverage": 0.75,
+        "matched": [
+          "Evaluation datasets",
+          "Evaluation graders",
+          "Human evaluation"
+        ],
+        "missing": [
+          "Production feedback"
+        ],
+        "needsVerification": [
+          "Production use of Evaluation datasets is not established by the linked evidence.",
+          "Production use of Evaluation graders is not established by the linked evidence.",
+          "Production use of Human evaluation is not established by the linked evidence."
+        ],
+        "explanation": "Evidence found for Evaluation datasets, Evaluation graders, Human evaluation. Not on record: Production feedback. Production use of Evaluation datasets is not established by the linked evidence. Production use of Evaluation graders is not established by the linked evidence. Production use of Human evaluation is not established by the linked evidence.",
+        "evidence": [
+          {
+            "type": "case",
+            "name": "Uniiq.ai — Admissions Platform & Decision Twin",
+            "url": "https://div90.vercel.app/work/uniiq-platform",
+            "scope": "Documented work"
+          },
+          {
+            "type": "oss",
+            "name": "Mastra (mastra-ai/mastra)",
+            "url": "https://div90.vercel.app/open-source",
+            "scope": "Documented work"
+          },
+          {
+            "type": "repo",
+            "name": "LLM eval harness",
+            "url": "https://github.com/sdivyanshu90/EvalForge",
+            "scope": "Repository implementation"
+          }
+        ]
+      }
+    },
+    {
+      "job": "openai-applied-ai-digital-natives",
+      "company": "OpenAI",
+      "split": "calibration",
+      "url": "https://jobs.ashbyhq.com/openai/d039c0ef-ab36-4d40-bc5e-5c70295b2eb7",
+      "requirement": "Demonstrate delivery of AI or ML systems in enterprise settings, including the transition from prototype into production.",
+      "expected": "verify",
+      "rationale": "Uniiq establishes AI product engineering, but enterprise deployment scope and a documented prototype-to-production customer engagement are not established. Decision Twin is offline only.",
+      "before": "partial",
+      "after": {
+        "requirement": "Demonstrate delivery of AI or ML systems in enterprise settings, including the transition from prototype into production.",
+        "priority": "unspecified",
+        "strength": "verify",
+        "coverage": 1,
+        "matched": [
+          "Machine learning"
+        ],
+        "missing": [],
+        "needsVerification": [
+          "Enterprise deployment scope is not established by the portfolio."
+        ],
+        "explanation": "Evidence found for Machine learning. Enterprise deployment scope is not established by the portfolio.",
+        "evidence": [
+          {
+            "type": "case",
+            "name": "Privacy-Preserving Deep Learning via MPC",
+            "url": "https://div90.vercel.app/work/mpc-deep-learning",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "Deep Learning for CMS Detector Physics",
+            "url": "https://div90.vercel.app/work/ml4sci-cms",
+            "scope": "Documented work"
+          },
+          {
+            "type": "ship",
+            "name": "RenAIssance OCR",
+            "url": "https://div90.vercel.app/work/renaissance-ocr",
+            "scope": "Documented work"
+          }
+        ]
+      }
+    },
+    {
+      "job": "level-applied-ai",
+      "company": "Level",
+      "split": "calibration",
+      "url": "https://jobs.ashbyhq.com/level/473dba32-2fe2-43ca-8bd4-9aa41c249760/",
+      "requirement": "At least seven years of professional engineering, including at least one year building and operating agentic systems in production on a modern or custom agent stack.",
+      "expected": "verify",
+      "rationale": "The dated roles do not demonstrate seven engineering years or one year of production agent operations. Research consulting and open-source activity cannot automatically be counted as equivalent tenure.",
+      "before": "partial",
+      "after": {
+        "requirement": "At least seven years of professional engineering, including at least one year building and operating agentic systems in production on a modern or custom agent stack.",
+        "priority": "unspecified",
+        "strength": "verify",
+        "coverage": 1,
+        "matched": [
+          "AI agents"
+        ],
+        "missing": [],
+        "needsVerification": [
+          "Required duration is not established for this specific skill or responsibility."
+        ],
+        "explanation": "Evidence found for AI agents. Required duration is not established for this specific skill or responsibility.",
+        "evidence": [
+          {
+            "type": "case",
+            "name": "DIV-1 — this portfolio, built as a production AI system",
+            "url": "https://div90.vercel.app/work/div1-console",
+            "scope": "Documented work"
+          },
+          {
+            "type": "ship",
+            "name": "University Admission MCP",
+            "url": "https://div90.vercel.app/work#shipped",
+            "scope": "Documented work"
+          },
+          {
+            "type": "oss",
+            "name": "mcp-college-counselor",
+            "url": "https://div90.vercel.app/open-source",
+            "scope": "Documented work"
+          }
+        ]
+      }
+    },
+    {
+      "job": "level-applied-ai",
+      "company": "Level",
+      "split": "calibration",
+      "url": "https://jobs.ashbyhq.com/level/473dba32-2fe2-43ca-8bd4-9aa41c249760/",
+      "requirement": "Be comfortable enforcing structured outputs and validating them in production with provider-native or comparable schema-based methods.",
+      "expected": "strong",
+      "rationale": "Uniiq uses schema-validated extraction, Zod output contracts, sanitized responses, deterministic fallbacks and recoverable model failures.",
+      "before": "partial",
+      "after": {
+        "requirement": "Be comfortable enforcing structured outputs and validating them in production with provider-native or comparable schema-based methods.",
+        "priority": "unspecified",
+        "strength": "strong",
+        "coverage": 1,
+        "matched": [
+          "Structured outputs"
+        ],
+        "missing": [],
+        "needsVerification": [],
+        "explanation": "Evidence found for Structured outputs.",
+        "evidence": [
+          {
+            "type": "case",
+            "name": "Uniiq.ai — Admissions Platform & Decision Twin",
+            "url": "https://div90.vercel.app/work/uniiq-platform",
+            "scope": "Documented work"
+          },
+          {
+            "type": "role",
+            "name": "Founding Engineer @ Uniiq.ai",
+            "url": "https://div90.vercel.app/cv",
+            "scope": "Documented work"
+          }
+        ]
+      }
+    },
+    {
+      "job": "level-applied-ai",
+      "company": "Level",
+      "split": "calibration",
+      "url": "https://jobs.ashbyhq.com/level/473dba32-2fe2-43ca-8bd4-9aa41c249760/",
+      "requirement": "Have production retrieval experience covering chunking, embeddings, hybrid search, reranking and metadata filters, including their failure modes; also understand evidence grounding and faithfulness or refusal checks.",
+      "expected": "partial",
+      "rationale": "RAG and vector-search reference projects, live BM25 dossier retrieval and citation safeguards support parts of this requirement. Production operation of the full retrieval combination is not evidenced.",
+      "before": "partial",
+      "after": {
+        "requirement": "Have production retrieval experience covering chunking, embeddings, hybrid search, reranking and metadata filters, including their failure modes; also understand evidence grounding and faithfulness or refusal checks.",
+        "priority": "unspecified",
+        "strength": "partial",
+        "coverage": 0.67,
+        "matched": [
+          "Retrieval",
+          "Chunking",
+          "Embeddings",
+          "Reranking"
+        ],
+        "missing": [
+          "Hybrid search",
+          "Metadata filters"
+        ],
+        "needsVerification": [
+          "Production use of Chunking is not established by the linked evidence.",
+          "Production use of Embeddings is not established by the linked evidence.",
+          "Production use of Reranking is not established by the linked evidence."
+        ],
+        "explanation": "Evidence found for Retrieval, Chunking, Embeddings, Reranking. Not on record: Hybrid search, Metadata filters. Production use of Chunking is not established by the linked evidence. Production use of Embeddings is not established by the linked evidence. Production use of Reranking is not established by the linked evidence.",
+        "evidence": [
+          {
+            "type": "case",
+            "name": "DIV-1 — this portfolio, built as a production AI system",
+            "url": "https://div90.vercel.app/work/div1-console",
+            "scope": "Documented work"
+          },
+          {
+            "type": "oss",
+            "name": "Mastra (mastra-ai/mastra)",
+            "url": "https://div90.vercel.app/open-source",
+            "scope": "Documented work"
+          },
+          {
+            "type": "repo",
+            "name": "Vector database",
+            "url": "https://github.com/sdivyanshu90/Vector-Database-from-Scratch",
+            "scope": "Repository implementation"
+          },
+          {
+            "type": "repo",
+            "name": "RAG pipeline",
+            "url": "https://github.com/sdivyanshu90/RAG-Pipeline-From-Scratch",
+            "scope": "Repository implementation"
+          }
+        ]
+      }
+    },
+    {
+      "job": "accenture-federal-ml",
+      "company": "Accenture Federal Services",
+      "split": "calibration",
+      "url": "https://job-boards.greenhouse.io/accenturefederalservices/jobs/4722607006",
+      "requirement": "Be proficient in Python and have experience with at least one ML framework, for example PyTorch, TensorFlow, scikit-learn, XGBoost or Hugging Face.",
+      "expected": "strong",
+      "rationale": "The requirement allows one framework. PyTorch OCR and Transformers/Whisper work substantiate the conjunction with Python; mastery of every listed framework is unnecessary.",
+      "before": "partial",
+      "after": {
+        "requirement": "Be proficient in Python and have experience with at least one ML framework, for example PyTorch, TensorFlow, scikit-learn, XGBoost or Hugging Face.",
+        "priority": "unspecified",
+        "strength": "strong",
+        "coverage": 1,
+        "matched": [
+          "Python",
+          "Machine learning",
+          "PyTorch"
+        ],
+        "missing": [],
+        "needsVerification": [],
+        "explanation": "Evidence found for Python, Machine learning, PyTorch.",
+        "evidence": [
+          {
+            "type": "case",
+            "name": "Privacy-Preserving Deep Learning via MPC",
+            "url": "https://div90.vercel.app/work/mpc-deep-learning",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "Paged KV-Cache Engine (vLLM-style)",
+            "url": "https://div90.vercel.app/work/kv-cache-engine",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "Deep Learning for CMS Detector Physics",
+            "url": "https://div90.vercel.app/work/ml4sci-cms",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "RenAIssance OCR — Historical Document Pipeline",
+            "url": "https://div90.vercel.app/work/renaissance-ocr",
+            "scope": "Documented work"
+          }
+        ]
+      }
+    },
+    {
+      "job": "accenture-federal-ml",
+      "company": "Accenture Federal Services",
+      "split": "calibration",
+      "url": "https://job-boards.greenhouse.io/accenturefederalservices/jobs/4722607006",
+      "requirement": "Have MLOps experience encompassing versioned models, CI/CD, model registries, feature stores, monitoring and automated retraining.",
+      "expected": "partial",
+      "rationale": "The dossier records CI evaluation and lists MLflow and Airflow, but does not demonstrate the whole operational chain, particularly feature stores, registries and automated retraining.",
+      "before": "partial",
+      "after": {
+        "requirement": "Have MLOps experience encompassing versioned models, CI/CD, model registries, feature stores, monitoring and automated retraining.",
+        "priority": "unspecified",
+        "strength": "partial",
+        "coverage": 0.5,
+        "matched": [
+          "CI/CD",
+          "Feature stores",
+          "Monitoring"
+        ],
+        "missing": [
+          "Model versioning",
+          "Model registries",
+          "Automated retraining"
+        ],
+        "needsVerification": [],
+        "explanation": "Evidence found for CI/CD, Feature stores, Monitoring. Not on record: Model versioning, Model registries, Automated retraining.",
+        "evidence": [
+          {
+            "type": "repo",
+            "name": "Feature store",
+            "url": "https://github.com/sdivyanshu90/build-your-own-feature-store",
+            "scope": "Repository implementation"
+          },
+          {
+            "type": "repo",
+            "name": "AI gateway",
+            "url": "https://github.com/sdivyanshu90/build-your-own-ai-gateway",
+            "scope": "Repository implementation"
+          },
+          {
+            "type": "repo",
+            "name": "AI observability platform",
+            "url": "https://github.com/sdivyanshu90/build-your-own-ai-observability",
+            "scope": "Repository implementation"
+          },
+          {
+            "type": "skill",
+            "name": "GitHub Actions CI/CD",
+            "url": "https://div90.vercel.app/cv",
+            "scope": "Listed skill"
+          }
+        ]
+      }
+    },
+    {
+      "job": "accenture-federal-ml",
+      "company": "Accenture Federal Services",
+      "split": "calibration",
+      "url": "https://job-boards.greenhouse.io/accenturefederalservices/jobs/4722607006",
+      "requirement": "Hold US citizenship without dual citizenship.",
+      "expected": "verify",
+      "rationale": "Nationality and citizenship status are not supplied. Mumbai location cannot establish or disprove citizenship.",
+      "before": "partial",
+      "after": {
+        "requirement": "Hold US citizenship without dual citizenship.",
+        "priority": "unspecified",
+        "strength": "verify",
+        "coverage": 0,
+        "matched": [],
+        "missing": [],
+        "needsVerification": [
+          "Confirm work eligibility, location or availability directly."
+        ],
+        "explanation": "No direct supporting evidence found in the portfolio. Confirm work eligibility, location or availability directly.",
+        "evidence": []
+      }
+    },
+    {
+      "job": "graphcore-graduate-ml-2027",
+      "company": "Graphcore",
+      "split": "calibration",
+      "url": "https://job-boards.greenhouse.io/graphcore/jobs/8894041002",
+      "requirement": "Have a bachelor or master degree in ML, computer science, mathematics, data science or a related subject.",
+      "expected": "strong",
+      "rationale": "The recorded B.E. in Computer Science satisfies the undergraduate computer-science alternative.",
+      "before": "partial",
+      "after": {
+        "requirement": "Have a bachelor or master degree in ML, computer science, mathematics, data science or a related subject.",
+        "priority": "unspecified",
+        "strength": "strong",
+        "coverage": 1,
+        "matched": [
+          "Machine learning",
+          "B.E. Computer Science"
+        ],
+        "missing": [],
+        "needsVerification": [],
+        "explanation": "Evidence found for Machine learning, B.E. Computer Science.",
+        "evidence": [
+          {
+            "type": "case",
+            "name": "Privacy-Preserving Deep Learning via MPC",
+            "url": "https://div90.vercel.app/work/mpc-deep-learning",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "Deep Learning for CMS Detector Physics",
+            "url": "https://div90.vercel.app/work/ml4sci-cms",
+            "scope": "Documented work"
+          },
+          {
+            "type": "ship",
+            "name": "RenAIssance OCR",
+            "url": "https://div90.vercel.app/work/renaissance-ocr",
+            "scope": "Documented work"
+          },
+          {
+            "type": "edu",
+            "name": "B.E. Computer Science, University of Mumbai",
+            "url": "https://div90.vercel.app/cv",
+            "scope": "Documented work"
+          }
+        ]
+      }
+    },
+    {
+      "job": "graphcore-graduate-ml-2027",
+      "company": "Graphcore",
+      "split": "calibration",
+      "url": "https://job-boards.greenhouse.io/graphcore/jobs/8894041002",
+      "requirement": "Have software development ability and proficiency with a deep learning framework such as PyTorch or JAX; project, coursework or research evidence is acceptable.",
+      "expected": "strong",
+      "rationale": "PyTorch OCR and research implementations are appropriate evidence because this posting explicitly accepts projects and research, without a production requirement.",
+      "before": "partial",
+      "after": {
+        "requirement": "Have software development ability and proficiency with a deep learning framework such as PyTorch or JAX; project, coursework or research evidence is acceptable.",
+        "priority": "unspecified",
+        "strength": "strong",
+        "coverage": 1,
+        "matched": [
+          "Deep learning",
+          "PyTorch"
+        ],
+        "missing": [],
+        "needsVerification": [],
+        "explanation": "Evidence found for Deep learning, PyTorch.",
+        "evidence": [
+          {
+            "type": "case",
+            "name": "Privacy-Preserving Deep Learning via MPC",
+            "url": "https://div90.vercel.app/work/mpc-deep-learning",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "Deep Learning for CMS Detector Physics",
+            "url": "https://div90.vercel.app/work/ml4sci-cms",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "RenAIssance OCR — Historical Document Pipeline",
+            "url": "https://div90.vercel.app/work/renaissance-ocr",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "Paged KV-Cache Engine (vLLM-style)",
+            "url": "https://div90.vercel.app/work/kv-cache-engine",
+            "scope": "Documented work"
+          }
+        ]
+      }
+    },
+    {
+      "job": "graphcore-graduate-ml-2027",
+      "company": "Graphcore",
+      "split": "calibration",
+      "url": "https://job-boards.greenhouse.io/graphcore/jobs/8894041002",
+      "requirement": "Already have UK work authorization for the entire graduate programme without needing employer visa sponsorship.",
+      "expected": "verify",
+      "rationale": "UK work authorization and sponsorship needs are absent from the dossier. Do not infer them from residence.",
+      "before": "gap",
+      "after": {
+        "requirement": "Already have UK work authorization for the entire graduate programme without needing employer visa sponsorship.",
+        "priority": "unspecified",
+        "strength": "verify",
+        "coverage": 0,
+        "matched": [],
+        "missing": [],
+        "needsVerification": [
+          "Confirm work eligibility, location or availability directly."
+        ],
+        "explanation": "No direct supporting evidence found in the portfolio. Confirm work eligibility, location or availability directly.",
+        "evidence": []
+      }
+    },
+    {
+      "job": "twilio-conversation-intelligence-ml",
+      "company": "Twilio",
+      "split": "calibration",
+      "url": "https://job-boards.greenhouse.io/twilio/jobs/7996774",
+      "requirement": "Have at least two years in ML engineering or applied ML, with Python proficiency, at least one of PyTorch, TensorFlow or JAX, and familiarity with NLP tools such as Hugging Face Transformers, NLTK or SpaCy.",
+      "expected": "verify",
+      "rationale": "Python, PyTorch and Transformers are supported. The complete conjunction still needs verification of two years specifically in ML engineering/applied ML; quantitative research dates alone do not establish it.",
+      "before": "partial",
+      "after": {
+        "requirement": "Have at least two years in ML engineering or applied ML, with Python proficiency, at least one of PyTorch, TensorFlow or JAX, and familiarity with NLP tools such as Hugging Face Transformers, NLTK or SpaCy.",
+        "priority": "unspecified",
+        "strength": "verify",
+        "coverage": 1,
+        "matched": [
+          "Machine learning",
+          "Python",
+          "PyTorch",
+          "NLP",
+          "Hugging Face Transformers"
+        ],
+        "missing": [],
+        "needsVerification": [
+          "Required duration is not established for this specific skill or responsibility."
+        ],
+        "explanation": "Evidence found for Machine learning, Python, PyTorch, NLP, Hugging Face Transformers. Required duration is not established for this specific skill or responsibility.",
+        "evidence": [
+          {
+            "type": "case",
+            "name": "Privacy-Preserving Deep Learning via MPC",
+            "url": "https://div90.vercel.app/work/mpc-deep-learning",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "Deep Learning for CMS Detector Physics",
+            "url": "https://div90.vercel.app/work/ml4sci-cms",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "Paged KV-Cache Engine (vLLM-style)",
+            "url": "https://div90.vercel.app/work/kv-cache-engine",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "RenAIssance OCR — Historical Document Pipeline",
+            "url": "https://div90.vercel.app/work/renaissance-ocr",
+            "scope": "Documented work"
+          }
+        ]
+      }
+    },
+    {
+      "job": "twilio-conversation-intelligence-ml",
+      "company": "Twilio",
+      "split": "calibration",
+      "url": "https://job-boards.greenhouse.io/twilio/jobs/7996774",
+      "requirement": "Have developed, tested and deployed small-to-medium ML services collaboratively, including model versioning, experiment tracking and infrastructure on AWS, GCP or Azure.",
+      "expected": "partial",
+      "rationale": "ML training, tested serving projects and AI product work support components, but model versioning and experiment tracking in a collaboratively deployed cloud ML service are not demonstrated as one complete workflow.",
+      "before": "gap",
+      "after": {
+        "requirement": "Have developed, tested and deployed small-to-medium ML services collaboratively, including model versioning, experiment tracking and infrastructure on AWS, GCP or Azure.",
+        "priority": "unspecified",
+        "strength": "partial",
+        "coverage": 0.75,
+        "matched": [
+          "Machine learning",
+          "Experiment tracking",
+          "AWS"
+        ],
+        "missing": [
+          "Model versioning"
+        ],
+        "needsVerification": [
+          "Production use of Experiment tracking is not established by the linked evidence.",
+          "Production use of AWS is not established by the linked evidence."
+        ],
+        "explanation": "Evidence found for Machine learning, Experiment tracking, AWS. Not on record: Model versioning. Production use of Experiment tracking is not established by the linked evidence. Production use of AWS is not established by the linked evidence.",
+        "evidence": [
+          {
+            "type": "case",
+            "name": "Privacy-Preserving Deep Learning via MPC",
+            "url": "https://div90.vercel.app/work/mpc-deep-learning",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "Deep Learning for CMS Detector Physics",
+            "url": "https://div90.vercel.app/work/ml4sci-cms",
+            "scope": "Documented work"
+          },
+          {
+            "type": "ship",
+            "name": "RenAIssance OCR",
+            "url": "https://div90.vercel.app/work/renaissance-ocr",
+            "scope": "Documented work"
+          },
+          {
+            "type": "skill",
+            "name": "MLflow",
+            "url": "https://div90.vercel.app/cv",
+            "scope": "Listed skill"
+          }
+        ]
+      }
+    },
+    {
+      "job": "twilio-conversation-intelligence-ml",
+      "company": "Twilio",
+      "split": "calibration",
+      "url": "https://job-boards.greenhouse.io/twilio/jobs/7996774",
+      "requirement": "Have experience integrating large or small language models into software.",
+      "expected": "strong",
+      "rationale": "Gemini-powered Uniiq intake, the graph-query product and this portfolio directly demonstrate model integration.",
+      "before": "partial",
+      "after": {
+        "requirement": "Have experience integrating large or small language models into software.",
+        "priority": "unspecified",
+        "strength": "strong",
+        "coverage": 1,
+        "matched": [
+          "LLMs"
+        ],
+        "missing": [],
+        "needsVerification": [],
+        "explanation": "Evidence found for LLMs.",
+        "evidence": [
+          {
+            "type": "case",
+            "name": "Uniiq.ai — Admissions Platform & Decision Twin",
+            "url": "https://div90.vercel.app/work/uniiq-platform",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "RenAIssance OCR — Historical Document Pipeline",
+            "url": "https://div90.vercel.app/work/renaissance-ocr",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "Paged KV-Cache Engine (vLLM-style)",
+            "url": "https://div90.vercel.app/work/kv-cache-engine",
+            "scope": "Documented work"
+          }
+        ]
+      }
+    },
+    {
+      "job": "xpeng-staff-llm-quantization",
+      "company": "XPENG",
+      "split": "calibration",
+      "url": "https://job-boards.greenhouse.io/xpengmotors/jobs/8710020002",
+      "requirement": "Understand transformer architectures and LLM inference deeply.",
+      "expected": "strong",
+      "rationale": "The from-scratch Transformer and paged KV-cache with continuous batching support both conceptual areas; this requirement itself does not demand fleet-scale deployment.",
+      "before": "gap",
+      "after": {
+        "requirement": "Understand transformer architectures and LLM inference deeply.",
+        "priority": "unspecified",
+        "strength": "strong",
+        "coverage": 1,
+        "matched": [
+          "Transformer architectures",
+          "LLMs"
+        ],
+        "missing": [],
+        "needsVerification": [],
+        "explanation": "Evidence found for Transformer architectures, LLMs.",
+        "evidence": [
+          {
+            "type": "case",
+            "name": "Indic ASR Optimization & Consensus Evaluation",
+            "url": "https://div90.vercel.app/work/indic-asr",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "Uniiq.ai — Admissions Platform & Decision Twin",
+            "url": "https://div90.vercel.app/work/uniiq-platform",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "RenAIssance OCR — Historical Document Pipeline",
+            "url": "https://div90.vercel.app/work/renaissance-ocr",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "Paged KV-Cache Engine (vLLM-style)",
+            "url": "https://div90.vercel.app/work/kv-cache-engine",
+            "scope": "Documented work"
+          }
+        ]
+      }
+    },
+    {
+      "job": "xpeng-staff-llm-quantization",
+      "company": "XPENG",
+      "split": "calibration",
+      "url": "https://job-boards.greenhouse.io/xpengmotors/jobs/8710020002",
+      "requirement": "Have practical experience either quantizing or deploying deep learning models in production.",
+      "expected": "verify",
+      "rationale": "FromScratchQuant and tested inference projects support hands-on implementation, but production quantization or production deployment of a deep learning model is not established. Calling an external LLM API is not sufficient evidence.",
+      "before": "partial",
+      "after": {
+        "requirement": "Have practical experience either quantizing or deploying deep learning models in production.",
+        "priority": "unspecified",
+        "strength": "verify",
+        "coverage": 1,
+        "matched": [
+          "Deep learning"
+        ],
+        "missing": [],
+        "needsVerification": [
+          "Production use of Deep learning is not established by the linked evidence."
+        ],
+        "explanation": "Evidence found for Deep learning. Production use of Deep learning is not established by the linked evidence.",
+        "evidence": [
+          {
+            "type": "case",
+            "name": "Privacy-Preserving Deep Learning via MPC",
+            "url": "https://div90.vercel.app/work/mpc-deep-learning",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "Deep Learning for CMS Detector Physics",
+            "url": "https://div90.vercel.app/work/ml4sci-cms",
+            "scope": "Documented work"
+          },
+          {
+            "type": "edu",
+            "name": "B.E. Computer Science, University of Mumbai",
+            "url": "https://div90.vercel.app/cv",
+            "scope": "Documented work"
+          }
+        ]
+      }
+    },
+    {
+      "job": "xpeng-staff-llm-quantization",
+      "company": "XPENG",
+      "split": "calibration",
+      "url": "https://job-boards.greenhouse.io/xpengmotors/jobs/8710020002",
+      "requirement": "Preferred: have publications at venues such as NeurIPS, ICML, ICLR or ACL, or comparable conferences.",
+      "expected": "gap",
+      "rationale": "No research publication is recorded. Yale research and proposed Sequre PRs are not publications; this remains a preferred qualification rather than a mandatory gate.",
+      "before": "gap",
+      "after": {
+        "requirement": "Preferred: have publications at venues such as NeurIPS, ICML, ICLR or ACL, or comparable conferences.",
+        "priority": "unspecified",
+        "strength": "gap",
+        "coverage": 0,
+        "matched": [],
+        "missing": [
+          "Research publications or patents are not on record"
+        ],
+        "needsVerification": [],
+        "explanation": "No direct supporting evidence found in the portfolio. Not on record: Research publications or patents are not on record.",
+        "evidence": []
+      }
+    },
+    {
+      "job": "ameba-full-stack",
+      "company": "Ameba",
+      "split": "calibration",
+      "url": "https://jobs.ashbyhq.com/ameba/360706a5-1a0a-4a60-9755-5d3ac6c306d6",
+      "requirement": "Have at least three years of software-engineering experience.",
+      "expected": "verify",
+      "rationale": "The record includes 2023-24 contributions and dated research and founding roles, but does not document three years working as a software engineer. Counts of PRs are not tenure.",
+      "before": "partial",
+      "after": {
+        "requirement": "Have at least three years of software-engineering experience.",
+        "priority": "unspecified",
+        "strength": "verify",
+        "coverage": 0,
+        "matched": [],
+        "missing": [],
+        "needsVerification": [
+          "Required duration is not established for this specific skill or responsibility."
+        ],
+        "explanation": "No direct supporting evidence found in the portfolio. Required duration is not established for this specific skill or responsibility.",
+        "evidence": []
+      }
+    },
+    {
+      "job": "ameba-full-stack",
+      "company": "Ameba",
+      "split": "calibration",
+      "url": "https://jobs.ashbyhq.com/ameba/360706a5-1a0a-4a60-9755-5d3ac6c306d6",
+      "requirement": "Have at least two years using React/TypeScript and an object-oriented language such as Java, Scala, Kotlin, C# or C++.",
+      "expected": "verify",
+      "rationale": "React/TypeScript work and listed Java/C++ provide relevant skills, but two years of the specified combined experience is not established.",
+      "before": "partial",
+      "after": {
+        "requirement": "Have at least two years using React/TypeScript and an object-oriented language such as Java, Scala, Kotlin, C# or C++.",
+        "priority": "unspecified",
+        "strength": "verify",
+        "coverage": 1,
+        "matched": [
+          "React",
+          "Java"
+        ],
+        "missing": [],
+        "needsVerification": [
+          "Required duration is not established for this specific skill or responsibility."
+        ],
+        "explanation": "Evidence found for React, Java. Required duration is not established for this specific skill or responsibility.",
+        "evidence": [
+          {
+            "type": "case",
+            "name": "Uniiq.ai — Admissions Platform & Decision Twin",
+            "url": "https://div90.vercel.app/work/uniiq-platform",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "Graph Data Explorer AI",
+            "url": "https://div90.vercel.app/work/graph-data-explorer",
+            "scope": "Documented work"
+          },
+          {
+            "type": "ship",
+            "name": "Graph Data Explorer AI",
+            "url": "https://div90.vercel.app/work/graph-data-explorer",
+            "scope": "Documented work"
+          },
+          {
+            "type": "skill",
+            "name": "Java",
+            "url": "https://div90.vercel.app/cv",
+            "scope": "Listed skill"
+          }
+        ]
+      }
+    },
+    {
+      "job": "ameba-full-stack",
+      "company": "Ameba",
+      "split": "calibration",
+      "url": "https://jobs.ashbyhq.com/ameba/360706a5-1a0a-4a60-9755-5d3ac6c306d6",
+      "requirement": "Desirable: be interested in AI and familiar with building LLM-based agents.",
+      "expected": "strong",
+      "rationale": "The admissions MCP agent and validated function router directly support agent familiarity at the requested level. This is desirable, not an additional mandatory qualification.",
+      "before": "partial",
+      "after": {
+        "requirement": "Desirable: be interested in AI and familiar with building LLM-based agents.",
+        "priority": "unspecified",
+        "strength": "strong",
+        "coverage": 1,
+        "matched": [
+          "AI agents"
+        ],
+        "missing": [],
+        "needsVerification": [],
+        "explanation": "Evidence found for AI agents.",
+        "evidence": [
+          {
+            "type": "case",
+            "name": "DIV-1 — this portfolio, built as a production AI system",
+            "url": "https://div90.vercel.app/work/div1-console",
+            "scope": "Documented work"
+          },
+          {
+            "type": "ship",
+            "name": "University Admission MCP",
+            "url": "https://div90.vercel.app/work#shipped",
+            "scope": "Documented work"
+          },
+          {
+            "type": "oss",
+            "name": "mcp-college-counselor",
+            "url": "https://div90.vercel.app/open-source",
+            "scope": "Documented work"
+          }
+        ]
+      }
+    },
+    {
+      "job": "air-apps-backend",
+      "company": "Air Apps",
+      "split": "calibration",
+      "url": "https://jobs.ashbyhq.com/airapps/a83155dd-2e5f-48eb-a72f-2e8d3ca0e5e9/",
+      "requirement": "Have at least five years working in backend engineering roles.",
+      "expected": "verify",
+      "rationale": "The dossier does not establish five backend-engineering years. Founding Engineer is the correct current title, but it is not evidence of that duration.",
+      "before": "partial",
+      "after": {
+        "requirement": "Have at least five years working in backend engineering roles.",
+        "priority": "unspecified",
+        "strength": "verify",
+        "coverage": 1,
+        "matched": [
+          "Backend development"
+        ],
+        "missing": [],
+        "needsVerification": [
+          "Required duration is not established for this specific skill or responsibility."
+        ],
+        "explanation": "Evidence found for Backend development. Required duration is not established for this specific skill or responsibility.",
+        "evidence": [
+          {
+            "type": "case",
+            "name": "Uniiq.ai — Admissions Platform & Decision Twin",
+            "url": "https://div90.vercel.app/work/uniiq-platform",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "Graph Data Explorer AI",
+            "url": "https://div90.vercel.app/work/graph-data-explorer",
+            "scope": "Documented work"
+          },
+          {
+            "type": "ship",
+            "name": "Graph Data Explorer AI",
+            "url": "https://div90.vercel.app/work/graph-data-explorer",
+            "scope": "Documented work"
+          }
+        ]
+      }
+    },
+    {
+      "job": "air-apps-backend",
+      "company": "Air Apps",
+      "split": "calibration",
+      "url": "https://jobs.ashbyhq.com/airapps/a83155dd-2e5f-48eb-a72f-2e8d3ca0e5e9/",
+      "requirement": "Be proficient with both Node.js and TypeScript.",
+      "expected": "strong",
+      "rationale": "Uniiq Express backend ownership and typed LLM tooling substantiate both technologies together.",
+      "before": "strong",
+      "after": {
+        "requirement": "Be proficient with both Node.js and TypeScript.",
+        "priority": "unspecified",
+        "strength": "strong",
+        "coverage": 1,
+        "matched": [
+          "Node.js",
+          "TypeScript"
+        ],
+        "missing": [],
+        "needsVerification": [],
+        "explanation": "Evidence found for Node.js, TypeScript.",
+        "evidence": [
+          {
+            "type": "case",
+            "name": "Uniiq.ai — Admissions Platform & Decision Twin",
+            "url": "https://div90.vercel.app/work/uniiq-platform",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "DIV-1 — this portfolio, built as a production AI system",
+            "url": "https://div90.vercel.app/work/div1-console",
+            "scope": "Documented work"
+          },
+          {
+            "type": "repo",
+            "name": "AI gateway",
+            "url": "https://github.com/sdivyanshu90/build-your-own-ai-gateway",
+            "scope": "Repository implementation"
+          },
+          {
+            "type": "skill",
+            "name": "Node.js / Express",
+            "url": "https://div90.vercel.app/cv",
+            "scope": "Listed skill"
+          }
+        ]
+      }
+    },
+    {
+      "job": "air-apps-backend",
+      "company": "Air Apps",
+      "split": "calibration",
+      "url": "https://jobs.ashbyhq.com/airapps/a83155dd-2e5f-48eb-a72f-2e8d3ca0e5e9/",
+      "requirement": "Have substantial experience using Supabase or a comparable backend service based on PostgreSQL.",
+      "expected": "partial",
+      "rationale": "Neon Postgres analytics is relevant to the PostgreSQL-based alternative, so absence of Supabase is not by itself a gap. The dossier does not establish substantial experience with that backend service.",
+      "before": "partial",
+      "after": {
+        "requirement": "Have substantial experience using Supabase or a comparable backend service based on PostgreSQL.",
+        "priority": "unspecified",
+        "strength": "partial",
+        "coverage": 1,
+        "matched": [
+          "Backend development",
+          "PostgreSQL"
+        ],
+        "missing": [],
+        "needsVerification": [],
+        "explanation": "Evidence found for Backend development, PostgreSQL. Related work supports part of this requirement; it does not establish the full claim.",
+        "evidence": [
+          {
+            "type": "case",
+            "name": "Uniiq.ai — Admissions Platform & Decision Twin",
+            "url": "https://div90.vercel.app/work/uniiq-platform",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "Graph Data Explorer AI",
+            "url": "https://div90.vercel.app/work/graph-data-explorer",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "DIV-1 — this portfolio, built as a production AI system",
+            "url": "https://div90.vercel.app/work/div1-console",
+            "scope": "Documented work"
+          },
+          {
+            "type": "ship",
+            "name": "Graph Data Explorer AI",
+            "url": "https://div90.vercel.app/work/graph-data-explorer",
+            "scope": "Documented work"
+          }
+        ]
+      }
+    },
+    {
+      "job": "spotlio-infrastructure",
+      "company": "Spotlio",
+      "split": "holdout",
+      "url": "https://jobs.lever.co/catalate/6a9aac86-0082-4402-873f-1f20a0b37d8b",
+      "requirement": "Be proficient with Git and its collaboration workflows.",
+      "expected": "strong",
+      "rationale": "Merged external contributions and linked issue-to-fix histories demonstrate actual upstream collaboration, not merely a Git keyword.",
+      "before": "partial",
+      "after": {
+        "requirement": "Be proficient with Git and its collaboration workflows.",
+        "priority": "unspecified",
+        "strength": "gap",
+        "coverage": 0,
+        "matched": [],
+        "missing": [],
+        "needsVerification": [],
+        "explanation": "No direct supporting evidence found in the portfolio.",
+        "evidence": []
+      }
+    },
+    {
+      "job": "spotlio-infrastructure",
+      "company": "Spotlio",
+      "split": "holdout",
+      "url": "https://jobs.lever.co/catalate/6a9aac86-0082-4402-873f-1f20a0b37d8b",
+      "requirement": "Have infrastructure-as-code experience with Terraform, CloudFormation or similar tools.",
+      "expected": "gap",
+      "rationale": "No infrastructure-as-code implementation or named IaC tool is recorded. AWS and Docker listings do not establish declarative infrastructure management.",
+      "before": "partial",
+      "after": {
+        "requirement": "Have infrastructure-as-code experience with Terraform, CloudFormation or similar tools.",
+        "priority": "unspecified",
+        "strength": "gap",
+        "coverage": 0,
+        "matched": [],
+        "missing": [
+          "Terraform"
+        ],
+        "needsVerification": [],
+        "explanation": "No direct supporting evidence found in the portfolio. Not on record: Terraform.",
+        "evidence": []
+      }
+    },
+    {
+      "job": "spotlio-infrastructure",
+      "company": "Spotlio",
+      "split": "holdout",
+      "url": "https://jobs.lever.co/catalate/6a9aac86-0082-4402-873f-1f20a0b37d8b",
+      "requirement": "Have experience managing and scaling AWS infrastructure, covering services such as RDS, CloudWatch, EC2, load balancing/WAF, Redshift, CloudFront, S3, Route53, ECS/Docker, Lambda and Redis, with IaC tooling.",
+      "expected": "verify",
+      "rationale": "AWS/SageMaker/EC2 and Docker are listed, but ownership and scaling across this operational service breadth are not documented; no production scale should be inferred.",
+      "before": "gap",
+      "after": {
+        "requirement": "Have experience managing and scaling AWS infrastructure, covering services such as RDS, CloudWatch, EC2, load balancing/WAF, Redshift, CloudFront, S3, Route53, ECS/Docker, Lambda and Redis, with IaC tooling.",
+        "priority": "unspecified",
+        "strength": "partial",
+        "coverage": 0.67,
+        "matched": [
+          "AWS",
+          "Docker"
+        ],
+        "missing": [
+          "Redis"
+        ],
+        "needsVerification": [],
+        "explanation": "Evidence found for AWS, Docker. Not on record: Redis.",
+        "evidence": [
+          {
+            "type": "skill",
+            "name": "AWS (SageMaker, EC2)",
+            "url": "https://div90.vercel.app/cv",
+            "scope": "Listed skill"
+          },
+          {
+            "type": "skill",
+            "name": "Docker",
+            "url": "https://div90.vercel.app/cv",
+            "scope": "Listed skill"
+          }
+        ]
+      }
+    },
+    {
+      "job": "palantir-backend-infrastructure",
+      "company": "Palantir Technologies",
+      "split": "holdout",
+      "url": "https://jobs.lever.co/palantir/fb2d3222-dbd8-4e03-8d39-47b820e9509c",
+      "requirement": "Have strong coding ability demonstrated in languages such as Java, C++, Python, Rust or similar.",
+      "expected": "strong",
+      "rationale": "Python ML implementations and tested Rust serving provide direct coding evidence. The examples are alternatives, not a demand to know all listed languages.",
+      "before": "partial",
+      "after": {
+        "requirement": "Have strong coding ability demonstrated in languages such as Java, C++, Python, Rust or similar.",
+        "priority": "unspecified",
+        "strength": "strong",
+        "coverage": 1,
+        "matched": [
+          "Java",
+          "C++",
+          "Python",
+          "Rust"
+        ],
+        "missing": [],
+        "needsVerification": [],
+        "explanation": "Evidence found for Java, C++, Python, Rust.",
+        "evidence": [
+          {
+            "type": "case",
+            "name": "Privacy-Preserving Deep Learning via MPC",
+            "url": "https://div90.vercel.app/work/mpc-deep-learning",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "Paged KV-Cache Engine (vLLM-style)",
+            "url": "https://div90.vercel.app/work/kv-cache-engine",
+            "scope": "Documented work"
+          },
+          {
+            "type": "role",
+            "name": "Research Consultant @ WorldQuant BRAIN",
+            "url": "https://div90.vercel.app/cv",
+            "scope": "Documented work"
+          },
+          {
+            "type": "repo",
+            "name": "Inference server",
+            "url": "https://github.com/sdivyanshu90/build-your-own-inference-server",
+            "scope": "Repository implementation"
+          }
+        ]
+      }
+    },
+    {
+      "job": "palantir-backend-infrastructure",
+      "company": "Palantir Technologies",
+      "split": "holdout",
+      "url": "https://jobs.lever.co/palantir/fb2d3222-dbd8-4e03-8d39-47b820e9509c",
+      "requirement": "Be familiar with storage and data-processing systems, cloud infrastructure and related technical tooling.",
+      "expected": "partial",
+      "rationale": "MongoDB integrity work and graph data processing substantiate storage/data familiarity. Cloud platforms are listed, but concrete infrastructure work is sparse.",
+      "before": "partial",
+      "after": {
+        "requirement": "Be familiar with storage and data-processing systems, cloud infrastructure and related technical tooling.",
+        "priority": "unspecified",
+        "strength": "gap",
+        "coverage": 0,
+        "matched": [],
+        "missing": [],
+        "needsVerification": [],
+        "explanation": "No direct supporting evidence found in the portfolio.",
+        "evidence": []
+      }
+    },
+    {
+      "job": "palantir-backend-infrastructure",
+      "company": "Palantir Technologies",
+      "split": "holdout",
+      "url": "https://jobs.lever.co/palantir/fb2d3222-dbd8-4e03-8d39-47b820e9509c",
+      "requirement": "Value quality and defensive coding, including deliberate handling of edge cases.",
+      "expected": "strong",
+      "rationale": "Idempotent completion, recoverable errors, safe partial updates and upstream token/transport fixes directly demonstrate this engineering practice.",
+      "before": "partial",
+      "after": {
+        "requirement": "Value quality and defensive coding, including deliberate handling of edge cases.",
+        "priority": "unspecified",
+        "strength": "gap",
+        "coverage": 0,
+        "matched": [],
+        "missing": [],
+        "needsVerification": [],
+        "explanation": "No direct supporting evidence found in the portfolio.",
+        "evidence": []
+      }
+    },
+    {
+      "job": "biti-backend",
+      "company": "Biti Pro",
+      "split": "holdout",
+      "url": "https://jobs.ashbyhq.com/biti/3b42b9ac-57d4-4701-bb92-92a08c28e8ef",
+      "requirement": "Have experience integrating blockchain data or Web3 systems.",
+      "expected": "gap",
+      "rationale": "The supplied projects and experience do not record blockchain/Web3 integration. Quant research is not evidence of on-chain systems.",
+      "before": "partial",
+      "after": {
+        "requirement": "Have experience integrating blockchain data or Web3 systems.",
+        "priority": "unspecified",
+        "strength": "gap",
+        "coverage": 0,
+        "matched": [],
+        "missing": [],
+        "needsVerification": [],
+        "explanation": "No direct supporting evidence found in the portfolio.",
+        "evidence": []
+      }
+    },
+    {
+      "job": "biti-backend",
+      "company": "Biti Pro",
+      "split": "holdout",
+      "url": "https://jobs.ashbyhq.com/biti/3b42b9ac-57d4-4701-bb92-92a08c28e8ef",
+      "requirement": "Have experience building backends with demanding performance requirements.",
+      "expected": "partial",
+      "rationale": "Reliability work, rate policies, batching and backpressure show related backend engineering, but a measured high-performance backend workload is not established. Frontend bundle reduction is not backend throughput evidence.",
+      "before": "partial",
+      "after": {
+        "requirement": "Have experience building backends with demanding performance requirements.",
+        "priority": "unspecified",
+        "strength": "gap",
+        "coverage": 0,
+        "matched": [],
+        "missing": [],
+        "needsVerification": [],
+        "explanation": "No direct supporting evidence found in the portfolio.",
+        "evidence": []
+      }
+    },
+    {
+      "job": "biti-backend",
+      "company": "Biti Pro",
+      "split": "holdout",
+      "url": "https://jobs.ashbyhq.com/biti/3b42b9ac-57d4-4701-bb92-92a08c28e8ef",
+      "requirement": "Have experience with PostgreSQL and data modeling.",
+      "expected": "partial",
+      "rationale": "Neon Postgres analytics supplies PostgreSQL use, and MongoDB/knowledge-graph work supplies data-model design. The dossier gives limited detail about PostgreSQL-specific modeling depth.",
+      "before": "strong",
+      "after": {
+        "requirement": "Have experience with PostgreSQL and data modeling.",
+        "priority": "unspecified",
+        "strength": "strong",
+        "coverage": 1,
+        "matched": [
+          "PostgreSQL"
+        ],
+        "missing": [],
+        "needsVerification": [],
+        "explanation": "Evidence found for PostgreSQL.",
+        "evidence": [
+          {
+            "type": "case",
+            "name": "DIV-1 — this portfolio, built as a production AI system",
+            "url": "https://div90.vercel.app/work/div1-console",
+            "scope": "Documented work"
+          },
+          {
+            "type": "skill",
+            "name": "PostgreSQL",
+            "url": "https://div90.vercel.app/cv",
+            "scope": "Listed skill"
+          }
+        ]
+      }
+    },
+    {
+      "job": "tenstorrent-ml-ai-models",
+      "company": "Tenstorrent",
+      "split": "holdout",
+      "url": "https://job-boards.greenhouse.io/tenstorrent/jobs/4832276007",
+      "requirement": "Have strong experience creating and working with ML models in either PyTorch or TensorFlow.",
+      "expected": "strong",
+      "rationale": "PyTorch OCR and CMS model work satisfy the framework alternative with concrete model-building evidence; both frameworks are not required.",
+      "before": "partial",
+      "after": {
+        "requirement": "Have strong experience creating and working with ML models in either PyTorch or TensorFlow.",
+        "priority": "unspecified",
+        "strength": "strong",
+        "coverage": 1,
+        "matched": [
+          "Machine learning"
+        ],
+        "missing": [],
+        "needsVerification": [],
+        "explanation": "Evidence found for Machine learning.",
+        "evidence": [
+          {
+            "type": "case",
+            "name": "Privacy-Preserving Deep Learning via MPC",
+            "url": "https://div90.vercel.app/work/mpc-deep-learning",
+            "scope": "Documented work"
+          },
+          {
+            "type": "case",
+            "name": "Deep Learning for CMS Detector Physics",
+            "url": "https://div90.vercel.app/work/ml4sci-cms",
+            "scope": "Documented work"
+          },
+          {
+            "type": "ship",
+            "name": "RenAIssance OCR",
+            "url": "https://div90.vercel.app/work/renaissance-ocr",
+            "scope": "Documented work"
+          }
+        ]
+      }
+    },
+    {
+      "job": "tenstorrent-ml-ai-models",
+      "company": "Tenstorrent",
+      "split": "holdout",
+      "url": "https://job-boards.greenhouse.io/tenstorrent/jobs/4832276007",
+      "requirement": "Bonus, not required: have profiling or tuning experience, or familiarity with topics such as quantization, FlashAttention, kernel fusion, memory hierarchies, C++, CUDA or systems programming.",
+      "expected": "strong",
+      "rationale": "Quantization, FlashAttention and KV-cache implementations establish familiarity with several allowed alternatives. The clause does not require CUDA expertise or production accelerator deployment.",
+      "before": "partial",
+      "after": {
+        "requirement": "Bonus, not required: have profiling or tuning experience, or familiarity with topics such as quantization, FlashAttention, kernel fusion, memory hierarchies, C++, CUDA or systems programming.",
+        "priority": "unspecified",
+        "strength": "partial",
+        "coverage": 0.67,
+        "matched": [
+          "Quantization",
+          "C++"
+        ],
+        "missing": [
+          "CUDA"
+        ],
+        "needsVerification": [],
+        "explanation": "Evidence found for Quantization, C++. Not on record: CUDA.",
+        "evidence": [
+          {
+            "type": "repo",
+            "name": "Quantization library",
+            "url": "https://github.com/sdivyanshu90/FromScratchQuant",
+            "scope": "Repository implementation"
+          },
+          {
+            "type": "skill",
+            "name": "C++",
+            "url": "https://div90.vercel.app/cv",
+            "scope": "Listed skill"
+          },
+          {
+            "type": "guide",
+            "name": "AI — From Scratch to Scale",
+            "url": "https://github.com/sdivyanshu90/AI-from-scratch-to-scale",
+            "scope": "Documented work"
+          }
+        ]
+      }
+    },
+    {
+      "job": "tenstorrent-ml-ai-models",
+      "company": "Tenstorrent",
+      "split": "holdout",
+      "url": "https://job-boards.greenhouse.io/tenstorrent/jobs/4832276007",
+      "requirement": "Be eligible to access US export-controlled technology; employment may depend on citizenship or permanent residency status, or obtaining the relevant government license.",
+      "expected": "verify",
+      "rationale": "Export-access eligibility and relevant citizenship/residency/license facts are absent. Residence alone cannot settle this employer condition.",
+      "before": "gap",
+      "after": {
+        "requirement": "Be eligible to access US export-controlled technology; employment may depend on citizenship or permanent residency status, or obtaining the relevant government license.",
+        "priority": "unspecified",
+        "strength": "verify",
+        "coverage": 0,
+        "matched": [],
+        "missing": [],
+        "needsVerification": [
+          "Confirm work eligibility, location or availability directly."
+        ],
+        "explanation": "No direct supporting evidence found in the portfolio. Confirm work eligibility, location or availability directly.",
+        "evidence": []
+      }
+    }
+  ]
+}

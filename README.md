@@ -3,8 +3,8 @@
 > **One screen. No scrolling. Ask, and watch the answer assemble.**
 > DIV-1 presents Divanshu Sharma as a queryable model on a single
 > non-scrolling stage: behind the answer card hangs a constellation in which
-> **every star is one of his real systems** — 37 from-scratch repos clustered
-> by stack layer plus 7 case studies. Type a question and the relevant stars
+> **every star is one of his real systems** — 47 from-scratch repos clustered
+> by stack layer plus 8 case studies. Type a question and the relevant stars
 > begin to glow; run it and they converge into the answer.
 
 **Live:** [https://div90.vercel.app/](https://div90.vercel.app/)
@@ -143,18 +143,48 @@ browser), `/r/<id>` (shared answers). For AI screeners: `/llms.txt`,
 
 ## Development
 
+Run commands from the directory containing `package.json` (in this workspace:
+`/home/somu/my_portfolio/my_portfolio`). Use Node.js 20.9 or newer and npm;
+the workspace currently provides Node.js 22.
+
+Install the exact dependencies from the committed lockfile. Environment
+variables are optional: without integrations, answers use the deterministic
+fallback and storage stays in memory. Preserve an existing `.env.local`.
+
 ```bash
-npm install
+node --version
+npm --version
+npm ci
+test -f .env.local || cp .env.example .env.local
 npm run dev    # http://localhost:3000
+```
+
+Then, in another terminal:
+
+```bash
+npm run typecheck
 npm test       # golden router set, guard, retrieval, store, credit-safety route tests
 npm run eval   # print the router scorecard (-- --verbose lists failures)
 npm run build  # eval scorecard + static build + sitemap/robots/OG image generation
 npm run db:migrate     # apply src/lib/schema.ts to Neon (idempotent)
+npm run eval:fit       # offline regression against 36 Astra-reviewed requirements from 12 real JDs
 npm run verify-claims  # re-check open-source numbers against GitHub (GITHUB_TOKEN)
 npm run sync-github    # refresh src/data/activity.json (runs before every build)
 npm run cv:pdf         # print /cv to public/Divanshu_Sharma_Resume.pdf (BASE + CHROME_PATH; running server)
 npm run smoke          # end-to-end check of every page/API + the Neon rows (needs ADMIN_TOKEN, a running server)
                        #   BASE=http://localhost:3100 npm run smoke -- [--live] [--email] [--keep]
+```
+
+`npm ci` needs access to `registry.npmjs.org` unless every locked package is
+already cached. An `EAI_AGAIN` error indicates a DNS/network problem; restore
+registry access and rerun `npm ci`. Do not delete or regenerate the lockfile
+to work around it.
+
+For résumé PDF generation, install a Chromium-compatible browser and set
+`CHROME_PATH` to its executable. With the development server running:
+
+```bash
+BASE=http://localhost:3000 CHROME_PATH=/path/to/chrome npm run cv:pdf
 ```
 
 ## License

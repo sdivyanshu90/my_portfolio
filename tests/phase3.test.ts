@@ -12,7 +12,7 @@ describe("sentence x-ray", () => {
   });
   it("supports dossier-backed sentences and flags invented ones", () => {
     const [real, fake] = xray(
-      "He resolved 40+ critical vulnerabilities at Uniiq and cut LCP from 3.3s to 0.7s. He enjoys long walks on the beach.",
+      "He reduced the primary frontend bundle at Uniiq by 80.8% to 278 KB. He enjoys long walks on the beach.",
     );
     expect(real.supported).toBe(true);
     expect(real.source?.url).toMatch(/^https:\/\//);
@@ -22,7 +22,7 @@ describe("sentence x-ray", () => {
 
 describe("number tripwire", () => {
   it("passes figures the dossier states", () => {
-    expect(unverifiedFigures("88.08% ChestMNIST accuracy, 40+ vulnerabilities, violations 70% to 0%, an 80.8% smaller bundle, Sharpe 1.8")).toEqual([]);
+    expect(unverifiedFigures("88.08% ChestMNIST accuracy, 39 targeted mutation tests, violations 70% to 0%, an 80.8% smaller bundle, Sharpe 1.8")).toEqual([]);
   });
   it("flags invented figures but not years or small counts", () => {
     expect(unverifiedFigures("He hit 92% accuracy in 2024 across 3 projects")).toEqual(["92%"]);

@@ -1,0 +1,1511 @@
+{
+  "asOf": "2026-10-25",
+  "query": "author:sdivyanshu90 is:pr is:public -user:sdivyanshu90",
+  "pullRequests": [
+    {
+      "repo": "monid-ai/monid",
+      "number": 199,
+      "state": "open",
+      "title": "fix(testing): preserve no-content responses in fixture helpers",
+      "url": "https://github.com/monid-ai/monid/pull/199"
+    },
+    {
+      "repo": "monid-ai/monid",
+      "number": 198,
+      "state": "open",
+      "title": "fix(dataforseo): materialize defaults outside selector unions",
+      "url": "https://github.com/monid-ai/monid/pull/198"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4456,
+      "state": "open",
+      "title": "Make Azure chat available through lazy model discovery",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4456"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4455,
+      "state": "open",
+      "title": "Forward configured base URLs to LiteLLM completion calls",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4455"
+    },
+    {
+      "repo": "monid-ai/monid",
+      "number": 182,
+      "state": "open",
+      "title": "fix(compiler): reject parameter schemas that exclude objects",
+      "url": "https://github.com/monid-ai/monid/pull/182"
+    },
+    {
+      "repo": "monid-ai/monid",
+      "number": 181,
+      "state": "open",
+      "title": "fix(core): reject duplicate category IDs when loading registries",
+      "url": "https://github.com/monid-ai/monid/pull/181"
+    },
+    {
+      "repo": "rowboatlabs/rowboat",
+      "number": 1220,
+      "state": "open",
+      "title": "fix(core): traverse directories when filtering workspace extensions",
+      "url": "https://github.com/rowboatlabs/rowboat/pull/1220"
+    },
+    {
+      "repo": "rowboatlabs/rowboat",
+      "number": 1219,
+      "state": "open",
+      "title": "fix(shared): preserve refetch requests during snapshot fetches",
+      "url": "https://github.com/rowboatlabs/rowboat/pull/1219"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4439,
+      "state": "open",
+      "title": "Replace null content in asynchronous LiteLLM generations",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4439"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4438,
+      "state": "open",
+      "title": "Trim stop sequences from HF audio generations",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4438"
+    },
+    {
+      "repo": "SigNoz/signoz",
+      "number": 13193,
+      "state": "open",
+      "title": "fix(alerts): reject non-positive maintenance recurrence durations",
+      "url": "https://github.com/SigNoz/signoz/pull/13193"
+    },
+    {
+      "repo": "SigNoz/signoz",
+      "number": 13192,
+      "state": "open",
+      "title": "fix(querier): preserve precision in numeric PromQL variables",
+      "url": "https://github.com/SigNoz/signoz/pull/13192"
+    },
+    {
+      "repo": "monid-ai/monid",
+      "number": 158,
+      "state": "open",
+      "title": "fix(estimate): support resource-bound endpoints",
+      "url": "https://github.com/monid-ai/monid/pull/158"
+    },
+    {
+      "repo": "monid-ai/monid",
+      "number": 157,
+      "state": "open",
+      "title": "fix(compiler): normalize division after keyword properties",
+      "url": "https://github.com/monid-ai/monid/pull/157"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 56927,
+      "state": "open",
+      "title": "fix(codemode): skip holes in flatMap results",
+      "url": "https://github.com/anomalyco/opencode/pull/56927"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 56926,
+      "state": "open",
+      "title": "fix(codemode): preserve typed-array search equality",
+      "url": "https://github.com/anomalyco/opencode/pull/56926"
+    },
+    {
+      "repo": "monid-ai/monid",
+      "number": 151,
+      "state": "open",
+      "title": "fix(compiler): include provider engine floors in bundles",
+      "url": "https://github.com/monid-ai/monid/pull/151"
+    },
+    {
+      "repo": "monid-ai/monid",
+      "number": 150,
+      "state": "open",
+      "title": "fix(compiler): reject duplicate provider names",
+      "url": "https://github.com/monid-ai/monid/pull/150"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4409,
+      "state": "open",
+      "title": "Initialize explicit HF multimodal and audio processor overrides",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4409"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4408,
+      "state": "open",
+      "title": "Respect TensorRT-LLM input limits during generation",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4408"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 56307,
+      "state": "merged",
+      "title": "fix(util): retry broken-pipe transport failures",
+      "url": "https://github.com/anomalyco/opencode/pull/56307"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 56306,
+      "state": "open",
+      "title": "fix(core): count changed lines within diff hunks",
+      "url": "https://github.com/anomalyco/opencode/pull/56306"
+    },
+    {
+      "repo": "monid-ai/monid",
+      "number": 146,
+      "state": "open",
+      "title": "fix(publish): include compiled resource documents",
+      "url": "https://github.com/monid-ai/monid/pull/146"
+    },
+    {
+      "repo": "monid-ai/monid",
+      "number": 145,
+      "state": "open",
+      "title": "fix(engine): validate provision seed resource identity",
+      "url": "https://github.com/monid-ai/monid/pull/145"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4399,
+      "state": "open",
+      "title": "Restore SGLang tokenizer identity and chat template metadata",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4399"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4398,
+      "state": "open",
+      "title": "Preserve vLLM thinking options from chat template arguments",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4398"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 55611,
+      "state": "open",
+      "title": "fix(core): parse web search SSE events",
+      "url": "https://github.com/anomalyco/opencode/pull/55611"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 55610,
+      "state": "open",
+      "title": "fix(core): isolate repository cache hosts",
+      "url": "https://github.com/anomalyco/opencode/pull/55610"
+    },
+    {
+      "repo": "monid-ai/monid",
+      "number": 129,
+      "state": "open",
+      "title": "fix(engine): reject inherited resource operations",
+      "url": "https://github.com/monid-ai/monid/pull/129"
+    },
+    {
+      "repo": "monid-ai/monid",
+      "number": 128,
+      "state": "open",
+      "title": "fix(engine): validate own credit pool declarations",
+      "url": "https://github.com/monid-ai/monid/pull/128"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4388,
+      "state": "open",
+      "title": "Honor bare xpu, hpu, and npu device names in HFLM",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4388"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4387,
+      "state": "open",
+      "title": "Exclude prompt tokens from Neuron generation stop criteria",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4387"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 55004,
+      "state": "open",
+      "title": "fix(util): decode OTLP header values",
+      "url": "https://github.com/anomalyco/opencode/pull/55004"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 55003,
+      "state": "open",
+      "title": "fix(util): preserve shared log objects",
+      "url": "https://github.com/anomalyco/opencode/pull/55003"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 26821,
+      "state": "closed",
+      "title": "fix(loggers): skip malformed Upstash records",
+      "url": "https://github.com/mastra-ai/mastra/pull/26821"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 26820,
+      "state": "closed",
+      "title": "fix(loggers): preserve caller-owned records",
+      "url": "https://github.com/mastra-ai/mastra/pull/26820"
+    },
+    {
+      "repo": "monid-ai/monid",
+      "number": 122,
+      "state": "open",
+      "title": "fix(core): ignore inherited JSONPath properties",
+      "url": "https://github.com/monid-ai/monid/pull/122"
+    },
+    {
+      "repo": "monid-ai/monid",
+      "number": 120,
+      "state": "open",
+      "title": "fix(engine): reject empty path params",
+      "url": "https://github.com/monid-ai/monid/pull/120"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4366,
+      "state": "open",
+      "title": "Omit SAE decoder bias for additive CSV steering",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4366"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4365,
+      "state": "open",
+      "title": "Preserve model temperature when sampling is explicitly enabled",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4365"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 54462,
+      "state": "open",
+      "title": "fix(core): canonicalize snapshot scope",
+      "url": "https://github.com/anomalyco/opencode/pull/54462"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 54461,
+      "state": "open",
+      "title": "fix(core): treat session search literally",
+      "url": "https://github.com/anomalyco/opencode/pull/54461"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 54456,
+      "state": "closed",
+      "title": "fix(core): canonicalize snapshot scope",
+      "url": "https://github.com/anomalyco/opencode/pull/54456"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 54455,
+      "state": "closed",
+      "title": "fix(core): treat session search literally",
+      "url": "https://github.com/anomalyco/opencode/pull/54455"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 26672,
+      "state": "closed",
+      "title": "fix(loggers): preserve epoch-zero timestamps",
+      "url": "https://github.com/mastra-ai/mastra/pull/26672"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 26671,
+      "state": "closed",
+      "title": "fix(loggers): normalize HTTP page zero",
+      "url": "https://github.com/mastra-ai/mastra/pull/26671"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 54262,
+      "state": "closed",
+      "title": "fix(opencode): protect unregistered worktree paths",
+      "url": "https://github.com/anomalyco/opencode/pull/54262"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 54261,
+      "state": "closed",
+      "title": "fix(tui): strip file IDs when forking",
+      "url": "https://github.com/anomalyco/opencode/pull/54261"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4356,
+      "state": "open",
+      "title": "Preserve leaf names for group reference overrides",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4356"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4355,
+      "state": "open",
+      "title": "Fix direct-task bypass metric results",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4355"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 26495,
+      "state": "closed",
+      "title": "fix(loggers): suppress overridden stdout fallback",
+      "url": "https://github.com/mastra-ai/mastra/pull/26495"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 26494,
+      "state": "closed",
+      "title": "fix(loggers): bound Upstash outage buffer",
+      "url": "https://github.com/mastra-ai/mastra/pull/26494"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 1257,
+      "state": "open",
+      "title": "gateway: reject unserializable batch lines before dispatch",
+      "url": "https://github.com/experientiallabs/experiential/pull/1257"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 1256,
+      "state": "open",
+      "title": "gateway: report database lock contention accurately",
+      "url": "https://github.com/experientiallabs/experiential/pull/1256"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 26492,
+      "state": "closed",
+      "title": "[superseded] fix(loggers): suppress overridden stdout fallback",
+      "url": "https://github.com/mastra-ai/mastra/pull/26492"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 26491,
+      "state": "closed",
+      "title": "[superseded] fix(loggers): bound Upstash outage buffer",
+      "url": "https://github.com/mastra-ai/mastra/pull/26491"
+    },
+    {
+      "repo": "monid-ai/monid",
+      "number": 105,
+      "state": "open",
+      "title": "fix(engine): preserve null consolidated output",
+      "url": "https://github.com/monid-ai/monid/pull/105"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 53869,
+      "state": "closed",
+      "title": "fix(session-ui): report attachment errors",
+      "url": "https://github.com/anomalyco/opencode/pull/53869"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 53868,
+      "state": "closed",
+      "title": "fix(tui): preserve startup prompt history",
+      "url": "https://github.com/anomalyco/opencode/pull/53868"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4341,
+      "state": "open",
+      "title": "Make direct Python task names deterministic",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4341"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4340,
+      "state": "open",
+      "title": "Fix empty sample selection in task document iterator",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4340"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 1222,
+      "state": "open",
+      "title": "gateway: allow removed provider connections to be added again",
+      "url": "https://github.com/experientiallabs/experiential/pull/1222"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 1221,
+      "state": "open",
+      "title": "gateway: preserve settled batch state during cancellation",
+      "url": "https://github.com/experientiallabs/experiential/pull/1221"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 26174,
+      "state": "merged",
+      "title": "fix(loggers): drain Upstash logs on destroy",
+      "url": "https://github.com/mastra-ai/mastra/pull/26174"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 26173,
+      "state": "merged",
+      "title": "fix(loggers): paginate Upstash log queries",
+      "url": "https://github.com/mastra-ai/mastra/pull/26173"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4324,
+      "state": "open",
+      "title": "fix(groups): use metric-specific sample counts",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4324"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4323,
+      "state": "open",
+      "title": "fix(cache): canonicalize dictionary key order",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4323"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 53484,
+      "state": "closed",
+      "title": "fix(tui): reset workspace notice timer",
+      "url": "https://github.com/anomalyco/opencode/pull/53484"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 53483,
+      "state": "closed",
+      "title": "fix(tui): align wrapped hunk jumps",
+      "url": "https://github.com/anomalyco/opencode/pull/53483"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 1208,
+      "state": "open",
+      "title": "gateway: release unpersisted batch reservations",
+      "url": "https://github.com/experientiallabs/experiential/pull/1208"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 1207,
+      "state": "open",
+      "title": "providers: retry empty native completions",
+      "url": "https://github.com/experientiallabs/experiential/pull/1207"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 25915,
+      "state": "closed",
+      "title": "fix(loggers): drain HTTP logs on destroy",
+      "url": "https://github.com/mastra-ai/mastra/pull/25915"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 25914,
+      "state": "closed",
+      "title": "fix(loggers): bound HTTP transport buffering",
+      "url": "https://github.com/mastra-ai/mastra/pull/25914"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 53117,
+      "state": "closed",
+      "title": "fix(tui): preserve empty editor results",
+      "url": "https://github.com/anomalyco/opencode/pull/53117"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 53116,
+      "state": "closed",
+      "title": "fix(opencode): align JSONC error caret",
+      "url": "https://github.com/anomalyco/opencode/pull/53116"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 1200,
+      "state": "open",
+      "title": "providers: bound synchronous response time",
+      "url": "https://github.com/experientiallabs/experiential/pull/1200"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 1198,
+      "state": "open",
+      "title": "providers: tolerate malformed model listing entries",
+      "url": "https://github.com/experientiallabs/experiential/pull/1198"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4307,
+      "state": "open",
+      "title": "fix(gguf): reject malformed generation responses",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4307"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4306,
+      "state": "open",
+      "title": "fix(gguf): preserve generated whitespace",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4306"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 25874,
+      "state": "closed",
+      "title": "fix(loggers): stream file log queries",
+      "url": "https://github.com/mastra-ai/mastra/pull/25874"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 25873,
+      "state": "closed",
+      "title": "fix(loggers): skip permanent HTTP retries",
+      "url": "https://github.com/mastra-ai/mastra/pull/25873"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 52689,
+      "state": "closed",
+      "title": "fix(app): keep server search visible",
+      "url": "https://github.com/anomalyco/opencode/pull/52689"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 52688,
+      "state": "closed",
+      "title": "fix(app): ignore no-op project drags",
+      "url": "https://github.com/anomalyco/opencode/pull/52688"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 1176,
+      "state": "open",
+      "title": "vertex: normalize token refresh failures",
+      "url": "https://github.com/experientiallabs/experiential/pull/1176"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 1174,
+      "state": "open",
+      "title": "bedrock: classify local botocore failures",
+      "url": "https://github.com/experientiallabs/experiential/pull/1174"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4285,
+      "state": "open",
+      "title": "fix(habana): restore max length after generation",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4285"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4284,
+      "state": "open",
+      "title": "fix(mamba): correct missing dependency guidance",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4284"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 25679,
+      "state": "closed",
+      "title": "fix(loggers): propagate file write errors",
+      "url": "https://github.com/mastra-ai/mastra/pull/25679"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 25676,
+      "state": "closed",
+      "title": "fix(loggers): reject directory file paths",
+      "url": "https://github.com/mastra-ai/mastra/pull/25676"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 52254,
+      "state": "closed",
+      "title": "fix(http-recorder): preserve binary request bodies",
+      "url": "https://github.com/anomalyco/opencode/pull/52254"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 1154,
+      "state": "open",
+      "title": "providers: reject invalid header credentials",
+      "url": "https://github.com/experientiallabs/experiential/pull/1154"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 1152,
+      "state": "open",
+      "title": "providers: type synchronous completion deadlines",
+      "url": "https://github.com/experientiallabs/experiential/pull/1152"
+    },
+    {
+      "repo": "zulip/zulip",
+      "number": 40241,
+      "state": "merged",
+      "title": "uploads: Reject non-UTF-8 temporary access tokens.",
+      "url": "https://github.com/zulip/zulip/pull/40241"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 25434,
+      "state": "closed",
+      "title": "fix(loggers): skip malformed file log entries",
+      "url": "https://github.com/mastra-ai/mastra/pull/25434"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 25403,
+      "state": "closed",
+      "title": "fix(loggers): skip malformed file log entries",
+      "url": "https://github.com/mastra-ai/mastra/pull/25403"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 25398,
+      "state": "closed",
+      "title": "fix(loggers): separate Upstash trim command",
+      "url": "https://github.com/mastra-ai/mastra/pull/25398"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4271,
+      "state": "open",
+      "title": "fix(litellm): forward EOS to async requests",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4271"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4269,
+      "state": "open",
+      "title": "fix(models): normalize null stop sequences",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4269"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 1136,
+      "state": "open",
+      "title": "ingest: report malformed JSON document errors",
+      "url": "https://github.com/experientiallabs/experiential/pull/1136"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 1134,
+      "state": "open",
+      "title": "ingest: accept UTF-8 BOM in trace exports",
+      "url": "https://github.com/experientiallabs/experiential/pull/1134"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 51677,
+      "state": "closed",
+      "title": "fix(app): normalize file uri schemes",
+      "url": "https://github.com/anomalyco/opencode/pull/51677"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 51673,
+      "state": "closed",
+      "title": "fix(app): restore file selections explicitly",
+      "url": "https://github.com/anomalyco/opencode/pull/51673"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 25250,
+      "state": "closed",
+      "title": "fix(loggers): preserve retry options",
+      "url": "https://github.com/mastra-ai/mastra/pull/25250"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 25244,
+      "state": "merged",
+      "title": "fix(codemod): allow large print output",
+      "url": "https://github.com/mastra-ai/mastra/pull/25244"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 1117,
+      "state": "open",
+      "title": "ingest: retain nested Langfuse requests",
+      "url": "https://github.com/experientiallabs/experiential/pull/1117"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 1115,
+      "state": "open",
+      "title": "ingest: retain Langfuse traces with null usage",
+      "url": "https://github.com/experientiallabs/experiential/pull/1115"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4237,
+      "state": "open",
+      "title": "Honor custom group aggregation callables",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4237"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4235,
+      "state": "open",
+      "title": "Fix built-in registry initialization after custom entries",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4235"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 51324,
+      "state": "closed",
+      "title": "fix(desktop): narrow existing state detection",
+      "url": "https://github.com/anomalyco/opencode/pull/51324"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 51322,
+      "state": "closed",
+      "title": "fix(app): validate comment selection coordinates",
+      "url": "https://github.com/anomalyco/opencode/pull/51322"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 25108,
+      "state": "merged",
+      "title": "fix(codemod): migrate legacy scores imports",
+      "url": "https://github.com/mastra-ai/mastra/pull/25108"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 25104,
+      "state": "merged",
+      "title": "fix(codemod): migrate message types to valid exports",
+      "url": "https://github.com/mastra-ai/mastra/pull/25104"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 1098,
+      "state": "open",
+      "title": "ingest: accept negative OTLP integers",
+      "url": "https://github.com/experientiallabs/experiential/pull/1098"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4226,
+      "state": "open",
+      "title": "Forward special-token options to remote tokenizers",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4226"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4224,
+      "state": "open",
+      "title": "Reject lossy seed values in evaluation configs",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4224"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 50854,
+      "state": "closed",
+      "title": "fix(llm): terminate websocket streams on errors",
+      "url": "https://github.com/anomalyco/opencode/pull/50854"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 50846,
+      "state": "closed",
+      "title": "fix(tui): preserve explicit config during migration",
+      "url": "https://github.com/anomalyco/opencode/pull/50846"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 24785,
+      "state": "merged",
+      "title": "fix(codemod): migrate agent tools to listTools",
+      "url": "https://github.com/mastra-ai/mastra/pull/24785"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 24781,
+      "state": "closed",
+      "title": "fix(codemod): report transform failures",
+      "url": "https://github.com/mastra-ai/mastra/pull/24781"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 1073,
+      "state": "open",
+      "title": "ingest: accept empty OTLP root parent ID",
+      "url": "https://github.com/experientiallabs/experiential/pull/1073"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 1071,
+      "state": "open",
+      "title": "simulation: handle cancelled hashing vectors",
+      "url": "https://github.com/experientiallabs/experiential/pull/1071"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4204,
+      "state": "open",
+      "title": "Retry plugin discovery after transient metadata errors",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4204"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4202,
+      "state": "open",
+      "title": "Preserve RemoteTokenizer timeout across retries",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4202"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 50291,
+      "state": "closed",
+      "title": "fix(session-ui): count prompt line breaks in caret offsets",
+      "url": "https://github.com/anomalyco/opencode/pull/50291"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 24530,
+      "state": "merged",
+      "title": "fix(codemod): forward jscodeshift output",
+      "url": "https://github.com/mastra-ai/mastra/pull/24530"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 24528,
+      "state": "merged",
+      "title": "fix(codemod): scope hidden directory ignores",
+      "url": "https://github.com/mastra-ai/mastra/pull/24528"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 1058,
+      "state": "open",
+      "title": "ci: cancel superseded pull request runs",
+      "url": "https://github.com/experientiallabs/experiential/pull/1058"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4194,
+      "state": "open",
+      "title": "fix: fail fast for missing W&B dependency",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4194"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 1056,
+      "state": "merged",
+      "title": "providers: paginate Anthropic model discovery",
+      "url": "https://github.com/experientiallabs/experiential/pull/1056"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4192,
+      "state": "open",
+      "title": "docs: clarify function-backed few-shot samples",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4192"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 49924,
+      "state": "closed",
+      "title": "fix(app): recognize loopback server URLs",
+      "url": "https://github.com/anomalyco/opencode/pull/49924"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 49914,
+      "state": "closed",
+      "title": "fix(app): guard agent color lookup",
+      "url": "https://github.com/anomalyco/opencode/pull/49914"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 24472,
+      "state": "merged",
+      "title": "fix(codemod): migrate RuntimeContext DI imports",
+      "url": "https://github.com/mastra-ai/mastra/pull/24472"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 24470,
+      "state": "merged",
+      "title": "fix(codemod): reject unknown transform names",
+      "url": "https://github.com/mastra-ai/mastra/pull/24470"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 1034,
+      "state": "open",
+      "title": "ingest: normalize PostHog pull failures",
+      "url": "https://github.com/experientiallabs/experiential/pull/1034"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 1032,
+      "state": "open",
+      "title": "Validate telemetry host overrides before egress",
+      "url": "https://github.com/experientiallabs/experiential/pull/1032"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4186,
+      "state": "open",
+      "title": "docs: fix low-level evaluate example",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4186"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4184,
+      "state": "open",
+      "title": "fix(results): honor metadata n-shot override",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4184"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 49498,
+      "state": "closed",
+      "title": "fix(app): stop repeated session pagination",
+      "url": "https://github.com/anomalyco/opencode/pull/49498"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 49492,
+      "state": "closed",
+      "title": "fix(app): preserve unicode search characters",
+      "url": "https://github.com/anomalyco/opencode/pull/49492"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 24251,
+      "state": "merged",
+      "title": "fix(codemod): pass explicit verbose level",
+      "url": "https://github.com/mastra-ai/mastra/pull/24251"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 24249,
+      "state": "closed",
+      "title": "fix(editor): surface Composio catalog failures",
+      "url": "https://github.com/mastra-ai/mastra/pull/24249"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4172,
+      "state": "open",
+      "title": "fix(groups): count shared leaf tasks once",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4172"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4170,
+      "state": "open",
+      "title": "Reraise retryable exceptions after finite attempts",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4170"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 998,
+      "state": "open",
+      "title": "ingest: encode PostHog project path segment",
+      "url": "https://github.com/experientiallabs/experiential/pull/998"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 996,
+      "state": "open",
+      "title": "packaging: ship py.typed marker",
+      "url": "https://github.com/experientiallabs/experiential/pull/996"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 23967,
+      "state": "closed",
+      "title": "fix(editor): clear versioned agent registrations",
+      "url": "https://github.com/mastra-ai/mastra/pull/23967"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 23964,
+      "state": "closed",
+      "title": "fix(editor): stabilize inline workspace IDs",
+      "url": "https://github.com/mastra-ai/mastra/pull/23964"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 49143,
+      "state": "closed",
+      "title": "fix(app): limit export filename length",
+      "url": "https://github.com/anomalyco/opencode/pull/49143"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 49138,
+      "state": "closed",
+      "title": "fix(app): avoid reserved export names",
+      "url": "https://github.com/anomalyco/opencode/pull/49138"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 23823,
+      "state": "closed",
+      "title": "fix(editor): preserve code-defined scorers",
+      "url": "https://github.com/mastra-ai/mastra/pull/23823"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 23821,
+      "state": "closed",
+      "title": "fix(editor): round-trip workspace tool settings",
+      "url": "https://github.com/mastra-ai/mastra/pull/23821"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4156,
+      "state": "merged",
+      "title": "Restore the FLAN RTE prompt-2 task",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4156"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4154,
+      "state": "open",
+      "title": "Include Icelandic in the MELA group",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4154"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 934,
+      "state": "open",
+      "title": "providers: validate hosted Platform origin",
+      "url": "https://github.com/experientiallabs/experiential/pull/934"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 932,
+      "state": "open",
+      "title": "gateway: print unknown setup key once",
+      "url": "https://github.com/experientiallabs/experiential/pull/932"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 48769,
+      "state": "closed",
+      "title": "fix(core): normalize github cache identity",
+      "url": "https://github.com/anomalyco/opencode/pull/48769"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 48765,
+      "state": "closed",
+      "title": "fix(core): validate git branch names",
+      "url": "https://github.com/anomalyco/opencode/pull/48765"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4146,
+      "state": "open",
+      "title": "Exclude evaluation documents from fallback few-shot pools",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4146"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4144,
+      "state": "merged",
+      "title": "Allow braces in CLI key-value arguments",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4144"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 23717,
+      "state": "closed",
+      "title": "fix(editor): preserve processor graph step IDs",
+      "url": "https://github.com/mastra-ai/mastra/pull/23717"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 23713,
+      "state": "closed",
+      "title": "fix(editor): gate conditional fallback branches",
+      "url": "https://github.com/mastra-ai/mastra/pull/23713"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4136,
+      "state": "merged",
+      "title": "Preserve signed integer types in CLI arguments",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4136"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4134,
+      "state": "open",
+      "title": "Reject cyclic result hierarchies during table formatting",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4134"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 910,
+      "state": "open",
+      "title": "gateway: shell-quote compatibility key path",
+      "url": "https://github.com/experientiallabs/experiential/pull/910"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 908,
+      "state": "open",
+      "title": "gateway: normalize bounded batch field errors",
+      "url": "https://github.com/experientiallabs/experiential/pull/908"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 48304,
+      "state": "closed",
+      "title": "fix(core): preserve unicode replay chunks",
+      "url": "https://github.com/anomalyco/opencode/pull/48304"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 48301,
+      "state": "closed",
+      "title": "fix(tui): validate frecency entries",
+      "url": "https://github.com/anomalyco/opencode/pull/48301"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 883,
+      "state": "open",
+      "title": "cli: report invalid dotenv files without tracebacks",
+      "url": "https://github.com/experientiallabs/experiential/pull/883"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 23401,
+      "state": "closed",
+      "title": "fix(editor): validate stored processor config",
+      "url": "https://github.com/mastra-ai/mastra/pull/23401"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 23398,
+      "state": "closed",
+      "title": "fix(editor): bypass cache for version zero requests",
+      "url": "https://github.com/mastra-ai/mastra/pull/23398"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 23306,
+      "state": "closed",
+      "title": "fix(cli): stop polling retries on cancellation",
+      "url": "https://github.com/mastra-ai/mastra/pull/23306"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 23303,
+      "state": "closed",
+      "title": "fix(cli): skip unresolved peer dependency versions",
+      "url": "https://github.com/mastra-ai/mastra/pull/23303"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 867,
+      "state": "merged",
+      "title": "providers: preserve Gemini listing page tokens",
+      "url": "https://github.com/experientiallabs/experiential/pull/867"
+    },
+    {
+      "repo": "experientiallabs/experiential",
+      "number": 864,
+      "state": "open",
+      "title": "docs: index portable project bundle reference",
+      "url": "https://github.com/experientiallabs/experiential/pull/864"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 23194,
+      "state": "closed",
+      "title": "fix(cli): detect package manager from ancestor locks",
+      "url": "https://github.com/mastra-ai/mastra/pull/23194"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 23192,
+      "state": "closed",
+      "title": "fix(cli): include optional Mastra packages",
+      "url": "https://github.com/mastra-ai/mastra/pull/23192"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 23178,
+      "state": "closed",
+      "title": "fix(cli): propagate environment write errors",
+      "url": "https://github.com/mastra-ai/mastra/pull/23178"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 23175,
+      "state": "closed",
+      "title": "fix(cli): require source entry files",
+      "url": "https://github.com/mastra-ai/mastra/pull/23175"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 47585,
+      "state": "closed",
+      "title": "fix(opencode): decode uppercase base64 markers",
+      "url": "https://github.com/anomalyco/opencode/pull/47585"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 47582,
+      "state": "closed",
+      "title": "fix(app): accept uppercase deep-link schemes",
+      "url": "https://github.com/anomalyco/opencode/pull/47582"
+    },
+    {
+      "repo": "aden-hive/hive",
+      "number": 7411,
+      "state": "closed",
+      "title": "fix(tools): validate port scanner ranges",
+      "url": "https://github.com/aden-hive/hive/pull/7411"
+    },
+    {
+      "repo": "aden-hive/hive",
+      "number": 7410,
+      "state": "closed",
+      "title": "fix(tools): validate QuickBooks invoice line items",
+      "url": "https://github.com/aden-hive/hive/pull/7410"
+    },
+    {
+      "repo": "aden-hive/hive",
+      "number": 7407,
+      "state": "closed",
+      "title": "fix(tools): reject non-positive subdomain result limits",
+      "url": "https://github.com/aden-hive/hive/pull/7407"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4098,
+      "state": "open",
+      "title": "Preserve None values when undistributing results",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4098"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4096,
+      "state": "open",
+      "title": "Treat escaped-split separators as literal characters",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4096"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4094,
+      "state": "open",
+      "title": "Restore positional argument deprecation warnings",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4094"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 22622,
+      "state": "merged",
+      "title": "fix(cli): retry direct network errors",
+      "url": "https://github.com/mastra-ai/mastra/pull/22622"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 22620,
+      "state": "closed",
+      "title": "fix(cli): preserve literal file replacements",
+      "url": "https://github.com/mastra-ai/mastra/pull/22620"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 46225,
+      "state": "closed",
+      "title": "fix(app): encode server credentials as UTF-8",
+      "url": "https://github.com/anomalyco/opencode/pull/46225"
+    },
+    {
+      "repo": "mastra-ai/mastra",
+      "number": 22534,
+      "state": "merged",
+      "title": "docs: correct Signals XML name guidance",
+      "url": "https://github.com/mastra-ai/mastra/pull/22534"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 45900,
+      "state": "closed",
+      "title": "fix(app): normalize terminal websocket path",
+      "url": "https://github.com/anomalyco/opencode/pull/45900"
+    },
+    {
+      "repo": "anomalyco/opencode",
+      "number": 44998,
+      "state": "closed",
+      "title": "fix(app): wrap initial picker navigation",
+      "url": "https://github.com/anomalyco/opencode/pull/44998"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4047,
+      "state": "merged",
+      "title": "Create missing request-cache parent directories",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4047"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4029,
+      "state": "open",
+      "title": "Make request-cache deletion idempotent",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4029"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 4006,
+      "state": "open",
+      "title": "Fix response-cache hashing for multimodal image requests",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/4006"
+    },
+    {
+      "repo": "EleutherAI/lm-evaluation-harness",
+      "number": 3990,
+      "state": "open",
+      "title": "docs: fix Discord link in contributing guide",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/pull/3990"
+    },
+    {
+      "repo": "0xTCG/sequre",
+      "number": 42,
+      "state": "open",
+      "title": "Refactor pooling logic and restore missing files",
+      "url": "https://github.com/0xTCG/sequre/pull/42"
+    },
+    {
+      "repo": "0xTCG/sequre",
+      "number": 41,
+      "state": "closed",
+      "title": "feat: add CNN layers and ChestMNIST MPC training pipeline",
+      "url": "https://github.com/0xTCG/sequre/pull/41"
+    },
+    {
+      "repo": "0xTCG/sequre",
+      "number": 35,
+      "state": "closed",
+      "title": "feat: Complete CNN",
+      "url": "https://github.com/0xTCG/sequre/pull/35"
+    },
+    {
+      "repo": "0xTCG/sequre",
+      "number": 33,
+      "state": "closed",
+      "title": "feat: add Conv2D layer implementation",
+      "url": "https://github.com/0xTCG/sequre/pull/33"
+    },
+    {
+      "repo": "NeuralEnsemble/PyNN",
+      "number": 813,
+      "state": "merged",
+      "title": "Fix content overflow in doc sidebar",
+      "url": "https://github.com/NeuralEnsemble/PyNN/pull/813"
+    },
+    {
+      "repo": "processing/p5.js-web-editor",
+      "number": 3003,
+      "state": "closed",
+      "title": "Enhance mobile collection share dropdown",
+      "url": "https://github.com/processing/p5.js-web-editor/pull/3003"
+    },
+    {
+      "repo": "aboutcode-org/vulnerablecode",
+      "number": 1392,
+      "state": "merged",
+      "title": "Add license_url for GitHub Importer",
+      "url": "https://github.com/aboutcode-org/vulnerablecode/pull/1392"
+    },
+    {
+      "repo": "processing/p5.js-web-editor",
+      "number": 2817,
+      "state": "closed",
+      "title": "Enhance mobile keyboard shortcut responsiveness",
+      "url": "https://github.com/processing/p5.js-web-editor/pull/2817"
+    },
+    {
+      "repo": "aboutcode-org/vulnerablecode",
+      "number": 1379,
+      "state": "closed",
+      "title": "Added license_url",
+      "url": "https://github.com/aboutcode-org/vulnerablecode/pull/1379"
+    },
+    {
+      "repo": "processing/p5.js-web-editor",
+      "number": 2761,
+      "state": "closed",
+      "title": "Resolved the responsiveness issue of the Fundraiser.",
+      "url": "https://github.com/processing/p5.js-web-editor/pull/2761"
+    },
+    {
+      "repo": "sugarlabs/musicblocks",
+      "number": 3346,
+      "state": "merged",
+      "title": "Fixed Close Info Window",
+      "url": "https://github.com/sugarlabs/musicblocks/pull/3346"
+    },
+    {
+      "repo": "processing/p5.js-web-editor",
+      "number": 2425,
+      "state": "closed",
+      "title": "Added the right click",
+      "url": "https://github.com/processing/p5.js-web-editor/pull/2425"
+    },
+    {
+      "repo": "processing/p5.js-web-editor",
+      "number": 2395,
+      "state": "merged",
+      "title": "Added a keyboard shortcut for adding files",
+      "url": "https://github.com/processing/p5.js-web-editor/pull/2395"
+    },
+    {
+      "repo": "processing/p5.js-web-editor",
+      "number": 2381,
+      "state": "merged",
+      "title": "favicon",
+      "url": "https://github.com/processing/p5.js-web-editor/pull/2381"
+    },
+    {
+      "repo": "processing/p5.js-web-editor",
+      "number": 2373,
+      "state": "closed",
+      "title": "Added right-clicked",
+      "url": "https://github.com/processing/p5.js-web-editor/pull/2373"
+    },
+    {
+      "repo": "processing/p5.js-web-editor",
+      "number": 2331,
+      "state": "merged",
+      "title": "The complete Korean language translation of keyboard shortcuts",
+      "url": "https://github.com/processing/p5.js-web-editor/pull/2331"
+    },
+    {
+      "repo": "processing/p5.js-web-editor",
+      "number": 2312,
+      "state": "merged",
+      "title": "Account height",
+      "url": "https://github.com/processing/p5.js-web-editor/pull/2312"
+    },
+    {
+      "repo": "processing/p5.js-web-editor",
+      "number": 2293,
+      "state": "closed",
+      "title": "fix overflow of about",
+      "url": "https://github.com/processing/p5.js-web-editor/pull/2293"
+    }
+  ]
+}

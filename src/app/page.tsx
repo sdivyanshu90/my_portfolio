@@ -42,6 +42,7 @@ export default function Home() {
               className="ml-auto flex flex-wrap gap-x-4 gap-y-1 font-mono text-[11px]"
             >
               {[
+                { href: "/hire", label: "hiring brief" },
                 { href: "/work", label: "work" },
                 { href: "/systems", label: "systems" },
                 { href: "/open-source", label: "open source" },

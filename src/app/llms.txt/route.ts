@@ -5,6 +5,8 @@ import {
   counts,
   education,
   openSource,
+  contributionStatus,
+  openSourceSummary,
   personal,
   principles,
   resume,
@@ -42,10 +44,11 @@ export function GET(): Response {
       (c) => `- [${c.title}](${site.url}/work/${c.id}): ${c.results[0].metric} — ${c.results[0].detail}. Stack: ${c.stack.join(", ")}.`,
     ),
     "",
-    "## Open source (merged upstream PRs)",
+    "## Open source (dated public upstream snapshot)",
+    openSourceSummary,
     ...openSource
       .filter((o) => o.role !== "Author")
-      .map((o) => `- [${o.name}](${o.href}): ${o.role === "Contributor" ? `${o.merged} merged` : "proposal, unmerged"} — ${o.summary}`),
+      .map((o) => `- [${o.name}](${o.href}): ${contributionStatus(o)} — ${o.summary}`),
     "",
     "## How he works",
     ...principles.map((p) => `- ${p.title}: ${p.body} (evidence: ${p.evidence.href.startsWith("/") ? site.url + p.evidence.href : p.evidence.href})`),

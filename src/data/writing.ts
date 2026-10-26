@@ -39,7 +39,7 @@ export const posts: Post[] = [
     body: [
       {
         t: "p",
-        text: `Between August and September 2026 I opened ${mastra?.authored ?? 29} pull requests against Mastra, the TypeScript agent framework. ${mastra?.merged ?? 11} were merged as mine — mostly fixes to its codemod and CLI migration tooling. The other ${fixed.length} are the more interesting story.`,
+        text: `In the September 28, 2026 snapshot I had opened 29 pull requests against Mastra, the TypeScript agent framework. 11 were merged as mine — mostly fixes to its codemod and CLI migration tooling. The other ${fixed.length} are the more interesting story.`,
       },
       { t: "h2", text: "Find, file, fix" },
       {
@@ -49,7 +49,7 @@ export const posts: Post[] = [
       { t: "h2", text: "Closed by a bot, fixed anyway" },
       {
         t: "p",
-        text: "Mastra runs a triage bot that closes pull requests whose linked issue hasn't been triaged by a maintainer yet. It closed all of mine for that reason — a process rule, not a judgment on the code. Then Mastra's own automation re-fixed each issue within days, and maintainers merged those fixes.",
+        text: "Mastra runs a triage bot that closes pull requests whose linked issue hasn't been triaged by a maintainer yet. It closed the PRs in this documented group for that reason — a process rule, not a judgment on the code. Then Mastra's own automation re-fixed each issue within days, and maintainers merged those fixes.",
       },
       {
         t: "ul",
@@ -112,7 +112,7 @@ export const posts: Post[] = [
       { t: "h2", text: "3. Evaluate it like a product" },
       {
         t: "p",
-        text: `A golden set of ${scorecard.router.total} real questions and ${scorecard.guard.total} injection cases runs in CI on every push; the build publishes the score on the site itself (currently ${scorecard.router.passed}/${scorecard.router.total} and ${scorecard.guard.passed}/${scorecard.guard.total}). An end-to-end smoke test drives every page and API against the real database. Open-source numbers are re-verified against the GitHub API daily.`,
+        text: `A golden set of ${scorecard.router.total} real questions and ${scorecard.guard.total} injection cases runs in CI on every push; the build publishes the score on the site itself (currently ${scorecard.router.passed}/${scorecard.router.total} and ${scorecard.guard.passed}/${scorecard.guard.total}). An end-to-end smoke test drives every page and API against the real database. Open-source counts are published as a dated GitHub snapshot; a scheduled workflow checks for drift.`,
       },
       {
         t: "p",

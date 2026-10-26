@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   });
   return [
     page("", 1),
+    page("/hire", 0.9),
     page("/work", 0.9),
     page("/cv", 0.9),
     page("/open-source", 0.8),

@@ -1,4 +1,6 @@
 import scorecard from "@/data/eval-scorecard.json";
+import githubSnapshot from "@/data/github-snapshot.json";
+import mastraIssues from "@/data/mastra-issues.json";
 
 /**
  * Single source of truth for every word on the site.
@@ -11,20 +13,20 @@ import scorecard from "@/data/eval-scorecard.json";
  */
 
 /**
- * GitHub profile totals — a dated snapshot, not live. Update both numbers
- * together (and `asOf`) from https://api.github.com/users/sdivyanshu90.
+ * GitHub profile totals — a dated snapshot, not live. Read from github-snapshot.json; repository counts come from the user API,
+ * stars are summed across owned non-fork repositories.
  */
 export const github = {
   user: "sdivyanshu90",
-  publicRepos: 195,
-  stars: 337, // across non-fork repos
-  asOf: "2026-09",
+  publicRepos: githubSnapshot.profile.publicRepos,
+  stars: githubSnapshot.profile.stars, // across non-fork repos
+  asOf: githubSnapshot.asOf,
 } as const;
 
 export const site = {
   url: "https://div90.vercel.app",
-  revision: "2026.09",
-  reportId: "DIV-2026.09",
+  revision: "2026.10",
+  reportId: "DIV-2026.10",
   title: "Divanshu Sharma — Applied AI / ML Systems Engineer",
   description:
     "Divanshu Sharma is a founding engineer who ships reliable AI products — leading the technical turnaround of Uniiq's AI advising platform, previously privacy-preserving ML research at Yale and quantitative research at WorldQuant BRAIN. DIV-1 is his AI-native portfolio: query it like a model and get answers as live, source-cited artifacts.",
@@ -37,14 +39,13 @@ export const personal = {
   lead: "Applied AI / ML Systems Engineer",
   /** The one-line specialty, as on his GitHub bio. */
   focus: "LLM evaluation, inference & reliability",
-  context: "Reliable AI products · Founding Engineer @ Uniiq · Mumbai",
+  context: "Reliable AI products · Founding Engineer @ Uniiq.ai · Mumbai",
   roles: [
     "Applied AI Engineer",
     "ML Systems Engineer",
     "Founding Engineer",
-    "Software Engineer",
   ],
-  currentRole: "Founding Engineer @ Uniiq",
+  currentRole: "Founding Engineer @ Uniiq.ai",
   openTo: "Open to AI engineering & founding roles", // confirmed by Divanshu, 2026-09 — actively looking
   location: "Mumbai, India",
   // Phone is deliberately not published on the site (scraping/spam); it
@@ -52,7 +53,7 @@ export const personal = {
   email: "divyanshu74.80@gmail.com", // per resume PDF & GitHub — the old config's "divanshu…" was a typo
   avatar: "/profile.jpg",
   abstract: [
-    "Founding engineer who ships reliable AI products. At Uniiq he owns the AI admissions platform: a stateful intake hardened so model outages can't corrupt student state, 40+ critical vulnerabilities resolved, and a Decision Twin that cut critical-constraint violations from 70% to 0% in offline evaluation. Before that: privacy-preserving deep learning research at Yale and three years of quantitative research at WorldQuant BRAIN.",
+    "Founding engineer who ships reliable AI products. At Uniiq he owns the AI admissions platform: a resumable, stateful intake with validated model outputs and failure recovery, an 80.8% smaller frontend entry bundle, and a Decision Twin designed and validated in controlled offline evaluation. Before that: privacy-preserving deep learning research at Yale and three years of quantitative research at WorldQuant BRAIN.",
     "The depth behind it is public: a habit of rebuilding the modern AI stack from first principles — transformers, diffusion, RLHF, paged KV-caches, quantization, vector indexes — each published as a readable repository.",
     "The through-line is reliable AI: structured outputs, prompt and response sanitization, failure recovery, rate limiting, consensus-fused ASR, and systems measured against explicit performance budgets.",
   ],
@@ -94,7 +95,8 @@ export const socials = [
  */
 export const resume = {
   href: `${site.url}/Divanshu_Sharma_Resume.pdf`,
-  label: "Résumé (PDF, 2 pages)",
+  label: "Résumé (PDF, 2 pages · 2026-10-06)",
+  asOf: "2026-10-06",
 } as const;
 
 /* ------------------------------------------------------------------ */
@@ -141,30 +143,41 @@ export interface CaseStudy {
       };
 }
 
+export const uniiqDecisionTwin = {
+  title: "Admissions Decision Twin",
+  summary:
+    "Designed and validated a versioned Admissions Decision Twin for university portfolio optimization across 5 hard constraints: budget, deadlines, eligibility, workload and binding application rounds. Decisions include evidence provenance, uncertainty-aware abstention, counterfactual comparison and replayability.",
+  evaluation:
+    "In a pre-registered, controlled offline evaluation of 30 applicant scenarios and 60 frozen decision artifacts across 9 quality metrics, constraint-feasible plans increased from 23.3% to 76.7%, critical-constraint violations fell from 70% to 0%, and evidence traceability and uncertainty handling both reached 100%.",
+  methodology:
+    "The adversarial evaluation included 10 evidence-conflict cases, 6 hard-constraint traps, 11 required-abstention cases and 2 counterfactual-invariance pairs, with frozen inputs, evidence lineage, audit rules and independent metric review.",
+  scope: "Designed and evaluated · controlled offline results",
+} as const;
+
 export const caseStudies: CaseStudy[] = [
   {
     id: "uniiq-platform",
     fig: "01",
-    title: "Uniiq — AI Admissions Platform",
-    domain: "Founding engineering · Production conversational AI",
+    title: "Uniiq.ai — Admissions Platform & Decision Twin",
+    domain: "Founding engineering · Conversational AI · LLM security",
     year: "2026",
     problem:
       "Students planning university applications need a coherent AI intake and a plan they can trust: one that respects hard limits like budget, deadlines, eligibility, workload and binding application rounds. The product had to stay correct when the model is slow, wrong or down — no partial profiles, no corrupted student state, no infeasible plans.",
     approach:
-      "Architected the stateful, AWS-deployed admissions workflow across React, Express, MongoDB and Gemini: a 3-phase conversational intake with schema-validated extraction, idempotent completion and resumable sessions. Wrapped the model in failure boundaries — prompt and response sanitization, Zod-validated structured output, retries, recoverable 503s, deterministic fallbacks and layered rate limits — so outages can't block onboarding or corrupt state. Designed and validated an Admissions Decision Twin that plans across 5 hard constraints with evidence provenance and uncertainty-aware abstention.",
+      "Architected a 3-phase intake with 9 adaptive follow-ups across 2 authenticated APIs in React, Express, MongoDB and Gemini. Persisted transcripts, schema-validated extraction and idempotent completion support resumable sessions. LLM security combines prompt and response sanitization, Zod-validated structured-output contracts and 5 layered rate policies. Up to 3 attempts for transient failures, recoverable 503 responses and deterministic fallbacks protect model execution. Rebuilt institution and opportunity updates using deep-partial validation and recursive MongoDB $set flattening, preserving nested data and uniqueness guarantees. Separately, designed and validated a versioned Admissions Decision Twin across budget, deadlines, eligibility, workload and binding application rounds; its results come from a pre-registered offline evaluation, not a production deployment.",
     results: [
       {
-        metric: "70% → 0% critical violations",
+        metric: "70% → 0% critical-constraint violations",
         detail:
-          "Admissions Decision Twin: constraint-feasible plans 23.3% → 76.7%, 100% evidence traceability — controlled offline evaluation",
-      },
-      {
-        metric: "40+ critical vulnerabilities",
-        detail: "resolved in inherited code, including prompt-injection and data-leak risks",
+          "Controlled offline evaluation: feasible plans 23.3% → 76.7%; 100% evidence traceability and uncertainty handling across 30 applicant scenarios, 60 frozen decision artifacts and 9 quality metrics.",
       },
       {
         metric: "80.8% smaller entry bundle",
-        detail: "1.45 MB → 278 KB; performance score 73 → 93, LCP 3.3s → 0.7s",
+        detail: "1.45 MB → 278 KB (81 KB gzipped): 21 lazy-loaded routes, vendor partitioning, Shiki critical-path removal, gzip, immutable caching and Lighthouse budgets.",
+      },
+      {
+        metric: "39 targeted mutation tests",
+        detail: "Schema, index, validation and patching coverage for 4 unique institution identifiers and the composite (source, externalId) deduplication key. Expanded regression coverage across 12 high-risk modules; the current server suite has 201 passing tests, zero failures.",
       },
     ],
     stack: ["React", "TypeScript", "Express", "MongoDB", "Gemini", "Zod"],
@@ -694,7 +707,7 @@ export const scratchIndex: ScratchEntry[] = [
     repo: "sdivyanshu90/build-your-own-ai-gateway",
     layer: "Inference & serving",
     lang: "TypeScript",
-    summary: "Multi-provider LLM gateway: routing, retries, keys.",
+    summary: "Multi-provider LLM gateway with routing, failover, circuit breaking, rate limits, semantic caching and observability.",
   },
   {
     name: "funcflow",
@@ -762,7 +775,7 @@ export const scratchIndex: ScratchEntry[] = [
     repo: "sdivyanshu90/build-your-own-code-interpreter",
     layer: "Retrieval & data",
     lang: "Python",
-    summary: "Sandboxed code-execution tool for agents.",
+    summary: "Sandboxed code execution with containers, namespaces, seccomp, cgroups and network/filesystem isolation.",
   },
   // — Evaluation & safety —
   {
@@ -966,7 +979,7 @@ export const shipped = [
   {
     name: "Uniiq",
     role: "Founding Engineer — full-stack AI product",
-    what: "Owns the AI admissions platform end-to-end: a stateful 3-phase intake hardened against model failures, 40+ critical vulnerabilities resolved, an 80.8% smaller entry bundle, and a Decision Twin that cut critical-constraint violations from 70% to 0% in offline evaluation.",
+    what: "Owns the AI admissions workflow: 3-phase intake, 9 adaptive follow-ups, resumable sessions and model failure recovery across 2 authenticated APIs. Reduced the entry bundle 80.8% to 278 KB (81 KB gzipped). Separately designed and validated the Admissions Decision Twin in controlled offline evaluation.",
     href: "https://uniiq.ai",
     tag: "live product",
   },
@@ -1008,7 +1021,7 @@ export const shipped = [
 ] as const;
 
 /**
- * Upstream open source, verified against the GitHub API (2026-09-28).
+ * Selected upstream work. Counts come from the dated GitHub API snapshot.
  * Every issue and PR here is his work. "merged" means merged as his PR;
  * bugs he found and patched that were fixed upstream after a bot closed his
  * PR are listed separately with both links. No maintainer title is claimed.
@@ -1022,6 +1035,8 @@ export interface Contribution {
   authored?: number;
   /** PRs currently open, awaiting review. */
   open?: number;
+  /** Closed without merge; distinct from open proposals. */
+  closed?: number;
   role: "Contributor" | "Proposal" | "In review" | "Author";
   summary: string;
   notable?: { title: string; href: string }[];
@@ -1035,17 +1050,29 @@ export interface Contribution {
   repo?: string;
 }
 
+/** Counts are maintained once; prose and cards consume the same snapshot. */
+export const upstreamSnapshot = githubSnapshot;
+export const mastraIssueContributions = mastraIssues;
+export function upstreamStats(...repos: string[]) {
+  return repos.reduce((total, repo) => {
+    const row = githubSnapshot.repositories[repo as keyof typeof githubSnapshot.repositories];
+    if (!row) throw new Error(`Missing GitHub snapshot for ${repo}`);
+    return { authored: total.authored + row.authored, merged: total.merged + row.merged, open: total.open + row.open, closed: total.closed + row.closed };
+  }, { authored: 0, merged: 0, open: 0, closed: 0 });
+}
+
 export const openSource: Contribution[] = [
   {
     name: "Mastra (mastra-ai/mastra)",
     href: "https://github.com/mastra-ai/mastra/pulls?q=is%3Apr+author%3Asdivyanshu90+is%3Amerged",
-    merged: 11,
+    ...upstreamStats("mastra-ai/mastra"),
     role: "Contributor",
     repo: "mastra-ai/mastra",
-    authored: 29,
     summary:
-      "29 PRs and 18 bug reports to the TypeScript agent framework (Aug–Sep 2026). 11 merged directly — codemod and CLI fixes for its migration tooling — and all 18 bugs he found and patched are fixed upstream, one merged with him as co-author. #58 of 466 contributors by commits.",
+      `${mastraIssues.summary.authored} issue reports across CLI, codemods, logging and embedding correctness. ${mastraIssues.summary.resolvedByOwnPR + mastraIssues.summary.resolvedByOthers} reports have linked merged resolutions: ${mastraIssues.summary.resolvedByOthers} through other upstream authors and ${mastraIssues.summary.resolvedByOwnPR} through his own merged PRs. Reports and merged PRs overlap and are counted separately. Selected implementation evidence below includes 18 reports with authored patches; one upstream fix credits him as co-author.`,
     notable: [
+      { title: "Drain Upstash logs on destroy", href: "https://github.com/mastra-ai/mastra/pull/26174" },
+      { title: "Paginate Upstash log queries", href: "https://github.com/mastra-ai/mastra/pull/26173" },
       { title: "fix(codemod): migrate RuntimeContext DI imports", href: "https://github.com/mastra-ai/mastra/pull/24472" },
       { title: "fix(codemod): forward jscodeshift output", href: "https://github.com/mastra-ai/mastra/pull/24530" },
       { title: "fix(codemod): migrate message types to valid exports", href: "https://github.com/mastra-ai/mastra/pull/25104" },
@@ -1077,12 +1104,10 @@ export const openSource: Contribution[] = [
   {
     name: "EleutherAI lm-evaluation-harness",
     href: "https://github.com/EleutherAI/lm-evaluation-harness/pulls?q=is%3Apr+author%3Asdivyanshu90+is%3Amerged",
-    merged: 4,
-    authored: 25,
-    open: 21,
+    ...upstreamStats("EleutherAI/lm-evaluation-harness"),
     role: "Contributor",
     summary:
-      "25 PRs to the standard LLM evaluation harness (Aug–Sep 2026): 4 merged — CLI argument parsing, request-cache robustness, and a restored benchmark task — and 21 in review.",
+      "Merged CLI argument-parsing fixes, restored a benchmark task and created missing request-cache parent directories. Open proposals cover evaluation correctness, model backends, tokenizers, retries, caching and aggregation.",
     notable: [
       { title: "Preserve signed integer types in CLI arguments", href: "https://github.com/EleutherAI/lm-evaluation-harness/pull/4136" },
       { title: "Allow braces in CLI key-value arguments", href: "https://github.com/EleutherAI/lm-evaluation-harness/pull/4144" },
@@ -1093,12 +1118,10 @@ export const openSource: Contribution[] = [
   {
     name: "Experiential (experientiallabs)",
     href: "https://github.com/experientiallabs/experiential/pulls?q=is%3Apr+author%3Asdivyanshu90+is%3Amerged",
-    merged: 2,
-    authored: 20,
-    open: 18,
+    ...upstreamStats("experientiallabs/experiential"),
     role: "Contributor",
     summary:
-      "20 PRs (Sep 2026): 2 merged model-provider fixes — paginated Anthropic model discovery and Gemini page-token handling — and 18 in review.",
+      "Merged Anthropic model-discovery pagination and Gemini page-token handling. Open proposals cover provider contracts, ingestion, credentials, cancellation and error recovery.",
     notable: [
       { title: "providers: paginate Anthropic model discovery", href: "https://github.com/experientiallabs/experiential/pull/1056" },
     ],
@@ -1106,12 +1129,10 @@ export const openSource: Contribution[] = [
   {
     name: "Sequre (0xTCG)",
     href: "https://github.com/0xTCG/sequre/pulls?q=is%3Apr+author%3Asdivyanshu90",
-    merged: 0,
-    authored: 4,
-    open: 1,
+    ...upstreamStats("0xTCG/sequre"),
     role: "Proposal",
     summary:
-      "4 PRs bringing the Yale work upstream — CNN layers and an MPC ChestMNIST training pipeline (#41 alone: +3.5k lines across 54 files). Not merged yet; #42 is open.",
+      "Authored CNN, pooling and MPC training proposals from the Yale research. Not merged yet; #42 remains open, while the other three PRs are closed without merge.",
     notable: [
       { title: "feat: add CNN layers and ChestMNIST MPC training pipeline", href: "https://github.com/0xTCG/sequre/pull/41" },
     ],
@@ -1119,11 +1140,10 @@ export const openSource: Contribution[] = [
   {
     name: "p5.js Web Editor (Processing Foundation)",
     href: "https://github.com/processing/p5.js-web-editor/pulls?q=is%3Apr+author%3Asdivyanshu90+is%3Amerged",
-    merged: 4,
-    authored: 10,
+    ...upstreamStats("processing/p5.js-web-editor"),
     role: "Contributor",
     summary:
-      "10 PRs (2023–24), 4 merged: a keyboard shortcut for adding files, the Korean translation of keyboard shortcuts, and two UI fixes.",
+      "Merged a keyboard shortcut for adding files, Korean keyboard-shortcut translations and two UI fixes (2023–24).",
     notable: [
       { title: "Added a keyboard shortcut for adding files", href: "https://github.com/processing/p5.js-web-editor/pull/2395" },
     ],
@@ -1131,20 +1151,28 @@ export const openSource: Contribution[] = [
   {
     name: "OpenCode (anomalyco/opencode)",
     href: "https://github.com/anomalyco/opencode/pulls?q=is%3Apr+author%3Asdivyanshu90",
-    merged: 0,
-    authored: 22,
-    open: 21,
-    role: "In review",
-    summary: "22 fix PRs to the open-source AI coding agent (210k★), Aug–Sep 2026 — 21 open, awaiting maintainer review.",
+    ...upstreamStats("anomalyco/opencode"),
+    role: "Contributor",
+    summary:
+      "Merged broken-pipe transport retry handling (#56307). Other authored fixes span TUI state, Unicode, filesystem portability, Git behavior, cache identity, authentication and pagination.",
+    notable: [{ title: "Retry broken-pipe transport failures", href: "https://github.com/anomalyco/opencode/pull/56307" }],
+  },
+  {
+    name: "Zulip",
+    href: "https://github.com/zulip/zulip/pull/40241",
+    repo: "zulip/zulip",
+    ...upstreamStats("zulip/zulip"),
+    role: "Contributor",
+    summary: "Merged validation for non-UTF-8 temporary upload access tokens, returning a client-input error instead of an HTTP 500.",
+    notable: [{ title: "Reject non-UTF-8 temporary access tokens", href: "https://github.com/zulip/zulip/pull/40241" }],
   },
   {
     name: "Also merged: vulnerablecode, Music Blocks, PyNN",
     href: "https://github.com/pulls?q=is%3Apr+author%3Asdivyanshu90+is%3Amerged+-user%3Asdivyanshu90",
-    merged: 3,
-    authored: 4,
+    ...upstreamStats("aboutcode-org/vulnerablecode", "sugarlabs/musicblocks", "NeuralEnsemble/PyNN"),
     role: "Contributor",
     summary:
-      "A license-URL fix to aboutcode-org/vulnerablecode, a close-button fix to Sugar Labs' Music Blocks, and a docs-layout fix to NeuralEnsemble's PyNN.",
+      "Merged fixes for GitHub importer license metadata, the Music Blocks info-window close button and the PyNN documentation sidebar.",
     notable: [
       { title: "Add license_url for GitHub Importer (vulnerablecode)", href: "https://github.com/aboutcode-org/vulnerablecode/pull/1392" },
       { title: "Fixed Close Info Window (Music Blocks)", href: "https://github.com/sugarlabs/musicblocks/pull/3346" },
@@ -1189,15 +1217,15 @@ export const changelog: Release[] = [
     version: "v3.0",
     span: "May 2026 — present",
     role: "Founding Engineer",
-    org: "Uniiq",
+    org: "Uniiq.ai",
     orgHref: "https://uniiq.ai",
     summary:
-      "Owns the architecture and reliability of Uniiq's AWS-deployed AI admissions platform across React, Express, MongoDB and Gemini — from the stateful intake to an evaluated decision-planning layer.",
+      "Owns the stateful AI admissions workflow across React, Express, MongoDB and Gemini, with a focus on model failure recovery, data integrity and measured performance.",
     notes: [
-      "Designed and validated an Admissions Decision Twin for constraint-aware planning across 5 hard constraints; in controlled offline evaluation it cut critical violations from 70% to 0%, raised constraint-feasible plans from 23.3% to 76.7%, and reached 100% evidence traceability.",
-      "Architected the stateful AI intake and hardened LLM execution — Zod-validated structured output, retries, recoverable 503s, deterministic fallbacks and layered rate limits — so model outages can't block onboarding or corrupt student state.",
-      "Led the turnaround of inherited code, resolving 40+ critical vulnerabilities including prompt-injection and data-leak risks.",
-      "Cut the primary entry bundle 80.8% (1.45 MB → 278 KB), raising the performance score from 73 to 93 and LCP from 3.3s to 0.7s.",
+      "Architected a 3-phase AI intake with 9 adaptive follow-ups and 2 authenticated APIs: structured Gemini generation, persisted transcripts, schema-validated extraction, idempotent completion and resumable sessions.",
+      "Hardened model execution with structured-output contracts, up to 3 attempts for transient failures, recoverable 503 responses, deterministic fallbacks and 5 layered rate-control policies.",
+      "Reduced the primary frontend bundle by 80.8% — 1.45 MB → 278 KB (81 KB gzipped) — through 21 lazy-loaded routes, vendor partitioning, compression, immutable caching and Lighthouse budgets.",
+      "Designed and validated an Admissions Decision Twin across 5 hard constraints. In controlled offline evaluation (30 scenarios, 60 artifacts, 9 metrics), feasible plans rose 23.3% → 76.7%, critical violations fell 70% → 0%, and evidence traceability and uncertainty handling reached 100%.",
     ],
   },
   {
@@ -1319,7 +1347,7 @@ export const honors = [
   "Kaggle 2× Expert", // résumé; confirmed by Divanshu 2026-09 (profile is captcha-walled to scrapers)
   "LeetCode contest rating 1,821 (top 7.5%) · CodeChef 3★ (1662) · 4,400+ problems solved",
   "GitHub: Pull Shark ×3 · Starstruck ×2 · YOLO · Quickdraw",
-  `${github.publicRepos} public repositories · ${github.stars} stars`,
+  `${github.publicRepos} public repositories · ${github.stars} stars across non-fork repos (GitHub snapshot ${github.asOf})`,
 ] as const;
 
 /* ------------------------------------------------------------------ */
@@ -1329,7 +1357,7 @@ export const honors = [
 export const citation = `@engineer{sharma_2026,
   author   = {Sharma, Divanshu},
   title    = {${personal.lead} — ${personal.focus}},
-  role     = {Founding Engineer, Uniiq},
+  role     = {Founding Engineer, Uniiq.ai},
   email    = {${personal.email}},
   url      = {${site.url}},
   github   = {${github.user}},
@@ -1349,14 +1377,22 @@ export const counts = {
   releases: changelog.length,
   /** Every star in the constellation: from-scratch systems + case studies. */
   stars: scratchIndex.length + caseStudies.length + openSource.filter((o) => o.role !== "Author").length,
-  /** Bugs he reported with a fix, fixed upstream after a bot closed his PR. */
-  reportedFixed: openSource.reduce((n, o) => n + (o.reportedFixed?.length ?? 0), 0),
+  /** Reported Mastra issues resolved by merged PRs authored by others. */
+  reportedFixed: mastraIssues.summary.resolvedByOthers,
   /** Every PR he opened in other people's projects (public repos). */
-  authoredUpstream: openSource.reduce((n, o) => n + (o.authored ?? 0), 0),
+  authoredUpstream: githubSnapshot.totals.authored,
   /** Merged upstream PRs across other people's projects. */
-  mergedUpstream: openSource.filter((o) => o.role === "Contributor").reduce((n, o) => n + o.merged, 0),
+  mergedUpstream: githubSnapshot.totals.merged,
   inLayer: (layer: Layer) => scratchIndex.filter((e) => e.layer === layer).length,
 } as const;
+
+/** Shared narration avoids stale hand-written PR totals in the console. */
+export const openSourceSummary = `As of ${github.asOf}, GitHub records ${counts.authoredUpstream} public upstream PRs authored by Divanshu: ${counts.mergedUpstream} merged, ${githubSnapshot.totals.open} open and ${githubSnapshot.totals.closed} closed without merge. Selected merged work includes Mastra (${upstreamStats("mastra-ai/mastra").merged}: codemods, CLI and logging), EleutherAI's lm-evaluation-harness (${upstreamStats("EleutherAI/lm-evaluation-harness").merged}: evaluation and cache correctness), OpenCode (${upstreamStats("anomalyco/opencode").merged}: broken-pipe retries), Zulip (${upstreamStats("zulip/zulip").merged}: token validation), Experiential (${upstreamStats("experientiallabs/experiential").merged}: provider pagination), and the p5.js Web Editor (${upstreamStats("processing/p5.js-web-editor").merged}). His Mastra contributions also include ${mastraIssues.summary.authored} issue reports: ${counts.reportedFixed} have linked merged fixes by other upstream authors, alongside ${mastraIssues.summary.resolvedByOwnPR} resolved through his own merged PRs. These issue outcomes overlap with the PR record and are not added to merge counts. The full snapshot also includes authored work in Monid, Rowboat, SigNoz, Hive and Sequre.`;
+
+export function contributionStatus(o: Contribution): string {
+  if (o.role === "Author") return "Author";
+  return `${o.merged} merged · ${o.open ?? 0} open · ${o.closed ?? 0} closed without merge`;
+}
 
 /**
  * Four headline numbers, all traceable: the Uniiq work summary, the résumé,
@@ -1364,16 +1400,16 @@ export const counts = {
  */
 export const keyResults = [
   {
-    value: 40,
-    display: "40+",
-    label: "critical vulnerabilities resolved",
-    note: "Uniiq · prompt-injection & data-leak risks",
+    value: 80.8,
+    display: "80.8%",
+    label: "smaller frontend entry bundle",
+    note: "Uniiq · 1.45 MB → 278 KB · 81 KB gzipped",
   },
   {
     value: counts.mergedUpstream,
     display: String(counts.mergedUpstream),
     label: "merged upstream PRs",
-    note: `Mastra · EleutherAI lm-eval · +${counts.reportedFixed} bugs fixed upstream`,
+    note: `Mastra · EleutherAI lm-eval · ${counts.reportedFixed} issue reports also resolved upstream`,
   },
   {
     value: 88.08,
@@ -1401,7 +1437,7 @@ export const principles = [
   },
   {
     title: "Honest by construction",
-    body: "Systems that say “not on record” instead of guessing: honest absences here, figures checked against the source, claims re-verified against GitHub daily.",
+    body: "Systems that say “not on record” instead of guessing: honest absences here, figures checked against the source, GitHub counts published as a dated snapshot with linked PR evidence.",
     evidence: { label: "claims verification workflow", href: "https://github.com/sdivyanshu90/my_portfolio/blob/main/.github/workflows/claims.yml" },
   },
   {
@@ -1411,7 +1447,7 @@ export const principles = [
   },
   {
     title: "Ship, then harden",
-    body: "Inherit a system, measure it, fix what's dangerous first: 40+ critical vulnerabilities, recoverable AI failures, and performance budgets at Uniiq.",
+    body: "Inherit a system, measure it, fix what's dangerous first: resumable intake, recoverable AI failures, safe database updates and performance budgets at Uniiq.",
     evidence: { label: "Fig. 01", href: "/work/uniiq-platform" },
   },
 ] as const;
